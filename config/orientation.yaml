@@ -1,0 +1,32 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# TARGET_VISUAL_OCCUPANCY — area-based car sizing (exterior_full lane).
+#
+# REPLACES Module 3's per-orientation fill_ratio/vertical_anchor table.
+#
+# Each value = the target fraction of the CANVAS AREA the car's RGB bbox crop
+# should cover after resizing. Sizing is UNIFORM (aspect preserved) and
+# UPSCALE-ONLY (never shrink the crop), capped so the car still fits the canvas
+# (see stages/occupancy_resize.py). Positioning is handled SEPARATELY by the
+# ground-contact anchor (stages/anchor.py + perspective/anchor_geometry.py): the car
+# is pinned by its WHEEL-FOOTPRINT CENTRE onto the plate's cx,cy, then slid toward the
+# camera by anchor.forward_bias_* (config, per pose group) for framing.
+#
+# Current values (tune freely; the block below is the source of truth):
+#   front / back                       0.70
+#   front-left/right, back-left/right  0.69   (the four 3/4 corners)
+#   sideways-left / sideways-right     0.70
+#   partial (exterior-partial lane)    0.25
+#   default (fallback, unresolved)     0.14
+# ─────────────────────────────────────────────────────────────────────────────
+
+target_visual_occupancy:
+  front:          0.80
+  back:           0.80
+  front-left:     0.72
+  front-right:    0.72
+  back-left:      0.72
+  back-right:     0.72
+  sideways-left:  0.75
+  sideways-right: 0.75
+  partial:        0.25
+  default:        0.14

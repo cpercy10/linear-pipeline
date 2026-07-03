@@ -1,0 +1,1384 @@
+{
+  "rooms": [
+    {
+      "key": "cove",
+      "name": "Infinity",
+      "thumb": "thumbs/room_cove.jpg"
+    },
+    {
+      "key": "flatwall",
+      "name": "Flat-Wall",
+      "thumb": "thumbs/room_flatwall.jpg"
+    },
+    {
+      "key": "curved",
+      "name": "Curved Wall",
+      "thumb": "thumbs/room_curved.jpg"
+    }
+  ],
+  "lighting": {
+    "flatwall": [
+      {
+        "key": "none",
+        "name": "Overhead only",
+        "thumb": "thumbs/light_flatwall_none.jpg"
+      },
+      {
+        "key": "led",
+        "name": "LED strips",
+        "thumb": "thumbs/light_flatwall_led.jpg"
+      },
+      {
+        "key": "fins",
+        "name": "Light fins",
+        "thumb": "thumbs/light_flatwall_fins.jpg"
+      },
+      {
+        "key": "panels",
+        "name": "Soft panels",
+        "thumb": "thumbs/light_flatwall_panels.jpg"
+      }
+    ],
+    "curved": [
+      {
+        "key": "none",
+        "name": "Overhead only",
+        "thumb": "thumbs/light_curved_none.jpg"
+      },
+      {
+        "key": "led",
+        "name": "LED strips",
+        "thumb": "thumbs/light_curved_led.jpg"
+      },
+      {
+        "key": "fins",
+        "name": "Light fins",
+        "thumb": "thumbs/light_curved_fins.jpg"
+      },
+      {
+        "key": "panels",
+        "name": "Soft panels",
+        "thumb": "thumbs/light_curved_panels.jpg"
+      }
+    ],
+    "cove": [
+      {
+        "key": "none",
+        "name": "Overhead only",
+        "thumb": ""
+      }
+    ]
+  },
+  "turntable": [
+    {
+      "key": "none",
+      "name": "None",
+      "thumb": "thumbs/turntable_none.jpg"
+    },
+    {
+      "key": "flush",
+      "name": "Flush ring",
+      "thumb": "thumbs/turntable_flush.jpg"
+    },
+    {
+      "key": "raised",
+      "name": "Raised platform",
+      "thumb": "thumbs/turntable_raised.jpg"
+    }
+  ],
+  "branding": [
+    {
+      "key": "none",
+      "name": "No branding",
+      "thumb": ""
+    },
+    {
+      "key": "painted",
+      "name": "Painted",
+      "thumb": "thumbs/brand_painted.jpg"
+    },
+    {
+      "key": "backlit",
+      "name": "Back-lit",
+      "thumb": "thumbs/brand_backlit.jpg"
+    },
+    {
+      "key": "signage3d",
+      "name": "3D signage",
+      "thumb": "thumbs/brand_signage3d.jpg"
+    },
+    {
+      "key": "multiprint",
+      "name": "Multi-print",
+      "thumb": "thumbs/brand_multiprint.jpg"
+    }
+  ],
+  "angles": [
+    {
+      "key": "front",
+      "name": "Front",
+      "rot": 180
+    },
+    {
+      "key": "front_q",
+      "name": "Front ¾",
+      "rot": 135
+    },
+    {
+      "key": "side",
+      "name": "Side",
+      "rot": 90
+    },
+    {
+      "key": "rear_q",
+      "name": "Rear ¾",
+      "rot": 45
+    },
+    {
+      "key": "rear",
+      "name": "Rear",
+      "rot": 0
+    }
+  ],
+  "heights": [
+    {
+      "key": "low",
+      "name": "Low",
+      "z": 0.7
+    },
+    {
+      "key": "eye",
+      "name": "Eye",
+      "z": 1.35
+    },
+    {
+      "key": "high",
+      "name": "High",
+      "z": 3.3
+    }
+  ],
+  "floors": [
+    {
+      "key": "micro_light",
+      "name": "Pale Microcement",
+      "family": "concrete",
+      "tier": "signature",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/micro_light.png",
+      "id": "F16"
+    },
+    {
+      "key": "concrete_industrial",
+      "name": "Industrial Concrete",
+      "family": "concrete",
+      "tier": "standard",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/concrete_industrial.png",
+      "id": "F2"
+    },
+    {
+      "key": "bk_e30e5153",
+      "name": "Burnished Concrete",
+      "family": "concrete",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_e30e5153.png",
+      "id": "F38"
+    },
+    {
+      "key": "bk_906e6202",
+      "name": "Smooth Concrete",
+      "family": "concrete",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_906e6202.png",
+      "id": "F36"
+    },
+    {
+      "key": "micro_dark",
+      "name": "Charcoal Microcement",
+      "family": "concrete",
+      "tier": "premium",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/micro_dark.png",
+      "id": "F15"
+    },
+    {
+      "key": "concrete_polished_fine",
+      "name": "Polished Concrete",
+      "family": "concrete",
+      "tier": "premium",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/concrete_polished_fine.png",
+      "id": "F3"
+    },
+    {
+      "key": "bk_8f432ed6",
+      "name": "Amber Resin",
+      "family": "epoxy",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_8f432ed6.png",
+      "id": "F43"
+    },
+    {
+      "key": "bk_eabe9065",
+      "name": "Coastal Blue Resin",
+      "family": "epoxy",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_eabe9065.png",
+      "id": "F35"
+    },
+    {
+      "key": "bk_31828369",
+      "name": "Liquid Pearl Resin",
+      "family": "epoxy",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_31828369.png",
+      "id": "F42"
+    },
+    {
+      "key": "bk_9d3e905a",
+      "name": "Monochrome Flow",
+      "family": "epoxy",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_9d3e905a.png",
+      "id": "F33"
+    },
+    {
+      "key": "bk_ea657719",
+      "name": "Sapphire Swirl",
+      "family": "epoxy",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_ea657719.png",
+      "id": "F34"
+    },
+    {
+      "key": "epoxy_1",
+      "name": "Clear Epoxy",
+      "family": "epoxy",
+      "tier": "premium",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/epoxy_1.png",
+      "id": "F5"
+    },
+    {
+      "key": "epoxy_2",
+      "name": "Deep Pour Epoxy",
+      "family": "epoxy",
+      "tier": "premium",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/epoxy_2.png",
+      "id": "F6"
+    },
+    {
+      "key": "epoxy_blackwhite",
+      "name": "Monochrome Epoxy",
+      "family": "epoxy",
+      "tier": "premium",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/epoxy_blackwhite.png",
+      "id": "F7"
+    },
+    {
+      "key": "bk_fc9c1fb6",
+      "name": "Classic Terrazzo",
+      "family": "terrazzo",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_fc9c1fb6.png",
+      "id": "F50"
+    },
+    {
+      "key": "terrazzo_grey",
+      "name": "Grey Terrazzo",
+      "family": "terrazzo",
+      "tier": "premium",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/terrazzo_grey.png",
+      "id": "F17"
+    },
+    {
+      "key": "terrazzo_venetian",
+      "name": "Venetian Terrazzo",
+      "family": "terrazzo",
+      "tier": "premium",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/terrazzo_venetian.png",
+      "id": "F4"
+    },
+    {
+      "key": "marble_carrara",
+      "name": "Carrara Marble",
+      "family": "marble",
+      "tier": "signature",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/marble_carrara.png",
+      "id": "F21"
+    },
+    {
+      "key": "marble_white",
+      "name": "White Dolomite",
+      "family": "marble",
+      "tier": "signature",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/marble_white.png",
+      "id": "F8"
+    },
+    {
+      "key": "marble_slab",
+      "name": "Polished Marble Slab",
+      "family": "marble",
+      "tier": "standard",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/marble_slab.png",
+      "id": "F14"
+    },
+    {
+      "key": "bk_319539a1",
+      "name": "Arabescato Marble",
+      "family": "marble",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_319539a1.png",
+      "id": "F46"
+    },
+    {
+      "key": "lib_floor-marble-quartziteexplosio",
+      "name": "Blue Fusion Quartzite",
+      "family": "marble",
+      "tier": "candidate",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/lib_floor-marble-quartziteexplosio.png",
+      "id": "F12"
+    },
+    {
+      "key": "bk_838cf372",
+      "name": "Golden Onyx",
+      "family": "marble",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_838cf372.png",
+      "id": "F62"
+    },
+    {
+      "key": "bk_c89541f2",
+      "name": "Midnight Onyx",
+      "family": "marble",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_c89541f2.png",
+      "id": "F63"
+    },
+    {
+      "key": "lib_floor-marble-stonemarbleportor",
+      "name": "Portoro Gold Marble",
+      "family": "marble",
+      "tier": "candidate",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/lib_floor-marble-stonemarbleportor.png",
+      "id": "F13"
+    },
+    {
+      "key": "bk_561e4f18",
+      "name": "Sand Beige Marble",
+      "family": "marble",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_561e4f18.png",
+      "id": "F47"
+    },
+    {
+      "key": "bk_319534c2",
+      "name": "Vein-Cut Travertine",
+      "family": "marble",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_319534c2.png",
+      "id": "F61"
+    },
+    {
+      "key": "bk_f9c27397",
+      "name": "White Marble Tile",
+      "family": "marble",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_f9c27397.png",
+      "id": "F45"
+    },
+    {
+      "key": "marble_cipollino",
+      "name": "Cipollino Marble",
+      "family": "marble",
+      "tier": "premium",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/marble_cipollino.png",
+      "id": "F9"
+    },
+    {
+      "key": "marble_grey",
+      "name": "Grey Fleury Marble",
+      "family": "marble",
+      "tier": "premium",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/marble_grey.png",
+      "id": "F10"
+    },
+    {
+      "key": "marble_nero",
+      "name": "Nero Belvedere",
+      "family": "marble",
+      "tier": "premium",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/marble_nero.png",
+      "id": "F11"
+    },
+    {
+      "key": "marble_statuario",
+      "name": "Statuario Marble",
+      "family": "marble",
+      "tier": "premium",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/marble_statuario.png",
+      "id": "F24"
+    },
+    {
+      "key": "bk_27bbb36a",
+      "name": "Charcoal Porcelain",
+      "family": "stone",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_27bbb36a.png",
+      "id": "F70"
+    },
+    {
+      "key": "bk_636bde9e",
+      "name": "Granite Tile",
+      "family": "stone",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_636bde9e.png",
+      "id": "F66"
+    },
+    {
+      "key": "bk_68967df0",
+      "name": "Grey Porcelain",
+      "family": "stone",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_68967df0.png",
+      "id": "F67"
+    },
+    {
+      "key": "bk_f3fa04d3",
+      "name": "Mist Grey Porcelain",
+      "family": "stone",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_f3fa04d3.png",
+      "id": "F69"
+    },
+    {
+      "key": "bk_d0e46840",
+      "name": "Pearl Granite",
+      "family": "stone",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_d0e46840.png",
+      "id": "F64"
+    },
+    {
+      "key": "bk_02a2a09a",
+      "name": "Roman Travertine",
+      "family": "stone",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_02a2a09a.png",
+      "id": "F56"
+    },
+    {
+      "key": "bk_cfd68ed5",
+      "name": "Speckled Granite",
+      "family": "stone",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_cfd68ed5.png",
+      "id": "F65"
+    },
+    {
+      "key": "bk_1c315c7c",
+      "name": "White Porcelain",
+      "family": "stone",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_1c315c7c.png",
+      "id": "F68"
+    },
+    {
+      "key": "porcelain_grey",
+      "name": "Slate Porcelain",
+      "family": "stone",
+      "tier": "premium",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/porcelain_grey.png",
+      "id": "F25"
+    },
+    {
+      "key": "lib_floor-tiling-stonegranitetile-",
+      "name": "Granite Stone Tile",
+      "family": "tile",
+      "tier": "candidate",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/lib_floor-tiling-stonegranitetile-.png",
+      "id": "F18"
+    },
+    {
+      "key": "lib_floor-tiling-tilesmarblesanped",
+      "name": "Marble Herringbone",
+      "family": "tile",
+      "tier": "candidate",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/lib_floor-tiling-tilesmarblesanped.png",
+      "id": "F22"
+    },
+    {
+      "key": "lib_floor-tiling-stonemarbletile-8",
+      "name": "Marble Stone Tile",
+      "family": "tile",
+      "tier": "candidate",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/lib_floor-tiling-stonemarbletile-8.png",
+      "id": "F19"
+    },
+    {
+      "key": "lib_floor-tiling-tilesmarblesilver",
+      "name": "Silver Herringbone",
+      "family": "tile",
+      "tier": "candidate",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/lib_floor-tiling-tilesmarblesilver.png",
+      "id": "F23"
+    },
+    {
+      "key": "lib_floor-tiling-stonetravertineti",
+      "name": "Travertine Stone Tile",
+      "family": "tile",
+      "tier": "candidate",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/lib_floor-tiling-stonetravertineti.png",
+      "id": "F20"
+    },
+    {
+      "key": "wood_oak",
+      "name": "Light Oak",
+      "family": "wood",
+      "tier": "standard",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/wood_oak.png",
+      "id": "F28"
+    },
+    {
+      "key": "wood_walnut",
+      "name": "Walnut",
+      "family": "wood",
+      "tier": "standard",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/wood_walnut.png",
+      "id": "F29"
+    },
+    {
+      "key": "lib_floor-wood-woodplankedalba001",
+      "name": "Alba Oak Plank",
+      "family": "wood",
+      "tier": "candidate",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/lib_floor-wood-woodplankedalba001.png",
+      "id": "F30"
+    },
+    {
+      "key": "bk_0edc6823",
+      "name": "Glazed Wood Plank",
+      "family": "wood",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_0edc6823.png",
+      "id": "F37"
+    },
+    {
+      "key": "lib_floor-wood-woodquarterednewmoo",
+      "name": "New Moon Oak",
+      "family": "wood",
+      "tier": "candidate",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/lib_floor-wood-woodquarterednewmoo.png",
+      "id": "F31"
+    },
+    {
+      "key": "lib_floor-wood-woodfloorherringbon",
+      "name": "Oak Herringbone",
+      "family": "wood",
+      "tier": "candidate",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/lib_floor-wood-woodfloorherringbon.png",
+      "id": "F26"
+    },
+    {
+      "key": "bk_863bb6df",
+      "name": "Pale Parquet",
+      "family": "wood",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_863bb6df.png",
+      "id": "F40"
+    },
+    {
+      "key": "lib_floor-wood-woodflooringashchev",
+      "name": "White Ash Chevron",
+      "family": "wood",
+      "tier": "candidate",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/lib_floor-wood-woodflooringashchev.png",
+      "id": "F27"
+    },
+    {
+      "key": "lib_floor-carpet-carpetcommercialv",
+      "name": "Pinstripe Carpet",
+      "family": "carpet",
+      "tier": "candidate",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/lib_floor-carpet-carpetcommercialv.png",
+      "id": "F1"
+    }
+  ],
+  "walls": [
+    {
+      "key": "paint:F0EDE7",
+      "name": "Gallery White",
+      "family": "Paint",
+      "tier": "signature",
+      "type": "paint",
+      "relief": "flat",
+      "hex": "F0EDE7",
+      "thumb": "thumbs/paint_F0EDE7.png",
+      "id": "W1"
+    },
+    {
+      "key": "paint:A7A9AA",
+      "name": "Dove Grey",
+      "family": "Paint",
+      "tier": "standard",
+      "type": "paint",
+      "relief": "flat",
+      "hex": "A7A9AA",
+      "thumb": "thumbs/paint_A7A9AA.png",
+      "id": "W2"
+    },
+    {
+      "key": "paint:54585B",
+      "name": "Graphite",
+      "family": "Paint",
+      "tier": "signature",
+      "type": "paint",
+      "relief": "flat",
+      "hex": "54585B",
+      "thumb": "thumbs/paint_54585B.png",
+      "id": "W3"
+    },
+    {
+      "key": "paint:1E2022",
+      "name": "Onyx",
+      "family": "Paint",
+      "tier": "signature",
+      "type": "paint",
+      "relief": "flat",
+      "hex": "1E2022",
+      "thumb": "thumbs/paint_1E2022.png",
+      "id": "W4"
+    },
+    {
+      "key": "paint:222E3F",
+      "name": "Navy",
+      "family": "Paint",
+      "tier": "signature",
+      "type": "paint",
+      "relief": "flat",
+      "hex": "222E3F",
+      "thumb": "thumbs/paint_222E3F.png",
+      "id": "W5"
+    },
+    {
+      "key": "paint:2C3A31",
+      "name": "Racing Green",
+      "family": "Paint",
+      "tier": "signature",
+      "type": "paint",
+      "relief": "flat",
+      "hex": "2C3A31",
+      "thumb": "thumbs/paint_2C3A31.png",
+      "id": "W6"
+    },
+    {
+      "key": "paint:28373E",
+      "name": "Petrol",
+      "family": "Paint",
+      "tier": "standard",
+      "type": "paint",
+      "relief": "flat",
+      "hex": "28373E",
+      "thumb": "thumbs/paint_28373E.png",
+      "id": "W7"
+    },
+    {
+      "key": "paint:45272D",
+      "name": "Oxblood",
+      "family": "Paint",
+      "tier": "standard",
+      "type": "paint",
+      "relief": "flat",
+      "hex": "45272D",
+      "thumb": "thumbs/paint_45272D.png",
+      "id": "W8"
+    },
+    {
+      "key": "paint:CBC2B4",
+      "name": "Greige",
+      "family": "Paint",
+      "tier": "standard",
+      "type": "paint",
+      "relief": "flat",
+      "hex": "CBC2B4",
+      "thumb": "thumbs/paint_CBC2B4.png",
+      "id": "W9"
+    },
+    {
+      "key": "paint:7C5A49",
+      "name": "Clay",
+      "family": "Paint",
+      "tier": "standard",
+      "type": "paint",
+      "relief": "flat",
+      "hex": "7C5A49",
+      "thumb": "thumbs/paint_7C5A49.png",
+      "id": "W10"
+    },
+    {
+      "key": "bk_e30e5153",
+      "name": "Burnished Concrete",
+      "family": "Concrete",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_e30e5153.png",
+      "id": "W11"
+    },
+    {
+      "key": "micro_dark",
+      "name": "Charcoal Microcement",
+      "family": "Concrete",
+      "tier": "premium",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/micro_dark.png",
+      "id": "W12"
+    },
+    {
+      "key": "wall_concrete_clad",
+      "name": "Concrete Cladding",
+      "family": "Concrete",
+      "tier": "premium",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/wall_concrete_clad.png",
+      "id": "W13"
+    },
+    {
+      "key": "concrete_industrial",
+      "name": "Industrial Concrete",
+      "family": "Concrete",
+      "tier": "standard",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/concrete_industrial.png",
+      "id": "W14"
+    },
+    {
+      "key": "micro_light",
+      "name": "Pale Microcement",
+      "family": "Concrete",
+      "tier": "signature",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/micro_light.png",
+      "id": "W15"
+    },
+    {
+      "key": "concrete_polished_fine",
+      "name": "Polished Concrete",
+      "family": "Concrete",
+      "tier": "premium",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/concrete_polished_fine.png",
+      "id": "W16"
+    },
+    {
+      "key": "wall_concrete_raw",
+      "name": "Raw Concrete",
+      "family": "Concrete",
+      "tier": "premium",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/wall_concrete_raw.png",
+      "id": "W17"
+    },
+    {
+      "key": "bk_906e6202",
+      "name": "Smooth Concrete",
+      "family": "Concrete",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_906e6202.png",
+      "id": "W18"
+    },
+    {
+      "key": "mblend:Wall Quartzite Blue Fusion",
+      "name": "Blue Quartzite",
+      "family": "Stone",
+      "tier": "standard",
+      "type": "mblend",
+      "relief": "flat",
+      "thumb": "thumbs/mblend_Wall_Quartzite_Blue_Fusion.png",
+      "id": "W19"
+    },
+    {
+      "key": "bk_27bbb36a",
+      "name": "Charcoal Porcelain",
+      "family": "Stone",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_27bbb36a.png",
+      "id": "W20"
+    },
+    {
+      "key": "bk_636bde9e",
+      "name": "Granite Tile",
+      "family": "Stone",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_636bde9e.png",
+      "id": "W21"
+    },
+    {
+      "key": "bk_68967df0",
+      "name": "Grey Porcelain",
+      "family": "Stone",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_68967df0.png",
+      "id": "W22"
+    },
+    {
+      "key": "bk_f3fa04d3",
+      "name": "Mist Grey Porcelain",
+      "family": "Stone",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_f3fa04d3.png",
+      "id": "W23"
+    },
+    {
+      "key": "bk_d0e46840",
+      "name": "Pearl Granite",
+      "family": "Stone",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_d0e46840.png",
+      "id": "W24"
+    },
+    {
+      "key": "mblend:Wall Tile Rammed Earth",
+      "name": "Rammed Earth",
+      "family": "Stone",
+      "tier": "standard",
+      "type": "mblend",
+      "relief": "flat",
+      "thumb": "thumbs/mblend_Wall_Tile_Rammed_Earth.png",
+      "id": "W25"
+    },
+    {
+      "key": "bk_02a2a09a",
+      "name": "Roman Travertine",
+      "family": "Stone",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_02a2a09a.png",
+      "id": "W26"
+    },
+    {
+      "key": "porcelain_grey",
+      "name": "Slate Porcelain",
+      "family": "Stone",
+      "tier": "premium",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/porcelain_grey.png",
+      "id": "W27"
+    },
+    {
+      "key": "bk_cfd68ed5",
+      "name": "Speckled Granite",
+      "family": "Stone",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_cfd68ed5.png",
+      "id": "W28"
+    },
+    {
+      "key": "wall_travertine",
+      "name": "Travertine Facade",
+      "family": "Stone",
+      "tier": "premium",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/wall_travertine.png",
+      "id": "W29"
+    },
+    {
+      "key": "bk_1c315c7c",
+      "name": "White Porcelain",
+      "family": "Stone",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_1c315c7c.png",
+      "id": "W30"
+    },
+    {
+      "key": "lib_floor-marble-quartziteexplosio",
+      "name": "Blue Fusion Quartzite",
+      "family": "Marble",
+      "tier": "candidate",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/lib_floor-marble-quartziteexplosio.png",
+      "id": "W31"
+    },
+    {
+      "key": "marble_carrara",
+      "name": "Carrara Marble",
+      "family": "Marble",
+      "tier": "signature",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/marble_carrara.png",
+      "id": "W32"
+    },
+    {
+      "key": "marble_cipollino",
+      "name": "Cipollino Marble",
+      "family": "Marble",
+      "tier": "premium",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/marble_cipollino.png",
+      "id": "W33"
+    },
+    {
+      "key": "bk_838cf372",
+      "name": "Golden Onyx",
+      "family": "Marble",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_838cf372.png",
+      "id": "W34"
+    },
+    {
+      "key": "marble_grey",
+      "name": "Grey Fleury Marble",
+      "family": "Marble",
+      "tier": "premium",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/marble_grey.png",
+      "id": "W35"
+    },
+    {
+      "key": "bk_c89541f2",
+      "name": "Midnight Onyx",
+      "family": "Marble",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_c89541f2.png",
+      "id": "W36"
+    },
+    {
+      "key": "marble_nero",
+      "name": "Nero Belvedere",
+      "family": "Marble",
+      "tier": "premium",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/marble_nero.png",
+      "id": "W37"
+    },
+    {
+      "key": "marble_slab",
+      "name": "Polished Marble Slab",
+      "family": "Marble",
+      "tier": "standard",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/marble_slab.png",
+      "id": "W38"
+    },
+    {
+      "key": "lib_floor-marble-stonemarbleportor",
+      "name": "Portoro Gold Marble",
+      "family": "Marble",
+      "tier": "candidate",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/lib_floor-marble-stonemarbleportor.png",
+      "id": "W39"
+    },
+    {
+      "key": "bk_561e4f18",
+      "name": "Sand Beige Marble",
+      "family": "Marble",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_561e4f18.png",
+      "id": "W40"
+    },
+    {
+      "key": "marble_statuario",
+      "name": "Statuario Marble",
+      "family": "Marble",
+      "tier": "premium",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/marble_statuario.png",
+      "id": "W41"
+    },
+    {
+      "key": "bk_319534c2",
+      "name": "Vein-Cut Travertine",
+      "family": "Marble",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_319534c2.png",
+      "id": "W42"
+    },
+    {
+      "key": "marble_white",
+      "name": "White Dolomite",
+      "family": "Marble",
+      "tier": "signature",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/marble_white.png",
+      "id": "W43"
+    },
+    {
+      "key": "bk_f9c27397",
+      "name": "White Marble Tile",
+      "family": "Marble",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_f9c27397.png",
+      "id": "W44"
+    },
+    {
+      "key": "mblend:Wall Tile Acoustic Foam 001",
+      "name": "Acoustic Panel",
+      "family": "Tile",
+      "tier": "standard",
+      "type": "mblend",
+      "relief": "flat",
+      "thumb": "thumbs/mblend_Wall_Tile_Acoustic_Foam_001.png",
+      "id": "W45"
+    },
+    {
+      "key": "mblend:Wall Tile Ceramic Rectangular",
+      "name": "Ceramic Brick",
+      "family": "Tile",
+      "tier": "standard",
+      "type": "mblend",
+      "relief": "flat",
+      "thumb": "thumbs/mblend_Wall_Tile_Ceramic_Rectangular.png",
+      "id": "W46"
+    },
+    {
+      "key": "mblend:Wall Tile Ceramic Square 9977",
+      "name": "Ceramic Square",
+      "family": "Tile",
+      "tier": "standard",
+      "type": "mblend",
+      "relief": "flat",
+      "thumb": "thumbs/mblend_Wall_Tile_Ceramic_Square_9977.png",
+      "id": "W47"
+    },
+    {
+      "key": "lib_floor-tiling-stonegranitetile-",
+      "name": "Granite Stone Tile",
+      "family": "Tile",
+      "tier": "candidate",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/lib_floor-tiling-stonegranitetile-.png",
+      "id": "W48"
+    },
+    {
+      "key": "lib_floor-tiling-stonemarbletile-8",
+      "name": "Marble Stone Tile",
+      "family": "Tile",
+      "tier": "candidate",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/lib_floor-tiling-stonemarbletile-8.png",
+      "id": "W49"
+    },
+    {
+      "key": "lib_floor-tiling-stonetravertineti",
+      "name": "Travertine Stone Tile",
+      "family": "Tile",
+      "tier": "candidate",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/lib_floor-tiling-stonetravertineti.png",
+      "id": "W50"
+    },
+    {
+      "key": "mblend:Wall Wood Accoya Smooth",
+      "name": "Accoya",
+      "family": "Wood",
+      "tier": "standard",
+      "type": "mblend",
+      "relief": "flat",
+      "thumb": "thumbs/mblend_Wall_Wood_Accoya_Smooth.png",
+      "id": "W51"
+    },
+    {
+      "key": "lib_floor-wood-woodplankedalba001",
+      "name": "Alba Oak Plank",
+      "family": "Wood",
+      "tier": "candidate",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/lib_floor-wood-woodplankedalba001.png",
+      "id": "W52"
+    },
+    {
+      "key": "mblend:Wall Wood Barnwood Delta Black",
+      "name": "Black Barnwood",
+      "family": "Wood",
+      "tier": "standard",
+      "type": "mblend",
+      "relief": "flat",
+      "thumb": "thumbs/mblend_Wall_Wood_Barnwood_Delta_Black.png",
+      "id": "W53"
+    },
+    {
+      "key": "wood_oak",
+      "name": "Light Oak",
+      "family": "Wood",
+      "tier": "standard",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/wood_oak.png",
+      "id": "W54"
+    },
+    {
+      "key": "lib_floor-wood-woodquarterednewmoo",
+      "name": "New Moon Oak",
+      "family": "Wood",
+      "tier": "candidate",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/lib_floor-wood-woodquarterednewmoo.png",
+      "id": "W55"
+    },
+    {
+      "key": "lib_floor-wood-woodfloorherringbon",
+      "name": "Oak Herringbone",
+      "family": "Wood",
+      "tier": "candidate",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/lib_floor-wood-woodfloorherringbon.png",
+      "id": "W56"
+    },
+    {
+      "key": "wood_walnut",
+      "name": "Walnut",
+      "family": "Wood",
+      "tier": "standard",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/wood_walnut.png",
+      "id": "W57"
+    },
+    {
+      "key": "lib_floor-wood-woodflooringashchev",
+      "name": "White Ash Chevron",
+      "family": "Wood",
+      "tier": "candidate",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/lib_floor-wood-woodflooringashchev.png",
+      "id": "W58"
+    },
+    {
+      "key": "mblend:Wall Wood Vinyl Wall Panel",
+      "name": "Wood Panel",
+      "family": "Wood",
+      "tier": "standard",
+      "type": "mblend",
+      "relief": "flat",
+      "thumb": "thumbs/mblend_Wall_Wood_Vinyl_Wall_Panel.png",
+      "id": "W59"
+    },
+    {
+      "key": "epoxy_1",
+      "name": "Clear Epoxy",
+      "family": "Epoxy",
+      "tier": "premium",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/epoxy_1.png",
+      "id": "W60"
+    },
+    {
+      "key": "bk_eabe9065",
+      "name": "Coastal Blue Resin",
+      "family": "Epoxy",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_eabe9065.png",
+      "id": "W61"
+    },
+    {
+      "key": "epoxy_2",
+      "name": "Deep Pour Epoxy",
+      "family": "Epoxy",
+      "tier": "premium",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/epoxy_2.png",
+      "id": "W62"
+    },
+    {
+      "key": "bk_31828369",
+      "name": "Liquid Pearl Resin",
+      "family": "Epoxy",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_31828369.png",
+      "id": "W63"
+    },
+    {
+      "key": "epoxy_blackwhite",
+      "name": "Monochrome Epoxy",
+      "family": "Epoxy",
+      "tier": "premium",
+      "type": "pbr_folder",
+      "relief": "flat",
+      "thumb": "thumbs/epoxy_blackwhite.png",
+      "id": "W64"
+    },
+    {
+      "key": "bk_9d3e905a",
+      "name": "Monochrome Flow",
+      "family": "Epoxy",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_9d3e905a.png",
+      "id": "W65"
+    },
+    {
+      "key": "bk_ea657719",
+      "name": "Sapphire Swirl",
+      "family": "Epoxy",
+      "tier": "candidate",
+      "type": "blend_material",
+      "relief": "flat",
+      "thumb": "thumbs/bk_ea657719.png",
+      "id": "W66"
+    }
+  ]
+}

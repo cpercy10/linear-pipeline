@@ -1,0 +1,2492 @@
+[
+  {
+    "key": "bk_0bf8ee47",
+    "name": "Blue plaster stucco wall",
+    "family": "Plaster",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "flat",
+    "thumb": "thumbs/bk_0bf8ee47.jpg",
+    "id": "W1"
+  },
+  {
+    "key": "wall_white_clean",
+    "name": "Clean White",
+    "family": "Plaster",
+    "tier": "signature",
+    "type": "pbr_folder",
+    "relief": "flat",
+    "thumb": "thumbs/wall_white_clean.jpg",
+    "id": "W2"
+  },
+  {
+    "key": "bk_72d9359b",
+    "name": "Damaged painted plaster wall",
+    "family": "Plaster",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "flat",
+    "thumb": "thumbs/bk_72d9359b.jpg",
+    "id": "W3"
+  },
+  {
+    "key": "wall_natural",
+    "name": "Natural Paint",
+    "family": "Plaster",
+    "tier": "standard",
+    "type": "pbr_folder",
+    "relief": "flat",
+    "thumb": "thumbs/wall_natural.jpg",
+    "id": "W4"
+  },
+  {
+    "key": "bk_a149cedb",
+    "name": "Old damaged plaster wall",
+    "family": "Plaster",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "flat",
+    "thumb": "thumbs/bk_a149cedb.jpg",
+    "id": "W5"
+  },
+  {
+    "key": "wall_painted",
+    "name": "Painted Plaster",
+    "family": "Plaster",
+    "tier": "standard",
+    "type": "pbr_folder",
+    "relief": "flat",
+    "thumb": "thumbs/wall_painted.jpg",
+    "id": "W6"
+  },
+  {
+    "key": "bk_1de50c23",
+    "name": "Painted plaster wall",
+    "family": "Plaster",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "flat",
+    "thumb": "thumbs/bk_1de50c23.jpg",
+    "id": "W7"
+  },
+  {
+    "key": "bk_f9631dfe",
+    "name": "Painted Plaster Wall",
+    "family": "Plaster",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "flat",
+    "thumb": "thumbs/bk_f9631dfe.jpg",
+    "id": "W8"
+  },
+  {
+    "key": "bk_8503aefe",
+    "name": "Plaster wall",
+    "family": "Plaster",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "flat",
+    "thumb": "thumbs/bk_8503aefe.jpg",
+    "id": "W9"
+  },
+  {
+    "key": "bk_a19ded65",
+    "name": "Plaster Wall",
+    "family": "Plaster",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "flat",
+    "thumb": "thumbs/bk_a19ded65.jpg",
+    "id": "W10"
+  },
+  {
+    "key": "bk_2f375e8d",
+    "name": "Plaster Wall Material",
+    "family": "Plaster",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "flat",
+    "thumb": "thumbs/bk_2f375e8d.jpg",
+    "id": "W11"
+  },
+  {
+    "key": "wall_grey_smooth",
+    "name": "Smooth Grey",
+    "family": "Plaster",
+    "tier": "signature",
+    "type": "pbr_folder",
+    "relief": "flat",
+    "thumb": "thumbs/wall_grey_smooth.jpg",
+    "id": "W12"
+  },
+  {
+    "key": "wall_plaster_1",
+    "name": "Smooth Plaster",
+    "family": "Plaster",
+    "tier": "standard",
+    "type": "pbr_folder",
+    "relief": "flat",
+    "thumb": "thumbs/wall_plaster_1.jpg",
+    "id": "W13"
+  },
+  {
+    "key": "wall_plaster_2",
+    "name": "Smooth Plaster — Grey",
+    "family": "Plaster",
+    "tier": "standard",
+    "type": "pbr_folder",
+    "relief": "flat",
+    "thumb": "thumbs/wall_plaster_2.jpg",
+    "id": "W14"
+  },
+  {
+    "key": "bk_7959f729",
+    "name": "Stucco grey wall",
+    "family": "Plaster",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "flat",
+    "thumb": "thumbs/bk_7959f729.jpg",
+    "id": "W15"
+  },
+  {
+    "key": "wall_stucco",
+    "name": "Stucco Lime",
+    "family": "Plaster",
+    "tier": "standard",
+    "type": "pbr_folder",
+    "relief": "flat",
+    "thumb": "thumbs/wall_stucco.jpg",
+    "id": "W16"
+  },
+  {
+    "key": "bk_2066a454",
+    "name": "Stucco painted wall",
+    "family": "Plaster",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "flat",
+    "thumb": "thumbs/bk_2066a454.jpg",
+    "id": "W17"
+  },
+  {
+    "key": "bk_5f4e5e4d",
+    "name": "Stucco painted wall",
+    "family": "Plaster",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "flat",
+    "thumb": "thumbs/bk_5f4e5e4d.jpg",
+    "id": "W18"
+  },
+  {
+    "key": "bk_8986db36",
+    "name": "Stucco wall",
+    "family": "Plaster",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "flat",
+    "thumb": "thumbs/bk_8986db36.jpg",
+    "id": "W19"
+  },
+  {
+    "key": "bk_566fc160",
+    "name": "Stucco wall",
+    "family": "Plaster",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "flat",
+    "thumb": "thumbs/bk_566fc160.jpg",
+    "id": "W20"
+  },
+  {
+    "key": "wall_venetian",
+    "name": "Venetian Plaster",
+    "family": "Plaster",
+    "tier": "premium",
+    "type": "pbr_folder",
+    "relief": "flat",
+    "thumb": "thumbs/wall_venetian.jpg",
+    "id": "W21"
+  },
+  {
+    "key": "lib_wall-plaster-metalpaintedworn-",
+    "name": "wall plaster metalpaintedworn 9139",
+    "family": "Plaster",
+    "tier": "candidate",
+    "type": "pbr_folder",
+    "relief": "flat",
+    "thumb": "thumbs/lib_wall-plaster-metalpaintedworn-.jpg",
+    "id": "W22"
+  },
+  {
+    "key": "lib_wall-plaster-rammedearth018",
+    "name": "wall plaster rammedearth018",
+    "family": "Plaster",
+    "tier": "candidate",
+    "type": "pbr_folder",
+    "relief": "flat",
+    "thumb": "thumbs/lib_wall-plaster-rammedearth018.jpg",
+    "id": "W23"
+  },
+  {
+    "key": "wall_warm_white",
+    "name": "Warm White",
+    "family": "Plaster",
+    "tier": "premium",
+    "type": "pbr_folder",
+    "relief": "flat",
+    "thumb": "thumbs/wall_warm_white.jpg",
+    "id": "W24"
+  },
+  {
+    "key": "bk_6377ea0c",
+    "name": "Yellow plaster stucco wall",
+    "family": "Plaster",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "flat",
+    "thumb": "thumbs/bk_6377ea0c.jpg",
+    "id": "W25"
+  },
+  {
+    "key": "wall_concrete_clad",
+    "name": "Concrete Cladding",
+    "family": "Concrete",
+    "tier": "premium",
+    "type": "pbr_folder",
+    "relief": "flat",
+    "thumb": "thumbs/wall_concrete_clad.jpg",
+    "id": "W26"
+  },
+  {
+    "key": "bk_a58f4a29",
+    "name": "Concrete Wall",
+    "family": "Concrete",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "flat",
+    "thumb": "thumbs/bk_a58f4a29.jpg",
+    "id": "W27"
+  },
+  {
+    "key": "bk_6b81b3b9",
+    "name": "Concrete wall",
+    "family": "Concrete",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "flat",
+    "thumb": "thumbs/bk_6b81b3b9.jpg",
+    "id": "W28"
+  },
+  {
+    "key": "bk_fe8fc708",
+    "name": "Concrete wall",
+    "family": "Concrete",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "flat",
+    "thumb": "thumbs/bk_fe8fc708.jpg",
+    "id": "W29"
+  },
+  {
+    "key": "bk_3f5918cb",
+    "name": "Concrete wall",
+    "family": "Concrete",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "flat",
+    "thumb": "thumbs/bk_3f5918cb.jpg",
+    "id": "W30"
+  },
+  {
+    "key": "bk_dd33b985",
+    "name": "Concrete wall",
+    "family": "Concrete",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "flat",
+    "thumb": "thumbs/bk_dd33b985.jpg",
+    "id": "W31"
+  },
+  {
+    "key": "bk_6f92a52b",
+    "name": "Concrete wall",
+    "family": "Concrete",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "flat",
+    "thumb": "thumbs/bk_6f92a52b.jpg",
+    "id": "W32"
+  },
+  {
+    "key": "bk_452b46d7",
+    "name": "Concrete wall",
+    "family": "Concrete",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "flat",
+    "thumb": "thumbs/bk_452b46d7.jpg",
+    "id": "W33"
+  },
+  {
+    "key": "wall_concrete_raw",
+    "name": "Raw Concrete",
+    "family": "Concrete",
+    "tier": "premium",
+    "type": "pbr_folder",
+    "relief": "flat",
+    "thumb": "thumbs/wall_concrete_raw.jpg",
+    "id": "W34"
+  },
+  {
+    "key": "bk_d356c9e1",
+    "name": "Board-Formed Concrete",
+    "family": "Concrete",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_d356c9e1.jpg",
+    "id": "W35"
+  },
+  {
+    "key": "bk_fc37648c",
+    "name": "Borad Formed Concrete",
+    "family": "Concrete",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_fc37648c.jpg",
+    "id": "W36"
+  },
+  {
+    "key": "bk_ee4ed152",
+    "name": "Brutalist Board-Formed Concrete",
+    "family": "Concrete",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_ee4ed152.jpg",
+    "id": "W37"
+  },
+  {
+    "key": "bk_3e950182",
+    "name": "Concrete Board",
+    "family": "Concrete",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_3e950182.jpg",
+    "id": "W38"
+  },
+  {
+    "key": "bk_1ca040be",
+    "name": "Concrete Board",
+    "family": "Concrete",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_1ca040be.jpg",
+    "id": "W39"
+  },
+  {
+    "key": "bk_b192d0b4",
+    "name": "Concrete Brick Formed",
+    "family": "Concrete",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_b192d0b4.jpg",
+    "id": "W40"
+  },
+  {
+    "key": "bk_4544b97b",
+    "name": "Stylised Wood Formed Concrete - 01",
+    "family": "Concrete",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_4544b97b.jpg",
+    "id": "W41"
+  },
+  {
+    "key": "bk_cc6c4b30",
+    "name": "Brick wall",
+    "family": "Brick",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_cc6c4b30.jpg",
+    "id": "W42"
+  },
+  {
+    "key": "bk_04f5e9f1",
+    "name": "Brick wall",
+    "family": "Brick",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_04f5e9f1.jpg",
+    "id": "W43"
+  },
+  {
+    "key": "bk_87839bef",
+    "name": "Brick Wall",
+    "family": "Brick",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_87839bef.jpg",
+    "id": "W44"
+  },
+  {
+    "key": "bk_6ea161b6",
+    "name": "Brick Wall",
+    "family": "Brick",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_6ea161b6.jpg",
+    "id": "W45"
+  },
+  {
+    "key": "bk_71cf4a9b",
+    "name": "Brick Wall",
+    "family": "Brick",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_71cf4a9b.jpg",
+    "id": "W46"
+  },
+  {
+    "key": "bk_77d5801f",
+    "name": "Brick Wall 01 Material",
+    "family": "Brick",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_77d5801f.jpg",
+    "id": "W47"
+  },
+  {
+    "key": "bk_22c76479",
+    "name": "Brick Wall Tile",
+    "family": "Brick",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_22c76479.jpg",
+    "id": "W48"
+  },
+  {
+    "key": "bk_2de1446d",
+    "name": "Rock Wall",
+    "family": "Stone",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "flat",
+    "thumb": "thumbs/bk_2de1446d.jpg",
+    "id": "W49"
+  },
+  {
+    "key": "bk_292f2466",
+    "name": "Rock Wall",
+    "family": "Stone",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "flat",
+    "thumb": "thumbs/bk_292f2466.jpg",
+    "id": "W50"
+  },
+  {
+    "key": "bk_1a105193",
+    "name": "Rock Wall",
+    "family": "Stone",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "flat",
+    "thumb": "thumbs/bk_1a105193.jpg",
+    "id": "W51"
+  },
+  {
+    "key": "bk_920c5447",
+    "name": "Smeared Wall",
+    "family": "Stone",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "flat",
+    "thumb": "thumbs/bk_920c5447.jpg",
+    "id": "W52"
+  },
+  {
+    "key": "bk_614651b9",
+    "name": "Stone Wall",
+    "family": "Stone",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "flat",
+    "thumb": "thumbs/bk_614651b9.jpg",
+    "id": "W53"
+  },
+  {
+    "key": "bk_e09dc764",
+    "name": "Stone Wall",
+    "family": "Stone",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "flat",
+    "thumb": "thumbs/bk_e09dc764.jpg",
+    "id": "W54"
+  },
+  {
+    "key": "wall_travertine",
+    "name": "Travertine Facade",
+    "family": "Stone",
+    "tier": "premium",
+    "type": "pbr_folder",
+    "relief": "flat",
+    "thumb": "thumbs/wall_travertine.jpg",
+    "id": "W55"
+  },
+  {
+    "key": "bk_aea1cca6",
+    "name": "Wall",
+    "family": "Stone",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "flat",
+    "thumb": "thumbs/bk_aea1cca6.jpg",
+    "id": "W56"
+  },
+  {
+    "key": "bk_35456e71",
+    "name": "Irregular Stone Wall Cladding",
+    "family": "Stone",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_35456e71.jpg",
+    "id": "W57"
+  },
+  {
+    "key": "bk_19d5f215",
+    "name": "Irregular stone wall cladding black",
+    "family": "Stone",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_19d5f215.jpg",
+    "id": "W58"
+  },
+  {
+    "key": "bk_25a1adc1",
+    "name": "Irregular stone wall cladding brownish",
+    "family": "Stone",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_25a1adc1.jpg",
+    "id": "W59"
+  },
+  {
+    "key": "bk_2831667e",
+    "name": "Japanse Stone Wall",
+    "family": "Stone",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_2831667e.jpg",
+    "id": "W60"
+  },
+  {
+    "key": "bk_9d72ada9",
+    "name": "Rock Wall",
+    "family": "Stone",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_9d72ada9.jpg",
+    "id": "W61"
+  },
+  {
+    "key": "bk_1f4329ab",
+    "name": "Rock Wall 129",
+    "family": "Stone",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_1f4329ab.jpg",
+    "id": "W62"
+  },
+  {
+    "key": "bk_469892ca",
+    "name": "Stone Cladding 1",
+    "family": "Stone",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_469892ca.jpg",
+    "id": "W63"
+  },
+  {
+    "key": "bk_779cd4ca",
+    "name": "Stone wall",
+    "family": "Stone",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_779cd4ca.jpg",
+    "id": "W64"
+  },
+  {
+    "key": "bk_fefd3b79",
+    "name": "Stone Wall",
+    "family": "Stone",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_fefd3b79.jpg",
+    "id": "W65"
+  },
+  {
+    "key": "bk_ef7822f7",
+    "name": "Stone wall",
+    "family": "Stone",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_ef7822f7.jpg",
+    "id": "W66"
+  },
+  {
+    "key": "bk_57d20f68",
+    "name": "Stone Wall",
+    "family": "Stone",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_57d20f68.jpg",
+    "id": "W67"
+  },
+  {
+    "key": "bk_4f322a87",
+    "name": "Stone wall/pavement",
+    "family": "Stone",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_4f322a87.jpg",
+    "id": "W68"
+  },
+  {
+    "key": "bk_f921f61c",
+    "name": "StoneWallBlocksPBR",
+    "family": "Stone",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_f921f61c.jpg",
+    "id": "W69"
+  },
+  {
+    "key": "bk_bb64ef8e",
+    "name": "Taupe gavi",
+    "family": "Stone",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_bb64ef8e.jpg",
+    "id": "W70"
+  },
+  {
+    "key": "bk_84f17cec",
+    "name": "3d circles on marble wall tile",
+    "family": "Marble",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "flat",
+    "thumb": "thumbs/bk_84f17cec.jpg",
+    "id": "W71"
+  },
+  {
+    "key": "bk_a615bf5e",
+    "name": "3d pattern marble wall tile",
+    "family": "Marble",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "flat",
+    "thumb": "thumbs/bk_a615bf5e.jpg",
+    "id": "W72"
+  },
+  {
+    "key": "bk_d2f3a11a",
+    "name": "Marble Decorative Brick Wall",
+    "family": "Marble",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "flat",
+    "thumb": "thumbs/bk_d2f3a11a.jpg",
+    "id": "W73"
+  },
+  {
+    "key": "bk_10889690",
+    "name": "Marble Floor Tiles",
+    "family": "Marble",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "flat",
+    "thumb": "thumbs/bk_10889690.jpg",
+    "id": "W74"
+  },
+  {
+    "key": "bk_9d66586e",
+    "name": "Marble Tiles",
+    "family": "Marble",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "flat",
+    "thumb": "thumbs/bk_9d66586e.jpg",
+    "id": "W75"
+  },
+  {
+    "key": "bk_7af9b361",
+    "name": "Marble wall tile pattern",
+    "family": "Marble",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "flat",
+    "thumb": "thumbs/bk_7af9b361.jpg",
+    "id": "W76"
+  },
+  {
+    "key": "bk_8b653c4d",
+    "name": "White Marble Brick Wall",
+    "family": "Marble",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "flat",
+    "thumb": "thumbs/bk_8b653c4d.jpg",
+    "id": "W77"
+  },
+  {
+    "key": "lib_wall-tiling-ceramicrectangular",
+    "name": "wall tiling ceramicrectangulartile 8961",
+    "family": "Tile",
+    "tier": "candidate",
+    "type": "pbr_folder",
+    "relief": "flat",
+    "thumb": "thumbs/lib_wall-tiling-ceramicrectangular.jpg",
+    "id": "W78"
+  },
+  {
+    "key": "lib_wall-tiling-ceramicsquaretile-",
+    "name": "wall tiling ceramicsquaretile 9940",
+    "family": "Tile",
+    "tier": "candidate",
+    "type": "pbr_folder",
+    "relief": "flat",
+    "thumb": "thumbs/lib_wall-tiling-ceramicsquaretile-.jpg",
+    "id": "W79"
+  },
+  {
+    "key": "lib_wall-tiling-ceramicsquaretile-",
+    "name": "wall tiling ceramicsquaretile 9977",
+    "family": "Tile",
+    "tier": "candidate",
+    "type": "pbr_folder",
+    "relief": "flat",
+    "thumb": "thumbs/lib_wall-tiling-ceramicsquaretile-.jpg",
+    "id": "W80"
+  },
+  {
+    "key": "lib_wall-tiling-ceramicsquaretile-",
+    "name": "wall tiling ceramicsquaretile 9978",
+    "family": "Tile",
+    "tier": "candidate",
+    "type": "pbr_folder",
+    "relief": "flat",
+    "thumb": "thumbs/lib_wall-tiling-ceramicsquaretile-.jpg",
+    "id": "W81"
+  },
+  {
+    "key": "lib_wall-tiling-ceramicsquaretile-",
+    "name": "wall tiling ceramicsquaretile 9979",
+    "family": "Tile",
+    "tier": "candidate",
+    "type": "pbr_folder",
+    "relief": "flat",
+    "thumb": "thumbs/lib_wall-tiling-ceramicsquaretile-.jpg",
+    "id": "W82"
+  },
+  {
+    "key": "lib_wall-tiling-panelsacousticfoam",
+    "name": "wall tiling panelsacousticfoamtiles001",
+    "family": "Tile",
+    "tier": "candidate",
+    "type": "pbr_folder",
+    "relief": "flat",
+    "thumb": "thumbs/lib_wall-tiling-panelsacousticfoam.jpg",
+    "id": "W83"
+  },
+  {
+    "key": "lib_wall-tiling-panelsacousticfoam",
+    "name": "wall tiling panelsacousticfoamtiles002",
+    "family": "Tile",
+    "tier": "candidate",
+    "type": "pbr_folder",
+    "relief": "flat",
+    "thumb": "thumbs/lib_wall-tiling-panelsacousticfoam.jpg",
+    "id": "W84"
+  },
+  {
+    "key": "lib_wall-tiling-panelsacousticfoam",
+    "name": "wall tiling panelsacousticfoamtiles003",
+    "family": "Tile",
+    "tier": "candidate",
+    "type": "pbr_folder",
+    "relief": "flat",
+    "thumb": "thumbs/lib_wall-tiling-panelsacousticfoam.jpg",
+    "id": "W85"
+  },
+  {
+    "key": "lib_wall-tiling-rammedearth010",
+    "name": "wall tiling rammedearth010",
+    "family": "Tile",
+    "tier": "candidate",
+    "type": "pbr_folder",
+    "relief": "flat",
+    "thumb": "thumbs/lib_wall-tiling-rammedearth010.jpg",
+    "id": "W86"
+  },
+  {
+    "key": "lib_wall-tiling-stonebrickrunningb",
+    "name": "wall tiling stonebrickrunningbond 9884",
+    "family": "Tile",
+    "tier": "candidate",
+    "type": "pbr_folder",
+    "relief": "flat",
+    "thumb": "thumbs/lib_wall-tiling-stonebrickrunningb.jpg",
+    "id": "W87"
+  },
+  {
+    "key": "lib_wall-tiling-stonetravertinetil",
+    "name": "wall tiling stonetravertinetile 8491",
+    "family": "Tile",
+    "tier": "candidate",
+    "type": "pbr_folder",
+    "relief": "flat",
+    "thumb": "thumbs/lib_wall-tiling-stonetravertinetil.jpg",
+    "id": "W88"
+  },
+  {
+    "key": "lib_wall-tiling-stonetravertinetil",
+    "name": "wall tiling stonetravertinetile 9640",
+    "family": "Tile",
+    "tier": "candidate",
+    "type": "pbr_folder",
+    "relief": "flat",
+    "thumb": "thumbs/lib_wall-tiling-stonetravertinetil.jpg",
+    "id": "W89"
+  },
+  {
+    "key": "lib_wall-tiling-stonewalltile-1117",
+    "name": "wall tiling stonewalltile 11177",
+    "family": "Tile",
+    "tier": "candidate",
+    "type": "pbr_folder",
+    "relief": "flat",
+    "thumb": "thumbs/lib_wall-tiling-stonewalltile-1117.jpg",
+    "id": "W90"
+  },
+  {
+    "key": "lib_wall-wood-vinylsquaretile-1269",
+    "name": "wall wood vinylsquaretile 12699",
+    "family": "Wood",
+    "tier": "candidate",
+    "type": "pbr_folder",
+    "relief": "flat",
+    "thumb": "thumbs/lib_wall-wood-vinylsquaretile-1269.jpg",
+    "id": "W91"
+  },
+  {
+    "key": "lib_wall-wood-vinylwallpanel-12725",
+    "name": "wall wood vinylwallpanel 12725",
+    "family": "Wood",
+    "tier": "candidate",
+    "type": "pbr_folder",
+    "relief": "flat",
+    "thumb": "thumbs/lib_wall-wood-vinylwallpanel-12725.jpg",
+    "id": "W92"
+  },
+  {
+    "key": "lib_wall-wood-woodaccoyabarnwoodde",
+    "name": "wall wood woodaccoyabarnwooddeltablack 9758",
+    "family": "Wood",
+    "tier": "candidate",
+    "type": "pbr_folder",
+    "relief": "flat",
+    "thumb": "thumbs/lib_wall-wood-woodaccoyabarnwoodde.jpg",
+    "id": "W93"
+  },
+  {
+    "key": "lib_wall-wood-woodaccoyabarnwoodwe",
+    "name": "wall wood woodaccoyabarnwoodwestmountain 9759",
+    "family": "Wood",
+    "tier": "candidate",
+    "type": "pbr_folder",
+    "relief": "flat",
+    "thumb": "thumbs/lib_wall-wood-woodaccoyabarnwoodwe.jpg",
+    "id": "W94"
+  },
+  {
+    "key": "lib_wall-wood-woodaccoyasmoothnati",
+    "name": "wall wood woodaccoyasmoothnative 9596",
+    "family": "Wood",
+    "tier": "candidate",
+    "type": "pbr_folder",
+    "relief": "flat",
+    "thumb": "thumbs/lib_wall-wood-woodaccoyasmoothnati.jpg",
+    "id": "W95"
+  },
+  {
+    "key": "bk_ec9f0626",
+    "name": "Decorative Wooden Planks",
+    "family": "Wood",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_ec9f0626.jpg",
+    "id": "W96"
+  },
+  {
+    "key": "bk_d1093223",
+    "name": "Faded Blue Painted wood plank PBR texture seamless",
+    "family": "Wood",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_d1093223.jpg",
+    "id": "W97"
+  },
+  {
+    "key": "bk_3e7f6248",
+    "name": "Old wood plank PBR texture seamless",
+    "family": "Wood",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_3e7f6248.jpg",
+    "id": "W98"
+  },
+  {
+    "key": "bk_44a31cdf",
+    "name": "Wall Cladding Black",
+    "family": "Wood",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_44a31cdf.jpg",
+    "id": "W99"
+  },
+  {
+    "key": "bk_d6026f55",
+    "name": "Wall Cladding Grey",
+    "family": "Wood",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_d6026f55.jpg",
+    "id": "W100"
+  },
+  {
+    "key": "bk_02775e42",
+    "name": "Wall Cladding White",
+    "family": "Wood",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_02775e42.jpg",
+    "id": "W101"
+  },
+  {
+    "key": "bk_23faa052",
+    "name": "Wood 45 blue Wall Panelling",
+    "family": "Wood",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_23faa052.jpg",
+    "id": "W102"
+  },
+  {
+    "key": "bk_bce64779",
+    "name": "Wood 45 Orange Wall Panelling",
+    "family": "Wood",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_bce64779.jpg",
+    "id": "W103"
+  },
+  {
+    "key": "bk_642ddbc1",
+    "name": "Wood 45 Red Wall Panelling",
+    "family": "Wood",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_642ddbc1.jpg",
+    "id": "W104"
+  },
+  {
+    "key": "bk_f5c3553a",
+    "name": "Wood Panel ( procedural )",
+    "family": "Wood",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_f5c3553a.jpg",
+    "id": "W105"
+  },
+  {
+    "key": "bk_d8f0913a",
+    "name": "Wood Plank Wall",
+    "family": "Wood",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_d8f0913a.jpg",
+    "id": "W106"
+  },
+  {
+    "key": "bk_82799fba",
+    "name": "Wooden Panel",
+    "family": "Wood",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_82799fba.jpg",
+    "id": "W107"
+  },
+  {
+    "key": "bk_bdd465f8",
+    "name": "Wooden panels",
+    "family": "Wood",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_bdd465f8.jpg",
+    "id": "W108"
+  },
+  {
+    "key": "bk_f6a6af0a",
+    "name": "Wooden Wall Panel",
+    "family": "Wood",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_f6a6af0a.jpg",
+    "id": "W109"
+  },
+  {
+    "key": "bk_606dc18d",
+    "name": "Acoustic Panel Wood",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_606dc18d.jpg",
+    "id": "W110"
+  },
+  {
+    "key": "bk_37c9bf87",
+    "name": "Acoustic Panel Wood",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_37c9bf87.jpg",
+    "id": "W111"
+  },
+  {
+    "key": "bk_a63b23f4",
+    "name": "Acoustic panels",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_a63b23f4.jpg",
+    "id": "W112"
+  },
+  {
+    "key": "bk_bd85d2f9",
+    "name": "Acoustic panels",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_bd85d2f9.jpg",
+    "id": "W113"
+  },
+  {
+    "key": "bk_e7bfee6f",
+    "name": "Acoustic panels",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_e7bfee6f.jpg",
+    "id": "W114"
+  },
+  {
+    "key": "bk_9c83f362",
+    "name": "Acoustic panels",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_9c83f362.jpg",
+    "id": "W115"
+  },
+  {
+    "key": "bk_00d020e1",
+    "name": "Birch Slats",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_00d020e1.jpg",
+    "id": "W116"
+  },
+  {
+    "key": "bk_410f005d",
+    "name": "Linear Slat Oak Wood",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_410f005d.jpg",
+    "id": "W117"
+  },
+  {
+    "key": "bk_adbe0177",
+    "name": "Medieval Timbered Wall",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_adbe0177.jpg",
+    "id": "W118"
+  },
+  {
+    "key": "bk_4cbdf8ce",
+    "name": "Slatted wood - Arauco MDf MAdeiral",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_4cbdf8ce.jpg",
+    "id": "W119"
+  },
+  {
+    "key": "bk_6a0b0e80",
+    "name": "Wall Timber Panelling Brown",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_6a0b0e80.jpg",
+    "id": "W120"
+  },
+  {
+    "key": "bk_03e09b41",
+    "name": "Wood Acoustic Panel",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_03e09b41.jpg",
+    "id": "W121"
+  },
+  {
+    "key": "bk_607140fa",
+    "name": "Wood Decorative Wall",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_607140fa.jpg",
+    "id": "W122"
+  },
+  {
+    "key": "bk_da5e5872",
+    "name": "Wood wall",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_da5e5872.jpg",
+    "id": "W123"
+  },
+  {
+    "key": "wm_4374d01c",
+    "name": "Acoustic Foam Panel",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_4374d01c.jpg",
+    "id": "W124"
+  },
+  {
+    "key": "wm_c5d37294",
+    "name": "Acoustic Hex Panel",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_c5d37294.jpg",
+    "id": "W125"
+  },
+  {
+    "key": "wm_123e8275",
+    "name": "Acoustic Triangle Panel",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_123e8275.jpg",
+    "id": "W126"
+  },
+  {
+    "key": "wm_0513a978",
+    "name": "Acoustic Wave Panel",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_0513a978.jpg",
+    "id": "W127"
+  },
+  {
+    "key": "wm_6fc3b92a",
+    "name": "Acoustic Wedge Panel",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_6fc3b92a.jpg",
+    "id": "W128"
+  },
+  {
+    "key": "wm_ede754b8",
+    "name": "Acoustic Wood Panel 1",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_ede754b8.jpg",
+    "id": "W129"
+  },
+  {
+    "key": "wm_1dd1e44c",
+    "name": "Acoustic Wood Panel 2",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_1dd1e44c.jpg",
+    "id": "W130"
+  },
+  {
+    "key": "wm_1cfd3724",
+    "name": "Acoustic Wood Panel 3",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_1cfd3724.jpg",
+    "id": "W131"
+  },
+  {
+    "key": "wm_93efa42a",
+    "name": "Acoustic Wood Panel 4",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_93efa42a.jpg",
+    "id": "W132"
+  },
+  {
+    "key": "wm_7300e943",
+    "name": "Acoustic Wood Panel 5",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_7300e943.jpg",
+    "id": "W133"
+  },
+  {
+    "key": "wm_b2482abd",
+    "name": "Acoustic Wood Panel 6",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_b2482abd.jpg",
+    "id": "W134"
+  },
+  {
+    "key": "wm_d92006da",
+    "name": "Acoustic Wood Panel 7",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_d92006da.jpg",
+    "id": "W135"
+  },
+  {
+    "key": "wm_f9ad1fe1",
+    "name": "Concrete Wall Panel with Wood",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_f9ad1fe1.jpg",
+    "id": "W136"
+  },
+  {
+    "key": "wm_8c94614e",
+    "name": "Decorative wood panel 1",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_8c94614e.jpg",
+    "id": "W137"
+  },
+  {
+    "key": "wm_24c7519f",
+    "name": "Decorative wood panel 2",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_24c7519f.jpg",
+    "id": "W138"
+  },
+  {
+    "key": "wm_5126a63a",
+    "name": "Modern Slatted Pavilion",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_5126a63a.jpg",
+    "id": "W139"
+  },
+  {
+    "key": "wm_6086a091",
+    "name": "Oak Wall Panel",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_6086a091.jpg",
+    "id": "W140"
+  },
+  {
+    "key": "wm_e4bd8bb9",
+    "name": "Panelline",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_e4bd8bb9.jpg",
+    "id": "W141"
+  },
+  {
+    "key": "wm_bed25e01",
+    "name": "Pyramidal Acoustic Foam Panel",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_bed25e01.jpg",
+    "id": "W142"
+  },
+  {
+    "key": "wm_793d0aa5",
+    "name": "Slat Wood Wall Panel",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_793d0aa5.jpg",
+    "id": "W143"
+  },
+  {
+    "key": "wm_286d31d2",
+    "name": "VERTICAL GARDEN A Fitowall",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_286d31d2.jpg",
+    "id": "W144"
+  },
+  {
+    "key": "wm_78ad61b3",
+    "name": "Vertical Slat Wood Wall",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_78ad61b3.jpg",
+    "id": "W145"
+  },
+  {
+    "key": "wm_7b88a5fa",
+    "name": "Wall panel",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_7b88a5fa.jpg",
+    "id": "W146"
+  },
+  {
+    "key": "wm_99a515c7",
+    "name": "Wall Stone Section 11",
+    "family": "Wood Slat",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_99a515c7.jpg",
+    "id": "W147"
+  },
+  {
+    "key": "bk_fa4965a9",
+    "name": "Fluted Inverted Glass",
+    "family": "Fluted",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_fa4965a9.jpg",
+    "id": "W148"
+  },
+  {
+    "key": "bk_ac5a80eb",
+    "name": "Fluted Yellow Cardboard",
+    "family": "Fluted",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_ac5a80eb.jpg",
+    "id": "W149"
+  },
+  {
+    "key": "bk_502991cb",
+    "name": "Old Wood Panel 164",
+    "family": "Fluted",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_502991cb.jpg",
+    "id": "W150"
+  },
+  {
+    "key": "bk_8ddfaf72",
+    "name": "RibbedCeramicWallTile",
+    "family": "Fluted",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_8ddfaf72.jpg",
+    "id": "W151"
+  },
+  {
+    "key": "bk_b7ae88d3",
+    "name": "Steampunk Electrical Panel",
+    "family": "Fluted",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_b7ae88d3.jpg",
+    "id": "W152"
+  },
+  {
+    "key": "bk_4d6c7a5a",
+    "name": "Wood Fluted Panel",
+    "family": "Fluted",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_4d6c7a5a.jpg",
+    "id": "W153"
+  },
+  {
+    "key": "bk_c589955b",
+    "name": "Wooden Panel",
+    "family": "Fluted",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_c589955b.jpg",
+    "id": "W154"
+  },
+  {
+    "key": "wm_b0f23165",
+    "name": "Fluted Wall Panel",
+    "family": "Fluted",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_b0f23165.jpg",
+    "id": "W155"
+  },
+  {
+    "key": "wm_906570d6",
+    "name": "Modular Fluted Wall Panel Cladding",
+    "family": "Fluted",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_906570d6.jpg",
+    "id": "W156"
+  },
+  {
+    "key": "wm_fbb792f9",
+    "name": "Stone & Fluted Arch wall Panel",
+    "family": "Fluted",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_fbb792f9.jpg",
+    "id": "W157"
+  },
+  {
+    "key": "wm_1177e4b0",
+    "name": "Wall panel",
+    "family": "Fluted",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_1177e4b0.jpg",
+    "id": "W158"
+  },
+  {
+    "key": "wm_6fe63903",
+    "name": "Wall panel",
+    "family": "Fluted",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_6fe63903.jpg",
+    "id": "W159"
+  },
+  {
+    "key": "wm_60e35bb5",
+    "name": "Wall panel",
+    "family": "Fluted",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_60e35bb5.jpg",
+    "id": "W160"
+  },
+  {
+    "key": "wm_77cbbccc",
+    "name": "Wall panel",
+    "family": "Fluted",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_77cbbccc.jpg",
+    "id": "W161"
+  },
+  {
+    "key": "wm_b7b2200b",
+    "name": "Wall pnel",
+    "family": "Fluted",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_b7b2200b.jpg",
+    "id": "W162"
+  },
+  {
+    "key": "bk_c31d5128",
+    "name": "3D panel wall",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_c31d5128.jpg",
+    "id": "W163"
+  },
+  {
+    "key": "bk_7cebad2e",
+    "name": "3D Wall Panels Black",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_7cebad2e.jpg",
+    "id": "W164"
+  },
+  {
+    "key": "bk_382ab603",
+    "name": "Decorative Wall Panel",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_382ab603.jpg",
+    "id": "W165"
+  },
+  {
+    "key": "bk_f1618a8f",
+    "name": "Metal panel wall",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_f1618a8f.jpg",
+    "id": "W166"
+  },
+  {
+    "key": "bk_b1aa9337",
+    "name": "Panels 02",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_b1aa9337.jpg",
+    "id": "W167"
+  },
+  {
+    "key": "bk_29e8b366",
+    "name": "Panels 03",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_29e8b366.jpg",
+    "id": "W168"
+  },
+  {
+    "key": "bk_b1005660",
+    "name": "Procedural/PBR 3D wall panel",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_b1005660.jpg",
+    "id": "W169"
+  },
+  {
+    "key": "bk_2038c3fa",
+    "name": "Wall decor panels",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_2038c3fa.jpg",
+    "id": "W170"
+  },
+  {
+    "key": "bk_d8021691",
+    "name": "Wall decor panels",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_d8021691.jpg",
+    "id": "W171"
+  },
+  {
+    "key": "bk_99191d9f",
+    "name": "Wall decor panels",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_99191d9f.jpg",
+    "id": "W172"
+  },
+  {
+    "key": "bk_06d8e26e",
+    "name": "Wall decor panels",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_06d8e26e.jpg",
+    "id": "W173"
+  },
+  {
+    "key": "bk_6ba2e48a",
+    "name": "Wall panel",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_6ba2e48a.jpg",
+    "id": "W174"
+  },
+  {
+    "key": "bk_8bc94e08",
+    "name": "Wall Panel",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_8bc94e08.jpg",
+    "id": "W175"
+  },
+  {
+    "key": "bk_ac5f176f",
+    "name": "Wall Timber Panelling Light Brown",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_ac5f176f.jpg",
+    "id": "W176"
+  },
+  {
+    "key": "wm_4edc6ef0",
+    "name": "3D Wall panel",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_4edc6ef0.jpg",
+    "id": "W177"
+  },
+  {
+    "key": "wm_8d34bce0",
+    "name": "Concrete and wood wall panel",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_8d34bce0.jpg",
+    "id": "W178"
+  },
+  {
+    "key": "wm_8ba5308c",
+    "name": "Curtain Parametric",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_8ba5308c.jpg",
+    "id": "W179"
+  },
+  {
+    "key": "wm_c8cf37df",
+    "name": "Curtain Parametric",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_c8cf37df.jpg",
+    "id": "W180"
+  },
+  {
+    "key": "wm_8f38fc13",
+    "name": "Curtain Parametric",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_8f38fc13.jpg",
+    "id": "W181"
+  },
+  {
+    "key": "wm_ee3e46b8",
+    "name": "Curtain Parametric",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_ee3e46b8.jpg",
+    "id": "W182"
+  },
+  {
+    "key": "wm_6002ae8e",
+    "name": "Curtain Parametric",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_6002ae8e.jpg",
+    "id": "W183"
+  },
+  {
+    "key": "wm_b2c1f06e",
+    "name": "Curtain Parametric animated",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_b2c1f06e.jpg",
+    "id": "W184"
+  },
+  {
+    "key": "wm_159e8b7e",
+    "name": "Curved wall panel",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_159e8b7e.jpg",
+    "id": "W185"
+  },
+  {
+    "key": "wm_149bda81",
+    "name": "Electrical Wall Mounted Panel",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_149bda81.jpg",
+    "id": "W186"
+  },
+  {
+    "key": "wm_489aa53b",
+    "name": "Floral Wood Carving Panel",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_489aa53b.jpg",
+    "id": "W187"
+  },
+  {
+    "key": "wm_9d60c6b0",
+    "name": "Glass wall panel interior",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_9d60c6b0.jpg",
+    "id": "W188"
+  },
+  {
+    "key": "wm_56c19382",
+    "name": "Parametric Light",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_56c19382.jpg",
+    "id": "W189"
+  },
+  {
+    "key": "wm_0e56f692",
+    "name": "Parametric wall",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_0e56f692.jpg",
+    "id": "W190"
+  },
+  {
+    "key": "wm_e8ae74bd",
+    "name": "Slate Wall Section",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_e8ae74bd.jpg",
+    "id": "W191"
+  },
+  {
+    "key": "wm_db9f4280",
+    "name": "Stone wall 3D Scanned",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_db9f4280.jpg",
+    "id": "W192"
+  },
+  {
+    "key": "wm_27cf6e64",
+    "name": "Wall Panel",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_27cf6e64.jpg",
+    "id": "W193"
+  },
+  {
+    "key": "wm_d56f6ce1",
+    "name": "Wall panel",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_d56f6ce1.jpg",
+    "id": "W194"
+  },
+  {
+    "key": "wm_1bee6bd0",
+    "name": "Wall panel",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_1bee6bd0.jpg",
+    "id": "W195"
+  },
+  {
+    "key": "wm_ea49efe5",
+    "name": "Wall panel",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_ea49efe5.jpg",
+    "id": "W196"
+  },
+  {
+    "key": "wm_b6cefece",
+    "name": "Wall panel",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_b6cefece.jpg",
+    "id": "W197"
+  },
+  {
+    "key": "wm_f7fee0cd",
+    "name": "Wall Panel 02",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_f7fee0cd.jpg",
+    "id": "W198"
+  },
+  {
+    "key": "wm_6f902221",
+    "name": "Wall Panel Module Type A",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_6f902221.jpg",
+    "id": "W199"
+  },
+  {
+    "key": "wm_4de0c96d",
+    "name": "Wooden Headboard \\ Wall panel",
+    "family": "Panel",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_4de0c96d.jpg",
+    "id": "W200"
+  },
+  {
+    "key": "bk_6c433d29",
+    "name": "Mesh Grid Holes Car Paint Surface",
+    "family": "Metal",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_6c433d29.jpg",
+    "id": "W201"
+  },
+  {
+    "key": "bk_85b70c9f",
+    "name": "Metal panel",
+    "family": "Metal",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_85b70c9f.jpg",
+    "id": "W202"
+  },
+  {
+    "key": "bk_063f5de0",
+    "name": "Metal panels",
+    "family": "Metal",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_063f5de0.jpg",
+    "id": "W203"
+  },
+  {
+    "key": "bk_50e174c1",
+    "name": "Perforated Brushed Meta",
+    "family": "Metal",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_50e174c1.jpg",
+    "id": "W204"
+  },
+  {
+    "key": "bk_dcdca89b",
+    "name": "Perforated Ring Metal Material",
+    "family": "Metal",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_dcdca89b.jpg",
+    "id": "W205"
+  },
+  {
+    "key": "bk_0a809f78",
+    "name": "Perforated Steel Panel",
+    "family": "Metal",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_0a809f78.jpg",
+    "id": "W206"
+  },
+  {
+    "key": "bk_1e8e26af",
+    "name": "Rusty Perforated Metal Panels",
+    "family": "Metal",
+    "tier": "candidate",
+    "type": "blend_material",
+    "relief": "dimensional",
+    "thumb": "thumbs/bk_1e8e26af.jpg",
+    "id": "W207"
+  },
+  {
+    "key": "wm_106754ae",
+    "name": "Stone Wall Panel",
+    "family": "Cladding",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_106754ae.jpg",
+    "id": "W208"
+  },
+  {
+    "key": "wm_7bd5ec28",
+    "name": "Stone Wall Panel",
+    "family": "Cladding",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_7bd5ec28.jpg",
+    "id": "W209"
+  },
+  {
+    "key": "wm_9f258319",
+    "name": "Stone Wall Panel",
+    "family": "Cladding",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_9f258319.jpg",
+    "id": "W210"
+  },
+  {
+    "key": "wm_7834b3c3",
+    "name": "Wall Panel",
+    "family": "Cladding",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_7834b3c3.jpg",
+    "id": "W211"
+  },
+  {
+    "key": "wm_ed13c64e",
+    "name": "Wall Panel",
+    "family": "Cladding",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_ed13c64e.jpg",
+    "id": "W212"
+  },
+  {
+    "key": "wm_ac60b970",
+    "name": "White Wall Panel",
+    "family": "Cladding",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_ac60b970.jpg",
+    "id": "W213"
+  },
+  {
+    "key": "wm_48a5ea71",
+    "name": "Wooden Wall Panel",
+    "family": "Cladding",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_48a5ea71.jpg",
+    "id": "W214"
+  },
+  {
+    "key": "wm_2d353787",
+    "name": "Wooden Wall Panel - Classic Teal",
+    "family": "Cladding",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_2d353787.jpg",
+    "id": "W215"
+  },
+  {
+    "key": "wm_8d8c7216",
+    "name": "Artistry wall accents",
+    "family": "Decorative",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_8d8c7216.jpg",
+    "id": "W216"
+  },
+  {
+    "key": "wm_cfce98cf",
+    "name": "Azalea Accent",
+    "family": "Decorative",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_cfce98cf.jpg",
+    "id": "W217"
+  },
+  {
+    "key": "wm_06bd2de4",
+    "name": "Big graffiti wall",
+    "family": "Decorative",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_06bd2de4.jpg",
+    "id": "W218"
+  },
+  {
+    "key": "wm_1af21767",
+    "name": "Clear Glass Block Wall",
+    "family": "Decorative",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_1af21767.jpg",
+    "id": "W219"
+  },
+  {
+    "key": "wm_dc7cf286",
+    "name": "Feature Wall Panel (Belt Design)",
+    "family": "Decorative",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_dc7cf286.jpg",
+    "id": "W220"
+  },
+  {
+    "key": "wm_f12feec9",
+    "name": "Feature Wall Panel (Contemporary)",
+    "family": "Decorative",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_f12feec9.jpg",
+    "id": "W221"
+  },
+  {
+    "key": "wm_5b155009",
+    "name": "Haven frames wall deco",
+    "family": "Decorative",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_5b155009.jpg",
+    "id": "W222"
+  },
+  {
+    "key": "wm_84839714",
+    "name": "Modern Wall Paneling Decoration",
+    "family": "Decorative",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_84839714.jpg",
+    "id": "W223"
+  },
+  {
+    "key": "wm_ba583299",
+    "name": "Modern Walnut Modular Feature Wall Panel",
+    "family": "Decorative",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_ba583299.jpg",
+    "id": "W224"
+  },
+  {
+    "key": "wm_a053f6b4",
+    "name": "Moodscape wall accents",
+    "family": "Decorative",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_a053f6b4.jpg",
+    "id": "W225"
+  },
+  {
+    "key": "wm_e4e563af",
+    "name": "Multi Functional Cooker",
+    "family": "Decorative",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_e4e563af.jpg",
+    "id": "W226"
+  },
+  {
+    "key": "wm_ffea3f8f",
+    "name": "Old Brick Wall",
+    "family": "Decorative",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_ffea3f8f.jpg",
+    "id": "W227"
+  },
+  {
+    "key": "wm_60aa33b0",
+    "name": "Old painted wall",
+    "family": "Decorative",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_60aa33b0.jpg",
+    "id": "W228"
+  },
+  {
+    "key": "wm_8e0bbe05",
+    "name": "PanelPulse wall Deco",
+    "family": "Decorative",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_8e0bbe05.jpg",
+    "id": "W229"
+  },
+  {
+    "key": "wm_27b245fc",
+    "name": "Stone wall",
+    "family": "Decorative",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_27b245fc.jpg",
+    "id": "W230"
+  },
+  {
+    "key": "wm_0d0e217f",
+    "name": "Tile Wall Decor Taso 24",
+    "family": "Decorative",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_0d0e217f.jpg",
+    "id": "W231"
+  },
+  {
+    "key": "wm_804eae77",
+    "name": "Valle Accent Armchair",
+    "family": "Decorative",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_804eae77.jpg",
+    "id": "W232"
+  },
+  {
+    "key": "wm_33c992b2",
+    "name": "Wall boulder",
+    "family": "Decorative",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_33c992b2.jpg",
+    "id": "W233"
+  },
+  {
+    "key": "wm_f292bb5f",
+    "name": "Wall Decor",
+    "family": "Decorative",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_f292bb5f.jpg",
+    "id": "W234"
+  },
+  {
+    "key": "wm_3a55a366",
+    "name": "Wall Decor",
+    "family": "Decorative",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_3a55a366.jpg",
+    "id": "W235"
+  },
+  {
+    "key": "wm_247b5463",
+    "name": "Wall Decor 001",
+    "family": "Decorative",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_247b5463.jpg",
+    "id": "W236"
+  },
+  {
+    "key": "wm_3e6ad4c7",
+    "name": "Wall Decor 002",
+    "family": "Decorative",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_3e6ad4c7.jpg",
+    "id": "W237"
+  },
+  {
+    "key": "wm_de8a7ad7",
+    "name": "Wall decoration",
+    "family": "Decorative",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_de8a7ad7.jpg",
+    "id": "W238"
+  },
+  {
+    "key": "wm_a887de69",
+    "name": "Wall decoration 01",
+    "family": "Decorative",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_a887de69.jpg",
+    "id": "W239"
+  },
+  {
+    "key": "wm_09b6572b",
+    "name": "Wall Flow wallDecor",
+    "family": "Decorative",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_09b6572b.jpg",
+    "id": "W240"
+  },
+  {
+    "key": "wm_88d219d1",
+    "name": "Wall Panel with LED Accent",
+    "family": "Decorative",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_88d219d1.jpg",
+    "id": "W241"
+  },
+  {
+    "key": "wm_956741ff",
+    "name": "Wall-double",
+    "family": "Decorative",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_956741ff.jpg",
+    "id": "W242"
+  },
+  {
+    "key": "wm_592b2be0",
+    "name": "Wall-Hanging Boston Fern Decor",
+    "family": "Decorative",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_592b2be0.jpg",
+    "id": "W243"
+  },
+  {
+    "key": "wm_cf5f6c33",
+    "name": "Wooden tv wall",
+    "family": "Decorative",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_cf5f6c33.jpg",
+    "id": "W244"
+  },
+  {
+    "key": "wm_c262352b",
+    "name": "Zolee Luxury Wall Lights",
+    "family": "Decorative",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_c262352b.jpg",
+    "id": "W245"
+  },
+  {
+    "key": "wm_09cdf9fb",
+    "name": "Zolee Luxury Wall Lights",
+    "family": "Decorative",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_09cdf9fb.jpg",
+    "id": "W246"
+  },
+  {
+    "key": "wm_2f0dc0e0",
+    "name": "Zolee Luxury Wall Lights",
+    "family": "Decorative",
+    "tier": "candidate",
+    "type": "blend_model",
+    "relief": "composite",
+    "thumb": "thumbs/wm_2f0dc0e0.jpg",
+    "id": "W247"
+  },
+  {
+    "key": "lib_wall-curtain-fabricplainblack0",
+    "name": "wall curtain fabricplainblack001",
+    "family": "Fabric",
+    "tier": "candidate",
+    "type": "pbr_folder",
+    "relief": "flat",
+    "thumb": "thumbs/lib_wall-curtain-fabricplainblack0.jpg",
+    "id": "W248"
+  },
+  {
+    "key": "lib_wall-curtain-fabricplainwhiteb",
+    "name": "wall curtain fabricplainwhiteblackout009",
+    "family": "Fabric",
+    "tier": "candidate",
+    "type": "pbr_folder",
+    "relief": "flat",
+    "thumb": "thumbs/lib_wall-curtain-fabricplainwhiteb.jpg",
+    "id": "W249"
+  }
+]

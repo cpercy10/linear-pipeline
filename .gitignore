@@ -1,0 +1,56 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Motuva pipeline — .gitignore
+# Keep the repo to SOURCE + small config only. Large assets and secrets are
+# shipped to the pod out-of-band (see SETUP.md), never committed.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ── Secrets / runtime env ──────────────────────────────────────────────────
+# a.env (and any *.env) holds real HF_TOKEN / REMOVE_BG_API_KEY + machine paths.
+# The committable template is .env.example (kept via the negation below).
+*.env
+!.env.example
+
+# ── Large model / index / render assets (ship out-of-band, NOT via git) ─────
+# ~1.4 GB total; .pth and .blend exceed GitHub's 100 MB/file limit.
+# Ignore EVERYTHING inside assets/ except the tracked placeholder README, so the
+# folder still exists in the repo (see assets/PLACEHOLDER_README.md).
+assets/*
+!assets/PLACEHOLDER_README.md
+*.pth
+*.pt
+*.blend
+*.npy
+
+# ── Outputs / scratch / checkpoints ─────────────────────────────────────────
+testing-images-results/
+exports/
+# Batch input/output image dumps (car adverts w/ number plates — PII, and large).
+Images/
+*.zip
+*.tgz
+# warm-worker temp dirs (created under the OS temp dir, but ignore if local)
+motuva_in/
+motuva_plates/
+
+# ── Python ──────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ── Editor / OS / tooling ───────────────────────────────────────────────────
+.agents/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+.agents

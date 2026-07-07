@@ -153,8 +153,15 @@ class FluxKleinRefiner:
         composite: Image.Image,
         guide: Image.Image,
         car_reference: Optional[Image.Image],
+        background_reference: Optional[Image.Image],
         max_long_edge: int,
-    ) -> Tuple[Image.Image, Image.Image, Optional[Image.Image], Tuple[int, int]]:
+    ) -> Tuple[
+        Image.Image,
+        Image.Image,
+        Optional[Image.Image],
+        Optional[Image.Image],
+        Tuple[int, int],
+    ]:
         original_size = composite.size
         work_size = _fit_size(original_size, max_long_edge)
         comp = composite.convert("RGB")
@@ -163,6 +170,11 @@ class FluxKleinRefiner:
             comp = comp.resize(work_size, Image.LANCZOS)
         if ref.size != work_size:
             ref = ref.resize(work_size, Image.LANCZOS)
+        bg_ref = None
+        if background_reference is not None:
+            bg_ref = background_reference.convert("RGB")
+            if bg_ref.size != work_size:
+                bg_ref = bg_ref.resize(work_size, Image.LANCZOS)
         car_ref = None
         if car_reference is not None:
             car_ref = car_reference.convert("RGB")
@@ -170,7 +182,7 @@ class FluxKleinRefiner:
             ref_size = _fit_size(car_ref.size, ref_long)
             if car_ref.size != ref_size:
                 car_ref = car_ref.resize(ref_size, Image.LANCZOS)
-        return comp, ref, car_ref, original_size
+        return comp, ref, car_ref, bg_ref, original_size
 
     def refine(
         self,
@@ -178,13 +190,14 @@ class FluxKleinRefiner:
         gray_guide: Image.Image,
         car_reference: Optional[Image.Image],
         req: FluxRefineRequest,
+        background_reference: Optional[Image.Image] = None,
     ) -> Image.Image:
         if not req.enabled:
             return composite.convert("RGB")
 
         pipe = self._ensure_pipe()
-        comp_in, guide_in, car_ref_in, original_size = self._prepare_inputs(
-            composite, gray_guide, car_reference, req.max_long_edge
+        comp_in, guide_in, car_ref_in, bg_ref_in, original_size = self._prepare_inputs(
+            composite, gray_guide, car_reference, background_reference, req.max_long_edge
         )
 
         generator = None
@@ -193,7 +206,10 @@ class FluxKleinRefiner:
 
         references = comp_in
         if req.reference_mode in {"with_reference", "multi_reference"}:
-            references = [comp_in, guide_in]
+            references = [comp_in]
+            if bg_ref_in is not None:
+                references.append(bg_ref_in)
+            references.append(guide_in)
             if car_ref_in is not None:
                 references.append(car_ref_in)
 

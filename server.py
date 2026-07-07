@@ -47,6 +47,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from typing import AsyncIterator, Dict, Optional
 
+import numpy as np
 import torch
 import uvicorn
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
@@ -156,14 +157,20 @@ def _lock_background_after_flux(
     refined: Image.Image,
     inputs: inpaint_masks.InpaintInputs,
 ) -> Image.Image:
-    """Keep prompt edits on the car/contact area; restore the untouched background."""
+    """Keep prompt edits on the car; allow only shadow-like darkening on the floor."""
     solid_car = composite_refine.solidify_mask(
         inputs.car_mask,
         threshold=8,
         close_px=7,
         fill_holes=True,
     )
-    car_context = composite_refine.dilate_mask(solid_car, 34)
+    car_core = solid_car.filter(ImageFilter.GaussianBlur(0.6))
+    narrow_edge = composite_refine.mask_subtract(
+        composite_refine.dilate_mask(solid_car, 7),
+        composite_refine.erode_mask(solid_car, 1),
+    ).filter(ImageFilter.GaussianBlur(1.2))
+    narrow_edge = narrow_edge.point(lambda p: int(p * 0.72))
+    car_edit = composite_refine.mask_union(car_core, narrow_edge)
 
     contact_context = Image.new("L", base.size, 0)
     bbox = solid_car.getbbox()
@@ -171,9 +178,9 @@ def _lock_background_after_flux(
         x0, y0, x1, y1 = bbox
         car_w = max(1, x1 - x0)
         car_h = max(1, y1 - y0)
-        pad_x = max(28, int(car_w * 0.09))
-        above = max(8, int(car_h * 0.035))
-        below = max(34, int(car_h * 0.16))
+        pad_x = max(36, int(car_w * 0.075))
+        above = max(4, int(car_h * 0.025))
+        below = max(40, int(car_h * 0.14))
         draw = ImageDraw.Draw(contact_context)
         draw.rounded_rectangle(
             [
@@ -186,17 +193,35 @@ def _lock_background_after_flux(
             fill=255,
         )
         contact_context = contact_context.filter(
-            ImageFilter.GaussianBlur(max(4.0, car_h * 0.012))
+            ImageFilter.GaussianBlur(max(5.0, car_h * 0.014))
         )
 
-    edit_mask = composite_refine.mask_union(
-        car_context,
-        contact_context,
-    ).filter(ImageFilter.GaussianBlur(2.0))
-    return Image.composite(
-        refined.resize(base.size, Image.LANCZOS).convert("RGB"),
-        base.convert("RGB"),
-        edit_mask,
+    base_rgb = base.convert("RGB")
+    refined_rgb = refined.resize(base.size, Image.LANCZOS).convert("RGB")
+    merged = Image.composite(refined_rgb, base_rgb, car_edit)
+
+    base_arr = np.array(base_rgb, dtype=np.float32)
+    refined_arr = np.array(refined_rgb, dtype=np.float32)
+    merged_arr = np.array(merged, dtype=np.float32)
+    contact = np.array(contact_context, dtype=np.float32) / 255.0
+    car_protect = np.array(
+        solid_car.filter(ImageFilter.GaussianBlur(1.0)),
+        dtype=np.float32,
+    ) / 255.0
+    contact *= 1.0 - car_protect
+
+    weights = np.array([0.2126, 0.7152, 0.0722], dtype=np.float32)
+    base_luma = np.dot(base_arr, weights)
+    refined_luma = np.dot(refined_arr, weights)
+    shadow = np.clip((base_luma - refined_luma) / 42.0, 0.0, 1.0) * contact
+    shadow = np.clip(shadow, 0.0, 0.65)
+    shadow_rgb = np.minimum(base_arr, refined_arr)
+    merged_arr = merged_arr * (1.0 - shadow[:, :, None])
+    merged_arr += shadow_rgb * shadow[:, :, None]
+
+    return Image.fromarray(
+        merged_arr.clip(0, 255).astype(np.uint8),
+        mode="RGB",
     )
 
 
@@ -359,9 +384,10 @@ def _flux_output_description(mode: str) -> str:
         )
     if mode in {"with_reference", "multi_reference"}:
         return (
-            "Final FLUX.2 Klein cleanup using composite plus placement/source-car "
-            "references: prompt can restore missing source details such as mirrors, "
-            "then fix edges, glass contamination, old reflections, and contact shadow."
+            "Final FLUX.2 Klein cleanup using composite plus clean background plate, "
+            "placement guide, and source-car references: prompt can restore missing "
+            "source details such as mirrors, replace window/reflection content with "
+            "the current background, then fix edges and contact shadow."
         )
     return f"Final FLUX.2 Klein cleanup in {mode!r} mode."
 
@@ -497,12 +523,6 @@ async def _process_stream(
                     if pre.raw_crop is not None:
                         yield _frame("23_reference_source_car_crop.png", _img_bytes(pre.raw_crop),
                                      meta={"note": "original YOLO crop reference"})
-                    yield _frame("24_debug_mask_car_alpha.png", _img_bytes(inputs.car_mask))
-                    yield _frame("25_debug_mask_edge_repair_region.png", _img_bytes(inputs.edge_band_mask))
-                    yield _frame("26_debug_legacy_local_shadow_hint_not_final.png", _img_bytes(inputs.shadow_mask),
-                                 meta={"note": "legacy local shadow hint only; final shadow is prompt-refined by Klein"})
-                    yield _frame("27_debug_optional_flux_fill_mask_not_final.png", _img_bytes(inputs.inpaint_mask),
-                                 meta={"mode": inpaint_req.mode})
                     yield _frame("30_composite_local_cutout_with_placeholder_shadow.png", _img_bytes(inputs.manual_composite),
                                  meta={"note": "local rembg cleanup before final prompt-based Klein refinement"})
 
@@ -550,6 +570,7 @@ async def _process_stream(
                             gray_guide,
                             pre.raw_crop,
                             mode_req,
+                            plate.plate,
                         ),
                     )
                     refined = _lock_background_after_flux(base_for_flux, refined, inputs)
@@ -561,7 +582,8 @@ async def _process_stream(
                             "flux_refine_reference_mode": refine_mode,
                             "description": _flux_output_description(refine_mode),
                             "prompt": mode_req.prompt,
-                            "background_lock": "solid_car_missing_part_context_plus_prompt_shadow_contact_area",
+                            "background_reference": "10_scene_empty_blender_plate.jpg",
+                            "background_lock": "tight_car_window_edge_plus_shadow_only_floor_darkening",
                         },
                     )
 
@@ -595,6 +617,7 @@ async def _process_stream(
                     "flux_refine_guidance_scale": flux_req.guidance_scale,
                     "flux_refine_strength": flux_req.strength,
                     "flux_refine_reference_mode": flux_req.reference_mode,
+                    "flux_refine_background_reference": "10_scene_empty_blender_plate.jpg",
                     "flux_refine_modes": list(flux_outputs.keys()),
                     "flux_refine_prompts_by_mode": flux_prompts,
                     "final_klein_input": (
@@ -604,6 +627,10 @@ async def _process_stream(
                     ),
                     "selected_final_source": selected_output or "local_composite",
                     "output_legend": {
+                        "10_scene_empty_blender_plate.jpg": "clean rendered target background plate; with-reference Klein also receives this for glass/reflections",
+                        "21_debug_cutout_clean_alpha_glass_edges.png": "local cleaned cutout before final Klein",
+                        "22_reference_gray_placement_guide.png": "placement guide for car silhouette, scale, and tire contact points",
+                        "23_reference_source_car_crop.png": "source car crop for identity, paint color, trim, mirrors, and missing details",
                         "30_composite_local_cutout_with_placeholder_shadow.png": "local cleaned rembg cutout on rendered plate before final prompt-based Klein refinement",
                         "31_composite_prompt_input_no_shadow.png": "actual clean composite sent into final Klein; shadow/reflection/window cleanup is prompt-generated",
                         "35_optional_flux_fill_mask_repair_not_final.png": "optional old FLUX Fill repair stage; not the final output",

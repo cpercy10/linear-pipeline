@@ -47,7 +47,9 @@ python-multipart
 
 # ---- Server-only rembg + FLUX Fill inpaint experiment ----
 # rembg downloads its model cache on first use (default: ~/.u2net; override U2NET_HOME).
-rembg[gpu]>=2.0
+# Use CPU rembg by default: onnxruntime-gpu wheels are CUDA-version-sensitive and can
+# pull a libcudart.so.* runtime that does not match the RunPod image. FLUX still uses GPU.
+rembg[cpu]>=2.0
 diffusers>=0.34
 transformers>=4.43
 accelerate>=0.33

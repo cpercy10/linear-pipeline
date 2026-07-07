@@ -49,6 +49,11 @@ class RembgSegmenter:
                 raise ConfigError(
                     "rembg is not installed; install the server experiment dependencies"
                 ) from exc
+            except SystemExit as exc:
+                raise ConfigError(
+                    "rembg could not load an onnxruntime backend. Install rembg[cpu] "
+                    "or a CUDA-compatible onnxruntime-gpu build."
+                ) from exc
             _log.info("rembg.loading", model=self._cfg.model_name)
             self._session = new_session(self._cfg.model_name)
             _log.info("rembg.ready", model=self._cfg.model_name)
@@ -61,6 +66,11 @@ class RembgSegmenter:
         except ImportError as exc:
             raise ConfigError(
                 "rembg is not installed; install the server experiment dependencies"
+            ) from exc
+        except SystemExit as exc:
+            raise ConfigError(
+                "rembg could not load an onnxruntime backend. Install rembg[cpu] "
+                "or a CUDA-compatible onnxruntime-gpu build."
             ) from exc
 
         session = self._ensure_session()
@@ -80,4 +90,3 @@ class RembgSegmenter:
     async def aclose(self) -> None:
         """Symmetric with BackgroundRemover; rembg has no async resource to close."""
         self._session = None
-

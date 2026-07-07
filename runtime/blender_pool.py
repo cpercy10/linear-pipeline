@@ -72,19 +72,24 @@ class BlenderPool:
             await self.start()
 
         async with self._slot:
-            return await self._worker.render(
-                camera,
-                disc_diam,
-                out_jpg,
-                out_json,
-                photo_w=photo_w,
-                photo_h=photo_h,
-                studio=studio,
-                studio_frame=studio_frame,
-                no_threeq_zoom=no_threeq_zoom,
-                long_edge=long_edge,
-                samples=samples,
-            )
+            try:
+                return await self._worker.render(
+                    camera,
+                    disc_diam,
+                    out_jpg,
+                    out_json,
+                    photo_w=photo_w,
+                    photo_h=photo_h,
+                    studio=studio,
+                    studio_frame=studio_frame,
+                    no_threeq_zoom=no_threeq_zoom,
+                    long_edge=long_edge,
+                    samples=samples,
+                )
+            finally:
+                if self._worker.release_after_render:
+                    _log.info("blender_pool.release_after_render")
+                    await self.shutdown()
 
     async def ping(self) -> bool:
         return await self._worker.ping()

@@ -6,6 +6,7 @@ composite alone or the composite plus references, then returns a full-frame poli
 
 from __future__ import annotations
 
+import gc
 from dataclasses import dataclass
 from threading import Lock
 from typing import Optional, Tuple
@@ -119,13 +120,26 @@ class FluxKleinRefiner:
                     dtype=torch.bfloat16,
                 )
 
-            if self._settings.flux_refine.cpu_offload and hasattr(pipe, "enable_model_cpu_offload"):
+            if self._settings.flux_refine.cpu_offload and hasattr(pipe, "enable_sequential_cpu_offload"):
+                pipe.enable_sequential_cpu_offload()
+            elif self._settings.flux_refine.cpu_offload and hasattr(pipe, "enable_model_cpu_offload"):
                 pipe.enable_model_cpu_offload()
             else:
                 pipe.to("cuda")
             self._pipe = pipe
             _log.info("flux_refine.ready", model=self.model_id)
             return self._pipe
+
+    @staticmethod
+    def _free_cuda(pipe=None) -> None:
+        if pipe is not None and hasattr(pipe, "maybe_free_model_hooks"):
+            try:
+                pipe.maybe_free_model_hooks()
+            except Exception:  # noqa: BLE001
+                pass
+        gc.collect()
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
 
     @staticmethod
     def _prepare_inputs(
@@ -198,16 +212,20 @@ class FluxKleinRefiner:
                 extra["reference_mode"] = req.reference_mode
                 extra["reference_count"] = len(references) if isinstance(references, list) else 1
         except TypeError as exc:
+            self._free_cuda(pipe)
             raise PipelineError(
                 "FLUX refine call failed. If your installed diffusers build does not "
                 "accept multiple input images, set "
                 "MOTOCUT_FLUX_REFINE__REFERENCE_MODE=composite_only or upgrade diffusers."
             ) from exc
         except torch.cuda.OutOfMemoryError as exc:
-            torch.cuda.empty_cache()
+            self._free_cuda(pipe)
             raise PipelineError(f"FLUX refine ran out of memory: {exc}") from exc
         except Exception as exc:  # noqa: BLE001
+            self._free_cuda(pipe)
             raise PipelineError(f"FLUX refine failed: {exc}") from exc
+        finally:
+            self._free_cuda(pipe)
 
         if result.size != original_size:
             result = result.resize(original_size, Image.LANCZOS)

@@ -91,8 +91,13 @@ class BlenderWorker:
         """Spawn Blender and wait for the warm worker to finish loading."""
         if self._started:
             return
+        self._closing = False
         await self._spawn()
         self._started = True
+
+    @property
+    def release_after_render(self) -> bool:
+        return bool(getattr(self._bcfg, "release_after_render", False))
 
     async def _spawn(self) -> None:
         loop = asyncio.get_running_loop()

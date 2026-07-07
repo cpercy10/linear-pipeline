@@ -26,7 +26,7 @@ import requests
 # Defaults you can edit, or override from the command line.
 SERVER_URL = "https://6ab7ri5k4gsatu-8000.proxy.runpod.net"
 INPUT_DIR = r"C:\Users\SyedZulfiqarHaiderZa\Desktop\cars2"
-OUTPUT_DIR = r"C:\Users\SyedZulfiqarHaiderZa\Desktop\cars2\Reference-Compare"
+OUTPUT_DIR = r"C:\Users\SyedZulfiqarHaiderZa\Desktop\cars2\Reference-Compare1"
 
 # Ask the server for both outputs in one request by default.
 REFERENCE_MODES = ("both",)
@@ -43,7 +43,7 @@ BODY_OPACITY = 0.35
 FLUX_REFINE_ENABLED = True
 FLUX_REFINE_STEPS = 4
 FLUX_REFINE_SEED = "1234"  # fixed seed makes A/B comparisons less noisy; "" = random
-FLUX_REFINE_MAX_EDGE = 1024
+FLUX_REFINE_MAX_EDGE = 768
 FLUX_REFINE_GUIDANCE = 1.0
 FLUX_REFINE_STRENGTH = ""  # "" = server/model default
 FLUX_REFINE_PROMPT = ""    # "" = server picks the prompt for each reference mode

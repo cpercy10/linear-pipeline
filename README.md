@@ -152,7 +152,8 @@ much foreground" look.
 
 ## 11. Compute notes
 
-Single GPU; Blender's Cycles renders on the **GPU** via the warm worker. Without
-`flux_refine`, VRAM demand stays modest. With FLUX refine enabled, the final server pass
-loads `black-forest-labs/FLUX.2-klein-9B` lazily and uses the rembg composite plus the
-gray YOLO guide to improve integration.
+Single GPU; Blender's Cycles renders on the **GPU**. For smaller instances, the server
+defaults to `BlenderConfig.release_after_render=true`: Blender starts for the plate,
+renders, then exits before FLUX refine loads/runs. This is slower than keeping Blender
+warm, but avoids co-resident Blender + FLUX VRAM pressure. FLUX refine loads one shared
+lazy instance with CPU offload and defaults to a 768px working long edge.

@@ -260,12 +260,12 @@ class FluxRefineConfig(BaseModel):
     """Final FLUX.2 Klein image-edit pass over the rembg composite."""
     enabled: bool = False
     model_id: str = "black-forest-labs/FLUX.2-klein-9B"
-    max_long_edge: int = 1024
+    max_long_edge: int = 768
     num_steps: int = 4
     seed: Optional[int] = None
     guidance_scale: float = 1.0
     strength: Optional[float] = None
-    reference_mode: Literal["with_reference", "composite_only", "multi_reference"] = "with_reference"
+    reference_mode: Literal["both", "with_reference", "composite_only", "multi_reference"] = "with_reference"
     cpu_offload: bool = True
     prompt: str = ""  # optional override; empty selects one of the mode prompts below
     prompt_composite_only: str = (
@@ -393,6 +393,7 @@ class BlenderConfig(BaseModel):
     render_long_edge: int = 1024
     render_samples:   int = 16
     device:           Literal["GPU", "CPU"] = "GPU"   # warm worker forces GPU
+    release_after_render: bool = True  # stop Blender after each plate to free Cycles VRAM
     # Warm-worker IPC / supervision.
     job_timeout_s:    float = 600.0   # full-res plates on big photos can take >180s until the plate-res cap lands
     startup_timeout_s: float = 300.0   # scene + material load can be slow on cold start

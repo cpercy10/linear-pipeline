@@ -555,7 +555,8 @@ async def lifespan(app: FastAPI):
             )
             worker = BlenderWorker(settings)
             S.blender_pool = BlenderPool(worker)
-            await S.blender_pool.start()
+            if not settings.blender.release_after_render:
+                await S.blender_pool.start()
             if settings.background_image and Path(settings.background_image).exists():
                 S.bg_rgba = Image.open(settings.background_image).convert("RGBA")
             S.ready = True

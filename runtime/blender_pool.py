@@ -4,9 +4,8 @@ There is exactly one warm Blender process (``render/blender_worker.py``) — Ble
 single-threaded and the scene/materials are loaded once and kept resident, so renders
 MUST serialize through a single slot. This pool is that slot.
 
-FLUX has been removed, so there is no longer a diffusion model contending for the GPU;
-the single render slot is all the gating the one warm worker needs (no VRAM
-co-residency controller anymore).
+The worker can optionally release Blender after each render so the later FLUX refine
+stage can take the GPU without a resident Blender scene competing for VRAM.
 
     pool = BlenderPool(worker)
     await pool.start()

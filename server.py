@@ -51,7 +51,7 @@ import torch
 import uvicorn
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.responses import StreamingResponse
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 from config.pipeline_config import ImageClass, get_orientation_registry, get_settings
 from models.model_manager import ModelManager
@@ -63,7 +63,7 @@ from processing.background_remover import BackgroundRemover
 from processing.rembg_segmenter import RembgSegmenter
 from runtime.blender_pool import BlenderPool
 from render.blender_worker import BlenderWorker
-from stages import exterior_full, inpaint_masks
+from stages import composite_refine, exterior_full, inpaint_masks
 from utils.logging import configure_logging, get_logger, stage_timer
 
 PORT = 8000
@@ -149,6 +149,24 @@ def _gray_yolo_guide(pre, canvas_size, paste_top_left) -> Image.Image:
     guide = Image.new("RGB", canvas_size, tuple(settings.canvas.fill_color))
     guide.paste(pre.resized_crop.convert("RGB"), paste_top_left)
     return guide
+
+
+def _lock_background_after_flux(
+    base: Image.Image,
+    refined: Image.Image,
+    inputs: inpaint_masks.InpaintInputs,
+) -> Image.Image:
+    """Keep FLUX edits only near the car/shadow; restore the untouched background."""
+    edit_mask = composite_refine.mask_union(
+        composite_refine.dilate_mask(inputs.car_mask, 12),
+        composite_refine.dilate_mask(inputs.edge_band_mask, 4),
+        composite_refine.dilate_mask(inputs.shadow_mask, 4),
+    ).filter(ImageFilter.GaussianBlur(2.0))
+    return Image.composite(
+        refined.resize(base.size, Image.LANCZOS).convert("RGB"),
+        base.convert("RGB"),
+        edit_mask,
+    )
 
 
 def _meta(pre, plate, extra: Optional[Dict[str, object]] = None) -> Dict[str, object]:
@@ -455,6 +473,7 @@ async def _process_stream(
                             mode_req,
                         ),
                     )
+                    refined = _lock_background_after_flux(base_for_flux, refined, inputs)
                     flux_outputs[refine_mode] = refined
                     yield _frame(
                         f"composite_{refine_mode}.png",

@@ -108,7 +108,12 @@ class FluxKleinRefiner:
                         "diffusers is not installed; install the FLUX.2 Klein dependencies"
                     ) from exc
 
-            _log.info("flux_refine.loading", model=self.model_id)
+            requested_cpu_offload = bool(self._settings.flux_refine.cpu_offload)
+            _log.info(
+                "flux_refine.loading",
+                model=self.model_id,
+                requested_mode="cpu_offload" if requested_cpu_offload else "full_gpu",
+            )
             try:
                 pipe = pipe_cls.from_pretrained(
                     self.model_id,
@@ -120,14 +125,16 @@ class FluxKleinRefiner:
                     dtype=torch.bfloat16,
                 )
 
-            if self._settings.flux_refine.cpu_offload and hasattr(pipe, "enable_sequential_cpu_offload"):
-                pipe.enable_sequential_cpu_offload()
-            elif self._settings.flux_refine.cpu_offload and hasattr(pipe, "enable_model_cpu_offload"):
+            use_cpu_offload = bool(
+                requested_cpu_offload and hasattr(pipe, "enable_model_cpu_offload")
+            )
+            if use_cpu_offload:
                 pipe.enable_model_cpu_offload()
             else:
                 pipe.to("cuda")
+            load_mode = "cpu_offload" if use_cpu_offload else "full_gpu"
             self._pipe = pipe
-            _log.info("flux_refine.ready", model=self.model_id)
+            _log.info("flux_refine.ready", model=self.model_id, mode=load_mode)
             return self._pipe
 
     @staticmethod
@@ -224,7 +231,8 @@ class FluxKleinRefiner:
         except Exception as exc:  # noqa: BLE001
             self._free_cuda(pipe)
             raise PipelineError(f"FLUX refine failed: {exc}") from exc
-        finally:
+
+        if self._settings.flux_refine.cpu_offload:
             self._free_cuda(pipe)
 
         if result.size != original_size:

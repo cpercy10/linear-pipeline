@@ -23,6 +23,16 @@ import requests
 SERVER_URL = "https://adwkhfepqo7bxo-8000.proxy.runpod.net"   # your server (e.g. a https://xxxx-8000.proxy.runpod.net URL)
 INPUT_DIR  = r"E:\CorTechSols\Motorcut\Background Removal\Background-Replacement-Removebg-Latest\Ali-Cortechsols\Latest\Results\Images\Set 02"    # folder of images to send
 OUTPUT_DIR = r"D:\Motocut\Code\motuva-pipline-removebgappraoch\Images\Output-1"     # results land in OUTPUT_DIR/<stem>/
+INPAINT_ENABLED = False              # False = rembg manual composite only
+INPAINT_MODE    = "shadow_edge"      # shadow | shadow_edge | shadow_edge_body
+INPAINT_PROMPT  = (
+    "Create a realistic studio contact shadow and cleanly blend the car into the "
+    "floor. Preserve the car identity, shape, wheels, lights, trim, and details."
+)
+INPAINT_STEPS    = 28
+INPAINT_SEED     = ""                # "" = random / server default
+INPAINT_MAX_EDGE = 1024
+BODY_OPACITY     = 0.35              # only used by shadow_edge_body
 DEBUG      = True                    # True → also receive crop/cutout/plate-marker debug images
 
 # Studio look overrides for /set_studio — set ONCE before the run (empty {} = use the
@@ -108,7 +118,16 @@ def process_one(base: str, img_path: Path, out_root: Path, debug: bool) -> bool:
             resp = requests.post(
                 f"{base}/process",
                 files={"file": (img_path.name, f, "application/octet-stream")},
-                data={"debug": "true" if debug else "false"},
+                data={
+                    "debug": "true" if debug else "false",
+                    "inpaint": "true" if INPAINT_ENABLED else "false",
+                    "inpaint_mode": INPAINT_MODE,
+                    "inpaint_prompt": INPAINT_PROMPT,
+                    "inpaint_steps": str(INPAINT_STEPS),
+                    "inpaint_seed": str(INPAINT_SEED),
+                    "inpaint_max_edge": str(INPAINT_MAX_EDGE),
+                    "body_opacity": str(BODY_OPACITY),
+                },
                 stream=True,
                 timeout=REQUEST_TIMEOUT,
             )

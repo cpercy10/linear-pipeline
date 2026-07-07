@@ -44,3 +44,11 @@ requests>=2.31
 fastapi
 uvicorn
 python-multipart
+
+# ---- Server-only rembg + FLUX Fill inpaint experiment ----
+# rembg downloads its model cache on first use (default: ~/.u2net; override U2NET_HOME).
+rembg[gpu]>=2.0
+diffusers>=0.34
+transformers>=4.43
+accelerate>=0.33
+safetensors>=0.4

@@ -218,6 +218,37 @@ class RemoveBgConfig(BaseModel):
     interior_alpha_threshold: int = 250  # alpha < this → forced to white
 
 
+class RembgConfig(BaseModel):
+    """Server exterior-full local segmentation experiment."""
+    model_name: str = "birefnet-general"
+    alpha_matting: bool = True
+    clean_mask: bool = True
+    morph_kernel: int = 7
+    feather_px: int = 3
+    alpha_threshold: int = 16
+    preserve_erode_px: int = 5
+    edge_band_px: int = 18
+    shadow_offset_frac: float = 0.08
+    shadow_height_frac: float = 0.18
+    shadow_blur_px: int = 18
+
+
+class InpaintConfig(BaseModel):
+    """Server-only FLUX Fill inpaint experiment for exterior-full images."""
+    enabled: bool = False
+    model_id: str = "black-forest-labs/FLUX.1-Fill-dev"
+    max_long_edge: int = 1024
+    num_steps: int = 28
+    seed: Optional[int] = None
+    mode: Literal["shadow", "shadow_edge", "shadow_edge_body"] = "shadow_edge"
+    prompt: str = (
+        "Create a realistic studio contact shadow and cleanly blend the car into the "
+        "floor. Preserve the car identity, shape, wheels, lights, trim, and details."
+    )
+    guidance_scale: float = 30.0
+    body_opacity: float = 0.35
+
+
 class InteriorConfig(BaseModel):
     bg_color: Tuple[int, int, int] = (255, 255, 255)
 
@@ -385,6 +416,8 @@ class PipelineSettings(BaseSettings):
     canvas:      CanvasConfig      = CanvasConfig()
     anchor:      AnchorConfig      = AnchorConfig()
     removebg:    RemoveBgConfig    = RemoveBgConfig()
+    rembg:       RembgConfig       = RembgConfig()
+    inpaint:     InpaintConfig     = InpaintConfig()
     interior:    InteriorConfig    = InteriorConfig()
     retrieval:   RetrievalConfig   = RetrievalConfig()
     geocalib:    GeoCalibConfig    = GeoCalibConfig()

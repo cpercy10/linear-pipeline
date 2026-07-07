@@ -44,7 +44,7 @@ from contextlib import asynccontextmanager
 from functools import partial
 from pathlib import Path
 from types import SimpleNamespace
-from typing import AsyncIterator, Dict, Optional, Tuple
+from typing import AsyncIterator, Dict, Optional
 
 import torch
 import uvicorn
@@ -55,11 +55,13 @@ from PIL import Image, ImageDraw, ImageFont
 from config.pipeline_config import ImageClass, get_orientation_registry, get_settings
 from models.model_manager import ModelManager
 from pipeline import _camera_export_payload
+from processing.flux_inpaint import FluxFillInpainter, default_request
 from processing import interior, partial as partial_lane
 from processing.background_remover import BackgroundRemover
+from processing.rembg_segmenter import RembgSegmenter
 from runtime.blender_pool import BlenderPool
 from render.blender_worker import BlenderWorker
-from stages import exterior_full
+from stages import exterior_full, inpaint_masks
 from utils.logging import configure_logging, get_logger, stage_timer
 
 PORT = 8000
@@ -77,6 +79,8 @@ S = SimpleNamespace(
     blender_pool=None,       # BlenderPool (owns the warm worker)
     pre_exec=None,           # ThreadPoolExecutor (preprocess tier)
     remover=None,            # BackgroundRemover (all remove.bg lanes)
+    rembg_segmenter=None,    # RembgSegmenter (server exterior-full only)
+    inpainter=None,          # FluxFillInpainter (lazy, optional)
     registry=None,           # VisualOccupancyRegistry
     bg_rgba=None,            # supplied background for the partial lane (optional)
     active_studio=dict(settings.blender.studio),   # studio look, overridable via /set_studio
@@ -137,9 +141,9 @@ def _mark_plate(plate: Image.Image, cx: float, cy: float) -> Image.Image:
     return im
 
 
-def _meta(pre, plate) -> Dict[str, object]:
+def _meta(pre, plate, extra: Optional[Dict[str, object]] = None) -> Dict[str, object]:
     e = pre.estimate
-    return {
+    meta = {
         "orientation": pre.orientation.value,
         "orientation_confidence": round(pre.orientation_confidence, 4),
         "azimuth": pre.camera.get("azimuth"),
@@ -155,6 +159,9 @@ def _meta(pre, plate) -> Dict[str, object]:
         "pose": pre.pose,
         "recovered_length_m": round(pre.recovered_length_m, 2),
     }
+    if extra:
+        meta.update(extra)
+    return meta
 
 
 def _frame(name: str, data: bytes, ctype: str = "image/png",
@@ -164,6 +171,51 @@ def _frame(name: str, data: bytes, ctype: str = "image/png",
         {"name": name, "ctype": ctype, "size": len(data), "meta": meta or {}}
     ).encode("utf-8")
     return header + b"\n" + data
+
+
+def _parse_bool(value: Optional[str], default: bool) -> bool:
+    if value is None or value == "":
+        return default
+    return str(value).strip().lower() in {"1", "true", "yes", "on"}
+
+
+def _parse_int(value: Optional[str], default: Optional[int]) -> Optional[int]:
+    if value is None or value == "":
+        return default
+    return int(value)
+
+
+def _parse_float(value: Optional[str], default: float) -> float:
+    if value is None or value == "":
+        return default
+    return float(value)
+
+
+def _inpaint_request_from_form(
+    *,
+    inpaint: Optional[str],
+    inpaint_mode: Optional[str],
+    inpaint_prompt: Optional[str],
+    inpaint_steps: Optional[str],
+    inpaint_seed: Optional[str],
+    inpaint_max_edge: Optional[str],
+    body_opacity: Optional[str],
+):
+    req = default_request(settings)
+    req.enabled = _parse_bool(inpaint, req.enabled)
+    if inpaint_mode not in (None, ""):
+        if inpaint_mode not in {"shadow", "shadow_edge", "shadow_edge_body"}:
+            raise ValueError(
+                "inpaint_mode must be one of: shadow, shadow_edge, shadow_edge_body"
+            )
+        req.mode = inpaint_mode
+    if inpaint_prompt not in (None, ""):
+        req.prompt = inpaint_prompt
+    req.num_steps = int(_parse_int(inpaint_steps, req.num_steps))
+    req.seed = _parse_int(inpaint_seed, req.seed)
+    req.max_long_edge = int(_parse_int(inpaint_max_edge, req.max_long_edge))
+    req.body_opacity = _parse_float(body_opacity, req.body_opacity)
+    return req
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -195,7 +247,7 @@ async def _render_plate(pre, stem: str, log):
 # Per-image streaming processor (STRICTLY SERIAL via PROCESS_LOCK)
 # ─────────────────────────────────────────────────────────────────────────────
 
-async def _process_stream(content: bytes, filename: str, debug: bool) -> AsyncIterator[bytes]:
+async def _process_stream(content: bytes, filename: str, debug: bool, inpaint_req) -> AsyncIterator[bytes]:
     stem = Path(filename).stem
     ext = (Path(filename).suffix or ".jpg").lower()
     orig_ctype = "image/png" if ext == ".png" else "image/jpeg"
@@ -257,25 +309,73 @@ async def _process_stream(content: bytes, filename: str, debug: bool) -> AsyncIt
                         meta={"cx": round(plate.cx, 1), "cy": round(plate.cy, 1)},
                     )
 
-                # tier 3 — remove.bg cutout + manual composite onto the plate (no FLUX)
-                crop_bytes = _img_bytes(pre.raw_crop, "PNG")
-                cutout = await S.remover.remove(
-                    crop_bytes, filename,
-                    add_shadow=settings.removebg.exterior_add_shadow,
-                )
-                if debug:
-                    cut_dbg = cutout.convert("RGBA").resize(pre.resized_crop.size, Image.LANCZOS)
-                    yield _frame("cutout.png", _img_bytes(cut_dbg),
-                                 meta={"note": "remove.bg cutout, occupancy-resized"})
-                composite = await loop.run_in_executor(
+                # tier 3 — rembg cutout + manual composite + optional FLUX Fill inpaint.
+                rembg_result = await loop.run_in_executor(
                     S.pre_exec,
-                    partial(exterior_full.composite_on_plate, pre, plate, cutout,
-                            settings=settings, log=log),
+                    partial(S.rembg_segmenter.remove, pre.raw_crop),
                 )
-                yield _frame("composite.png", _img_bytes(composite), meta=_meta(pre, plate))  # always
+                inputs = await loop.run_in_executor(
+                    S.pre_exec,
+                    partial(
+                        inpaint_masks.build_inputs,
+                        pre,
+                        plate,
+                        rembg_result.cutout,
+                        settings=settings,
+                        mode=inpaint_req.mode,
+                        log=log,
+                    ),
+                )
+
+                if debug:
+                    yield _frame("rembg_cutout.png", _img_bytes(inputs.cutout_resized),
+                                 meta={"model": rembg_result.model_name})
+                    yield _frame("mask_car.png", _img_bytes(inputs.car_mask))
+                    yield _frame("mask_shadow.png", _img_bytes(inputs.shadow_mask))
+                    yield _frame("mask_inpaint.png", _img_bytes(inputs.inpaint_mask),
+                                 meta={"mode": inpaint_req.mode})
+                    yield _frame("composite_manual.png", _img_bytes(inputs.manual_composite))
+
+                composite = inputs.manual_composite
+                if inpaint_req.enabled:
+                    inpainted = await loop.run_in_executor(
+                        S.pre_exec,
+                        partial(S.inpainter.inpaint, inputs.manual_composite,
+                                inputs.inpaint_mask, inpaint_req),
+                    )
+                    composite = await loop.run_in_executor(
+                        S.pre_exec,
+                        partial(
+                            inpaint_masks.merge_inpaint_result,
+                            inputs.manual_composite,
+                            inpainted,
+                            inputs,
+                            mode=inpaint_req.mode,
+                            body_opacity=inpaint_req.body_opacity,
+                        ),
+                    )
+                    if debug:
+                        yield _frame("composite_inpaint.png", _img_bytes(composite))
+
+                meta_extra = {
+                    "rembg_model": rembg_result.model_name,
+                    "inpaint_enabled": bool(inpaint_req.enabled),
+                    "inpaint_mode": inpaint_req.mode,
+                    "inpaint_prompt": inpaint_req.prompt,
+                    "inpaint_seed": inpaint_req.seed,
+                    "inpaint_steps": inpaint_req.num_steps,
+                    "inpaint_max_long_edge": inpaint_req.max_long_edge,
+                    "body_opacity": inpaint_req.body_opacity,
+                    "mask_pixels": inputs.mask_stats,
+                    "paste_top_left": list(inputs.paste_top_left),
+                    "placed_px": list(inputs.placed_size),
+                    "clamped": inputs.clamped,
+                }
+                yield _frame("composite.png", _img_bytes(composite),
+                             meta=_meta(pre, plate, meta_extra))  # always
                 if debug:
                     yield _frame("meta.json",
-                                 json.dumps(_meta(pre, plate), indent=2).encode("utf-8"),
+                                 json.dumps(_meta(pre, plate, meta_extra), indent=2).encode("utf-8"),
                                  "application/json")
 
             elif lane is ImageClass.INTERIOR:
@@ -320,6 +420,8 @@ async def lifespan(app: FastAPI):
             _log.info("server.loading")
             S.manager = await loop.run_in_executor(None, ModelManager.build, settings)
             S.remover = BackgroundRemover(settings)
+            S.rembg_segmenter = RembgSegmenter(settings)
+            S.inpainter = FluxFillInpainter(settings)
             S.pre_exec = ThreadPoolExecutor(
                 max_workers=settings.preprocess_workers, thread_name_prefix="pre"
             )
@@ -342,6 +444,8 @@ async def lifespan(app: FastAPI):
             await S.blender_pool.shutdown()
         if S.remover is not None:
             await S.remover.aclose()
+        if S.rembg_segmenter is not None:
+            await S.rembg_segmenter.aclose()
         if S.pre_exec is not None:
             S.pre_exec.shutdown(wait=False)
     except Exception:  # noqa: BLE001
@@ -376,13 +480,35 @@ async def get_studio():
 
 
 @app.post("/process")
-async def process(file: UploadFile = File(...), debug: bool = Form(False)):
+async def process(
+    file: UploadFile = File(...),
+    debug: bool = Form(False),
+    inpaint: Optional[str] = Form(None),
+    inpaint_mode: Optional[str] = Form(None),
+    inpaint_prompt: Optional[str] = Form(None),
+    inpaint_steps: Optional[str] = Form(None),
+    inpaint_seed: Optional[str] = Form(None),
+    inpaint_max_edge: Optional[str] = Form(None),
+    body_opacity: Optional[str] = Form(None),
+):
     if not S.ready:
         detail = S.load_error or "model is still loading — retry shortly"
         raise HTTPException(503, detail)
+    try:
+        inpaint_req = _inpaint_request_from_form(
+            inpaint=inpaint,
+            inpaint_mode=inpaint_mode,
+            inpaint_prompt=inpaint_prompt,
+            inpaint_steps=inpaint_steps,
+            inpaint_seed=inpaint_seed,
+            inpaint_max_edge=inpaint_max_edge,
+            body_opacity=body_opacity,
+        )
+    except ValueError as exc:
+        raise HTTPException(400, str(exc)) from exc
     content = await file.read()
     return StreamingResponse(
-        _process_stream(content, file.filename or "image.jpg", debug),
+        _process_stream(content, file.filename or "image.jpg", debug, inpaint_req),
         media_type="application/octet-stream",
     )
 
@@ -396,6 +522,16 @@ async def health():
         "gpu": torch.cuda.get_device_name(0) if torch.cuda.is_available() else "none",
         "studio": S.active_studio,
         "background_set": S.bg_rgba is not None,
+        "rembg": {
+            "model": settings.rembg.model_name,
+            "loaded": bool(S.rembg_segmenter and S.rembg_segmenter.loaded),
+        },
+        "inpaint": {
+            "enabled_default": bool(settings.inpaint.enabled),
+            "model": settings.inpaint.model_id,
+            "mode_default": settings.inpaint.mode,
+            "loaded": bool(S.inpainter and S.inpainter.loaded),
+        },
     }
 
 

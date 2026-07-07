@@ -156,17 +156,58 @@ def _lock_background_after_flux(
     refined: Image.Image,
     inputs: inpaint_masks.InpaintInputs,
 ) -> Image.Image:
-    """Keep FLUX edits only near the car/shadow; restore the untouched background."""
+    """Keep prompt edits on the car/contact area; restore the untouched background."""
+    solid_car = composite_refine.solidify_mask(
+        inputs.car_mask,
+        threshold=8,
+        close_px=7,
+        fill_holes=True,
+    )
+    car_context = composite_refine.dilate_mask(solid_car, 34)
+
+    contact_context = Image.new("L", base.size, 0)
+    bbox = solid_car.getbbox()
+    if bbox:
+        x0, y0, x1, y1 = bbox
+        car_w = max(1, x1 - x0)
+        car_h = max(1, y1 - y0)
+        pad_x = max(28, int(car_w * 0.09))
+        above = max(8, int(car_h * 0.035))
+        below = max(34, int(car_h * 0.16))
+        draw = ImageDraw.Draw(contact_context)
+        draw.rounded_rectangle(
+            [
+                max(0, x0 - pad_x),
+                max(0, y1 - above),
+                min(base.size[0], x1 + pad_x),
+                min(base.size[1], y1 + below),
+            ],
+            radius=max(10, int(car_h * 0.025)),
+            fill=255,
+        )
+        contact_context = contact_context.filter(
+            ImageFilter.GaussianBlur(max(4.0, car_h * 0.012))
+        )
+
     edit_mask = composite_refine.mask_union(
-        composite_refine.dilate_mask(inputs.car_mask, 12),
-        composite_refine.dilate_mask(inputs.edge_band_mask, 4),
-        composite_refine.dilate_mask(inputs.shadow_mask, 4),
+        car_context,
+        contact_context,
     ).filter(ImageFilter.GaussianBlur(2.0))
     return Image.composite(
         refined.resize(base.size, Image.LANCZOS).convert("RGB"),
         base.convert("RGB"),
         edit_mask,
     )
+
+
+def _prompt_refine_base_without_shadow(
+    plate: Image.Image,
+    inputs: inpaint_masks.InpaintInputs,
+) -> Image.Image:
+    """Clean rembg cutout on the rendered plate, before prompt-generated shadow."""
+    base = plate.convert("RGBA")
+    base.alpha_composite(inputs.cutout_resized, inputs.paste_top_left)
+    return base.convert("RGB")
 
 
 def _meta(pre, plate, extra: Optional[Dict[str, object]] = None) -> Dict[str, object]:
@@ -302,6 +343,29 @@ def _flux_refine_req_for_mode(req, mode: str):
     return replace(req, reference_mode=mode, prompt=prompt)
 
 
+def _flux_output_name(mode: str) -> str:
+    if mode == "composite_only":
+        return "40_final_klein_no_reference_prompt_edges_glass_shadow.png"
+    if mode in {"with_reference", "multi_reference"}:
+        return "41_final_klein_with_reference_restore_parts_edges_glass_shadow.png"
+    return f"40_final_klein_{mode}_prompt_edges_glass_shadow.png"
+
+
+def _flux_output_description(mode: str) -> str:
+    if mode == "composite_only":
+        return (
+            "Final FLUX.2 Klein cleanup using only the current composite: prompt fixes "
+            "edges, glass contamination, old reflections, and contact shadow."
+        )
+    if mode in {"with_reference", "multi_reference"}:
+        return (
+            "Final FLUX.2 Klein cleanup using composite plus placement/source-car "
+            "references: prompt can restore missing source details such as mirrors, "
+            "then fix edges, glass contamination, old reflections, and contact shadow."
+        )
+    return f"Final FLUX.2 Klein cleanup in {mode!r} mode."
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Plate render (mirrors pipeline.Pipeline._render_plate, reusing the shared helpers)
 # ─────────────────────────────────────────────────────────────────────────────
@@ -348,7 +412,7 @@ async def _process_stream(
         try:
             # original — always, first (the client already has it, but we echo it so the
             # output folder is self-contained).
-            yield _frame("original" + ext, content, orig_ctype)
+            yield _frame("00_source_original" + ext, content, orig_ctype)
 
             image = Image.open(io.BytesIO(content)).convert("RGB")
 
@@ -380,20 +444,20 @@ async def _process_stream(
                 )
                 if debug:
                     if pre.raw_crop is not None:
-                        yield _frame("crop_raw.png", _img_bytes(pre.raw_crop),
+                        yield _frame("01_debug_yolo_source_crop.png", _img_bytes(pre.raw_crop),
                                      meta={"note": "YOLO bbox crop before resize"})
                     yield _frame(
-                        "crop_resized.png", _img_bytes(_label_crop(pre.resized_crop, pre)),
+                        "02_debug_yolo_resized_crop_with_pose.png", _img_bytes(_label_crop(pre.resized_crop, pre)),
                         meta={"orientation": pre.orientation.value,
                               "orientation_confidence": round(pre.orientation_confidence, 4)},
                     )
 
                 # tier 2 — warm Blender plate render
                 plate = await _render_plate(pre, stem, log)
-                yield _frame("plate.jpg", _img_bytes(plate.plate, "JPEG"), "image/jpeg")  # always
+                yield _frame("10_scene_empty_blender_plate.jpg", _img_bytes(plate.plate, "JPEG"), "image/jpeg")  # always
                 if debug:
                     yield _frame(
-                        "plate_marked.jpg",
+                        "11_debug_scene_plate_center_marked.jpg",
                         _img_bytes(_mark_plate(plate.plate, plate.cx, plate.cy), "JPEG"),
                         "image/jpeg",
                         meta={"cx": round(plate.cx, 1), "cy": round(plate.cy, 1)},
@@ -424,19 +488,31 @@ async def _process_stream(
                 )
 
                 if debug:
-                    yield _frame("rembg_cutout.png", _img_bytes(inputs.cutout_resized),
+                    yield _frame("20_debug_rembg_raw_cutout.png", _img_bytes(rembg_result.cutout),
                                  meta={"model": rembg_result.model_name})
-                    yield _frame("gray_yolo_guide.png", _img_bytes(gray_guide),
+                    yield _frame("21_debug_cutout_clean_alpha_glass_edges.png", _img_bytes(inputs.cutout_resized),
+                                 meta={"note": "resized matte after alpha, edge, glass, and color cleanup"})
+                    yield _frame("22_reference_gray_placement_guide.png", _img_bytes(gray_guide),
                                  meta={"note": "resized YOLO crop at final placement"})
                     if pre.raw_crop is not None:
-                        yield _frame("car_reference.png", _img_bytes(pre.raw_crop),
+                        yield _frame("23_reference_source_car_crop.png", _img_bytes(pre.raw_crop),
                                      meta={"note": "original YOLO crop reference"})
-                    yield _frame("mask_car.png", _img_bytes(inputs.car_mask))
-                    yield _frame("mask_edge.png", _img_bytes(inputs.edge_band_mask))
-                    yield _frame("mask_shadow.png", _img_bytes(inputs.shadow_mask))
-                    yield _frame("mask_inpaint.png", _img_bytes(inputs.inpaint_mask),
+                    yield _frame("24_debug_mask_car_alpha.png", _img_bytes(inputs.car_mask))
+                    yield _frame("25_debug_mask_edge_repair_region.png", _img_bytes(inputs.edge_band_mask))
+                    yield _frame("26_debug_legacy_local_shadow_hint_not_final.png", _img_bytes(inputs.shadow_mask),
+                                 meta={"note": "legacy local shadow hint only; final shadow is prompt-refined by Klein"})
+                    yield _frame("27_debug_optional_flux_fill_mask_not_final.png", _img_bytes(inputs.inpaint_mask),
                                  meta={"mode": inpaint_req.mode})
-                    yield _frame("composite_manual.png", _img_bytes(inputs.manual_composite))
+                    yield _frame("30_composite_local_cutout_with_placeholder_shadow.png", _img_bytes(inputs.manual_composite),
+                                 meta={"note": "local rembg cleanup before final prompt-based Klein refinement"})
+
+                prompt_refine_base = _prompt_refine_base_without_shadow(
+                    plate.plate,
+                    inputs,
+                )
+                if debug:
+                    yield _frame("31_composite_prompt_input_no_shadow.png", _img_bytes(prompt_refine_base),
+                                 meta={"note": "clean cutout on new plate; final shadow/glass/edge cleanup is prompt-generated by Klein"})
 
                 composite = inputs.manual_composite
                 if inpaint_req.enabled:
@@ -457,12 +533,15 @@ async def _process_stream(
                         ),
                     )
                     if debug:
-                        yield _frame("composite_inpaint.png", _img_bytes(composite))
+                        yield _frame("35_optional_flux_fill_mask_repair_not_final.png", _img_bytes(composite),
+                                     meta={"note": "optional old FLUX Fill stage before final Klein prompt refinement"})
 
                 flux_outputs: Dict[str, Image.Image] = {}
-                base_for_flux = composite
+                flux_prompts: Dict[str, str] = {}
+                base_for_flux = prompt_refine_base if flux_req.enabled else composite
                 for refine_mode in _flux_refine_modes(flux_req):
                     mode_req = _flux_refine_req_for_mode(flux_req, refine_mode)
+                    flux_prompts[refine_mode] = mode_req.prompt
                     refined = await loop.run_in_executor(
                         S.pre_exec,
                         partial(
@@ -476,18 +555,23 @@ async def _process_stream(
                     refined = _lock_background_after_flux(base_for_flux, refined, inputs)
                     flux_outputs[refine_mode] = refined
                     yield _frame(
-                        f"composite_{refine_mode}.png",
+                        _flux_output_name(refine_mode),
                         _img_bytes(refined),
-                        meta={"flux_refine_reference_mode": refine_mode},
+                        meta={
+                            "flux_refine_reference_mode": refine_mode,
+                            "description": _flux_output_description(refine_mode),
+                            "prompt": mode_req.prompt,
+                            "background_lock": "solid_car_missing_part_context_plus_prompt_shadow_contact_area",
+                        },
                     )
-                    if debug:
-                        yield _frame(
-                            f"composite_flux_refined_{refine_mode}.png",
-                            _img_bytes(refined),
-                            meta={"flux_refine_reference_mode": refine_mode},
-                        )
 
+                selected_output = ""
                 if flux_outputs:
+                    selected_output = (
+                        "with_reference"
+                        if "with_reference" in flux_outputs
+                        else next(reversed(flux_outputs.keys()))
+                    )
                     composite = (
                         flux_outputs.get("with_reference")
                         or next(reversed(flux_outputs.values()))
@@ -512,16 +596,35 @@ async def _process_stream(
                     "flux_refine_strength": flux_req.strength,
                     "flux_refine_reference_mode": flux_req.reference_mode,
                     "flux_refine_modes": list(flux_outputs.keys()),
+                    "flux_refine_prompts_by_mode": flux_prompts,
+                    "final_klein_input": (
+                        "31_composite_prompt_input_no_shadow.png"
+                        if flux_req.enabled
+                        else "30_composite_local_cutout_with_placeholder_shadow.png"
+                    ),
+                    "selected_final_source": selected_output or "local_composite",
+                    "output_legend": {
+                        "30_composite_local_cutout_with_placeholder_shadow.png": "local cleaned rembg cutout on rendered plate before final prompt-based Klein refinement",
+                        "31_composite_prompt_input_no_shadow.png": "actual clean composite sent into final Klein; shadow/reflection/window cleanup is prompt-generated",
+                        "35_optional_flux_fill_mask_repair_not_final.png": "optional old FLUX Fill repair stage; not the final output",
+                        "40_final_klein_no_reference_prompt_edges_glass_shadow.png": _flux_output_description("composite_only"),
+                        "41_final_klein_with_reference_restore_parts_edges_glass_shadow.png": _flux_output_description("with_reference"),
+                        "99_final_selected.png": "selected final output; prefers with-reference when both modes are requested",
+                        "composite.png": "legacy alias of 99_final_selected.png",
+                    },
                     "mask_pixels": inputs.mask_stats,
                     "paste_top_left": list(inputs.paste_top_left),
                     "placed_px": list(inputs.placed_size),
                     "clamped": inputs.clamped,
                 }
+                final_meta = _meta(pre, plate, meta_extra)
+                yield _frame("99_final_selected.png", _img_bytes(composite),
+                             meta=final_meta)  # always
                 yield _frame("composite.png", _img_bytes(composite),
-                             meta=_meta(pre, plate, meta_extra))  # always
+                             meta={**final_meta, "alias_of": "99_final_selected.png"})
                 if debug:
                     yield _frame("meta.json",
-                                 json.dumps(_meta(pre, plate, meta_extra), indent=2).encode("utf-8"),
+                                 json.dumps(final_meta, indent=2).encode("utf-8"),
                                  "application/json")
 
             elif lane is ImageClass.INTERIOR:

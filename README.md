@@ -156,4 +156,6 @@ Single GPU; Blender's Cycles renders on the **GPU**. For smaller instances, the 
 defaults to `BlenderConfig.release_after_render=true`: Blender starts for the plate,
 renders, then exits before FLUX refine loads/runs. This is slower than keeping Blender
 warm, but avoids co-resident Blender + FLUX VRAM pressure. FLUX refine loads one shared
-lazy instance with CPU offload and defaults to a 768px working long edge.
+lazy full-GPU instance by default and uses a 1024px working long edge for cleaner final
+edges/glass cleanup. Set `MOTOCUT_FLUX_REFINE__CPU_OFFLOAD=true` or lower
+`MOTOCUT_FLUX_REFINE__MAX_LONG_EDGE` only when the pod still runs out of VRAM.

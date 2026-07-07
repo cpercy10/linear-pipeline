@@ -25,49 +25,29 @@ INPAINT_MODE = "shadow_edge"
 INPAINT_STEPS = 28
 INPAINT_MAX_EDGE = 1024
 FLUX_REFINE_ENABLED = True
-FLUX_REFINE_STEPS = 4
-FLUX_REFINE_MAX_EDGE = 768
+FLUX_REFINE_STEPS = 6
+FLUX_REFINE_MAX_EDGE = 1024
 FLUX_REFINE_GUIDANCE = 1.0
 FLUX_REFINE_STRENGTH = ""           # "" = model default
 FLUX_REFINE_REFERENCE_MODE = "both"  # both | with_reference | composite_only
 # ── DEFAULTS (edit these; no CLI args needed) ────────────────────────────────
 SERVER_URL = "https://6ab7ri5k4gsatu-8000.proxy.runpod.net"   # your server (e.g. a https://xxxx-8000.proxy.runpod.net URL)
 INPUT_DIR = r"C:\Users\SyedZulfiqarHaiderZa\Desktop\cars2"
-OUTPUT_DIR = r"C:\Users\SyedZulfiqarHaiderZa\Desktop\cars2\Output-2"     # results land in OUTPUT_DIR/<stem>/
+OUTPUT_DIR = r"C:\Users\SyedZulfiqarHaiderZa\Desktop\cars2\Output-6"     # results land in OUTPUT_DIR/<stem>/
 INPAINT_PROMPT  = (
-    "Create a natural soft studio contact shadow beneath the tires and repair only "
-    "the cutout edge transition into the floor and background. Preserve the car "
-    "identity, paint color, silhouette, wheels, lights, glass, trim, and details."
+    "Repair only the pasted car integration in this background replacement. Keep "
+    "the car silhouette, dimensions, perspective, paint color, wheels, lights, "
+    "glass shape, trim, badges, grille, and license area unchanged. Clean jagged "
+    "edges, halos, alpha fringing, and old-background bleed-through, especially "
+    "around glass. Add a soft natural contact shadow only under the tires at the "
+    "existing contact points, consistent with the new scene lighting. Do not "
+    "deform, repaint, recolor, resize, or regenerate the car."
 )
+# Leave empty so the server always uses its current mode-specific prompt.
 FLUX_REFINE_PROMPTS = {
-    "composite_only": (
-        "Locked-background automotive composite repair. Treat the background as frozen "
-        "and unchanged: do not edit the floor, wall, road, sky, signs, buildings, "
-        "turntable, horizon, camera viewpoint, framing, lighting direction, or scene "
-        "geometry. Repair only the pasted car integration: jagged cutout edges, thin "
-        "edge pixels, small holes, alpha fringing, background bleed-through inside the "
-        "car, tire contact, contact shadow, color mismatch, exposure mismatch, glass "
-        "contamination, and unnatural reflections. Preserve the same car silhouette, "
-        "scale, position, perspective, wheels, lights, glass, trim, badges, license "
-        "area, body shape, and original paint hue. Do not generate new background "
-        "content, do not repaint the room, and do not change any non-car details."
-    ),
-    "with_reference": (
-        "Locked-background automotive composite repair using references. The first "
-        "image is the final composition and its background is frozen. Do not alter any "
-        "background pixel or scene detail: floor, wall, road, sky, signs, buildings, "
-        "turntable, horizon, camera viewpoint, framing, and lighting direction must "
-        "remain unchanged. Use the gray guide only for exact car placement, silhouette, "
-        "scale, tire contact points, and perspective. Use the cropped car reference "
-        "only for car identity and missing car details: body shape, wheels, ride "
-        "height, glass, grille, lights, badges, trim, license area, and original paint "
-        "hue. Repair only car integration defects: jagged edges, edge holes, alpha "
-        "fringing, background bleed-through inside the car, weak/no contact shadow, "
-        "color mismatch, exposure mismatch, glass contamination, old-environment "
-        "reflections, and unnatural paint reflections. Preserve automotive gloss and "
-        "panel shading. Do not create, remove, repaint, recolor, or redesign any "
-        "background content."
-    ),
+    "both": "",
+    "composite_only": "",
+    "with_reference": "",
 }
 INPAINT_SEED     = ""                # "" = random / server default
 FLUX_REFINE_SEED = ""                # "" = random / server default

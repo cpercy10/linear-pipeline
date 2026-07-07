@@ -224,11 +224,16 @@ class RembgConfig(BaseModel):
     alpha_matting: bool = True
     clean_mask: bool = True
     morph_kernel: int = 7
-    feather_px: int = 3
-    alpha_threshold: int = 16
+    feather_px: int = 2
+    alpha_threshold: int = 64
+    alpha_halo_erode_px: int = 2
     preserve_erode_px: int = 5
     edge_band_px: int = 18
-    edge_inpaint_radius_px: int = 3
+    edge_inpaint_radius_px: int = 5
+    glass_cleanup: bool = True
+    glass_cleanup_strength: float = 0.88
+    glass_max_saturation: int = 120
+    glass_max_value: int = 185
     color_match_strength: float = 0.22
     color_match_band_px: int = 24
     edge_plate_blend: float = 0.18
@@ -236,7 +241,7 @@ class RembgConfig(BaseModel):
     shadow_height_frac: float = 0.18
     shadow_width_frac: float = 0.84
     shadow_blur_px: int = 18
-    contact_shadow_opacity: float = 0.34
+    contact_shadow_opacity: float = 0.40
 
 
 class InpaintConfig(BaseModel):
@@ -248,9 +253,13 @@ class InpaintConfig(BaseModel):
     seed: Optional[int] = None
     mode: Literal["shadow", "shadow_edge", "shadow_edge_body"] = "shadow_edge"
     prompt: str = (
-        "Create a natural soft studio contact shadow beneath the tires and repair only "
-        "the cutout edge transition into the floor and background. Preserve the car "
-        "identity, paint color, silhouette, wheels, lights, glass, trim, and details."
+        "Repair only the pasted car integration in this background replacement. Keep "
+        "the car silhouette, dimensions, perspective, paint color, wheels, lights, "
+        "glass shape, trim, badges, grille, and license area unchanged. Clean jagged "
+        "edges, halos, alpha fringing, and old-background bleed-through, especially "
+        "around glass. Add a soft natural contact shadow only under the tires at the "
+        "existing contact points, consistent with the new scene lighting. Do not "
+        "deform, repaint, recolor, resize, or regenerate the car."
     )
     guidance_scale: float = 30.0
     body_opacity: float = 0.35
@@ -260,8 +269,8 @@ class FluxRefineConfig(BaseModel):
     """Final FLUX.2 Klein image-edit pass over the rembg composite."""
     enabled: bool = False
     model_id: str = "black-forest-labs/FLUX.2-klein-9B"
-    max_long_edge: int = 768
-    num_steps: int = 4
+    max_long_edge: int = 1024
+    num_steps: int = 6
     seed: Optional[int] = None
     guidance_scale: float = 1.0
     strength: Optional[float] = None
@@ -269,32 +278,74 @@ class FluxRefineConfig(BaseModel):
     cpu_offload: bool = False
     prompt: str = ""  # optional override; empty selects one of the mode prompts below
     prompt_composite_only: str = (
-        "Locked-background automotive composite repair. Treat the background as frozen "
-        "and unchanged: do not edit the floor, wall, road, sky, signs, buildings, "
-        "turntable, horizon, camera viewpoint, framing, lighting direction, or scene "
-        "geometry. Repair only the pasted car integration: jagged cutout edges, thin "
-        "edge pixels, small holes, alpha fringing, background bleed-through inside the "
-        "car, tire contact, contact shadow, color mismatch, exposure mismatch, glass "
-        "contamination, and unnatural reflections. Preserve the same car silhouette, "
-        "scale, position, perspective, wheels, lights, glass, trim, badges, license "
-        "area, body shape, and original paint hue. Do not generate new background "
-        "content, do not repaint the room, and do not change any non-car details."
+        "Background replacement cleanup only, like a source-accurate selectively "
+        "cross-polarized automotive reference photograph. Image one is the current "
+        "composite: the original car is already placed into the rendered new "
+        "environment. The rendered background visible in image one is the target "
+        "environment and must stay locked outside the car, cutout edge, and tire "
+        "contact area. The car must remain exactly the same car: identical silhouette, "
+        "dimensions, viewing angle, camera perspective, proportions, body shape, wheel "
+        "size, wheel position, ride height, glass shape, badges, grille, lights, trim, "
+        "license area, and model-name text. Do not squish, stretch, rotate, resize, "
+        "repaint, recolor, redesign, smooth, simplify, or regenerate any part of the "
+        "car. Preserve the original car paint color exactly as seen in image one. "
+        "Only remove unwanted reflections and color contamination from the old "
+        "surroundings while keeping the same base paint color, metallic tone if "
+        "present, natural panel shading, body contours, broad gradients, specular "
+        "highlights, and realistic automotive gloss. Remove all original surrounding "
+        "information left by the raw cutout: halos, jagged edges, alpha fringing, old "
+        "floor, walls, neighboring vehicles, sky, signage, nearby objects, and any "
+        "old-environment content visible through the windows. Replace that unwanted "
+        "content only with the rendered environment from image one or neutral dark "
+        "glass. Apply selective cross-polarized reflection cleanup only to unwanted "
+        "old-environment reflections in paint, windows, mirrors, chrome, and glossy "
+        "trim. For glass areas, keep the original tint, transparency, darkness, edge "
+        "highlights, and natural reflective sheen; any visible reflection or "
+        "see-through content must correspond only to the new rendered background or "
+        "neutral dark glass, not the old showroom. Add only a soft natural contact "
+        "shadow under the tires at the existing tire contact points, consistent with "
+        "the new scene lighting. Final result: photorealistic automotive background "
+        "replacement with clean glass, clean edges, no halo, no fringing, no pasted-on "
+        "look, no car deformation, and no dimension change."
     )
     prompt_with_reference: str = (
-        "Locked-background automotive composite repair using references. The first "
-        "image is the final composition and its background is frozen. Do not alter any "
-        "background pixel or scene detail: floor, wall, road, sky, signs, buildings, "
-        "turntable, horizon, camera viewpoint, framing, and lighting direction must "
-        "remain unchanged. Use the gray guide only for exact car placement, silhouette, "
-        "scale, tire contact points, and perspective. Use the cropped car reference "
-        "only for car identity and missing car details: body shape, wheels, ride "
-        "height, glass, grille, lights, badges, trim, license area, and original paint "
-        "hue. Repair only car integration defects: jagged edges, edge holes, alpha "
-        "fringing, background bleed-through inside the car, weak/no contact shadow, "
-        "color mismatch, exposure mismatch, glass contamination, old-environment "
-        "reflections, and unnatural paint reflections. Preserve automotive gloss and "
-        "panel shading. Do not create, remove, repaint, recolor, or redesign any "
-        "background content."
+        "Background replacement cleanup only, like a source-accurate selectively "
+        "cross-polarized automotive reference photograph. Image one is the current "
+        "composite: the original car is already placed into the rendered new "
+        "environment. The rendered background visible in image one is the target "
+        "environment and must stay locked outside the car, cutout edge, and tire "
+        "contact area. Image two is only the placement guide showing the car location, "
+        "silhouette, scale, and tire contact points. Image three is the source car "
+        "reference for identity, paint color, missing parts, glass, trim, mirrors, "
+        "badges, wheels, lights, grille, and license area. The car from image three "
+        "must remain exactly the same car in image one: identical silhouette, "
+        "dimensions, viewing angle, camera perspective, proportions, body shape, wheel "
+        "size, wheel position, ride height, glass shape, badges, grille, lights, trim, "
+        "license area, and model-name text. Do not squish, stretch, rotate, resize, "
+        "repaint, recolor, redesign, smooth, simplify, or regenerate any part of the "
+        "car. Restore small source-car parts only if they are present in image three "
+        "and missing because of the raw segmentation, such as side mirrors, thin trim, "
+        "badges, antennas, or edge details. Do not invent parts that are not visible "
+        "in the source reference. Preserve the original car paint color exactly as "
+        "seen in image three. Only remove unwanted reflections and color contamination "
+        "from the old surroundings while keeping the same base paint color, metallic "
+        "tone if present, natural panel shading, body contours, broad gradients, "
+        "specular highlights, and realistic automotive gloss. Remove all original "
+        "surrounding information left by the raw cutout: halos, jagged edges, alpha "
+        "fringing, old floor, walls, neighboring vehicles, sky, signage, nearby "
+        "objects, and any old-environment content visible through the windows. "
+        "Replace that unwanted content only with the rendered environment from image "
+        "one or neutral dark glass. Apply selective cross-polarized reflection cleanup "
+        "only to unwanted old-environment reflections in paint, windows, mirrors, "
+        "chrome, and glossy trim. For glass areas, keep the original tint, "
+        "transparency, darkness, edge highlights, and natural reflective sheen; any "
+        "visible reflection or see-through content must correspond only to the new "
+        "rendered background or neutral dark glass, not the old showroom. Add only a "
+        "soft natural contact shadow under the tires at the existing tire contact "
+        "points, consistent with the new scene lighting. Final result: photorealistic "
+        "automotive background replacement with the original car locked in place, "
+        "clean glass, clean edges, no halo, no fringing, no pasted-on look, no car "
+        "deformation, and no dimension change."
     )
 
 

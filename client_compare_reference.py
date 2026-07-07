@@ -4,8 +4,8 @@ This is an A/B testing client for the server's final FLUX refine pass.
 
 Outputs are written as:
 
-    OUTPUT_DIR/<image-stem>/composite_composite_only.png
-    OUTPUT_DIR/<image-stem>/composite_with_reference.png
+    OUTPUT_DIR/<image-stem>/40_final_klein_no_reference_prompt_edges_glass_shadow.png
+    OUTPUT_DIR/<image-stem>/41_final_klein_with_reference_restore_parts_edges_glass_shadow.png
 
 The default `both` mode makes the server run the heavy pipeline once, then reuse the
 already-loaded FLUX refiner to produce both `composite_only` and `with_reference`.
@@ -41,9 +41,9 @@ BODY_OPACITY = 0.35
 
 # Main A/B pass: FLUX.2 Klein final image-edit refine.
 FLUX_REFINE_ENABLED = True
-FLUX_REFINE_STEPS = 4
+FLUX_REFINE_STEPS = 6
 FLUX_REFINE_SEED = "1234"  # fixed seed makes A/B comparisons less noisy; "" = random
-FLUX_REFINE_MAX_EDGE = 768
+FLUX_REFINE_MAX_EDGE = 1024
 FLUX_REFINE_GUIDANCE = 1.0
 FLUX_REFINE_STRENGTH = ""  # "" = server/model default
 FLUX_REFINE_PROMPT = ""    # "" = server picks the prompt for each reference mode

@@ -35,6 +35,7 @@ from __future__ import annotations
 import asyncio
 import json
 import os
+import shutil
 from pathlib import Path
 from typing import Dict, Optional
 
@@ -71,19 +72,63 @@ class BlenderWorker:
         self._validate_paths()
 
     # ── path validation ─────────────────────────────────────────────────────
+    def _resolve_blender_exe(self) -> Path:
+        configured = Path(self._s.blender_exe)
+        if configured.exists():
+            return configured
+
+        configured_str = str(configured)
+        is_builtin_windows_default = (
+            configured_str.replace("\\", "/").lower() == "d:/blender/b/blender.exe"
+        )
+        can_auto_detect = is_builtin_windows_default or configured.name.lower() in {
+            "blender",
+            "blender.exe",
+        }
+        if can_auto_detect:
+            found = shutil.which("blender")
+            if found:
+                resolved = Path(found)
+                _log.info(
+                    "blender.exe.autodetected",
+                    configured=configured_str,
+                    resolved=str(resolved),
+                )
+                return resolved
+
+            for candidate in (
+                Path("/workspace/blender-5.0/blender"),
+                Path("/workspace/blender/blender"),
+                Path("/usr/local/bin/blender"),
+                Path("/usr/bin/blender"),
+            ):
+                if candidate.exists():
+                    _log.info(
+                        "blender.exe.autodetected",
+                        configured=configured_str,
+                        resolved=str(candidate),
+                    )
+                    return candidate
+
+        raise ConfigError(
+            "Blender executable not found: "
+            f"{configured}. Set MOTOCUT_BLENDER_EXE to the Blender executable on "
+            "this machine, for example /workspace/blender-5.0/blender on RunPod "
+            "or D:\\Blender\\B\\blender.exe on Windows."
+        )
+
     def _validate_paths(self) -> None:
-        exe = Path(self._s.blender_exe)
+        exe = self._resolve_blender_exe()
         master = Path(self._s.master_blend)
         engine = Path(self._s.studio_engine_dir)
         worker_entry = Path(__file__).resolve().parent / "worker_entry.py"
-        if not exe.exists():
-            raise ConfigError(f"Blender executable not found: {exe}")
         if not master.exists():
             raise ConfigError(f"master .blend not found: {master}")
         if not engine.exists():
             raise ConfigError(f"studio engine dir not found: {engine}")
         if not worker_entry.exists():
             raise ConfigError(f"worker_entry.py not found: {worker_entry}")
+        self._blender_exe = exe
         self._worker_entry = worker_entry
 
     # ── lifecycle ────────────────────────────────────────────────────────────
@@ -113,7 +158,7 @@ class BlenderWorker:
         port = sockets[0].getsockname()[1]
 
         cmd = [
-            str(self._s.blender_exe),
+            str(self._blender_exe),
             "-b", str(self._s.master_blend),
             "--python", str(self._worker_entry),
             "--",
@@ -126,7 +171,7 @@ class BlenderWorker:
         env = dict(os.environ)
         env.setdefault("MOTUVA_LIB2K", str(self._s.materials_2k_dir))
 
-        _log.info("blender.spawn", port=port, exe=str(self._s.blender_exe),
+        _log.info("blender.spawn", port=port, exe=str(self._blender_exe),
                   master=str(self._s.master_blend))
         self._proc = await asyncio.create_subprocess_exec(
             *cmd,

@@ -10,9 +10,9 @@ under `assets/` and `render/studio_engine/`. You do **not** export them separate
 config defaults point at them. You still install the two external runtimes (Blender,
 GeoCalib) and supply one secret.
 
-> FLUX / diffusion has been removed — there is no Hugging Face gated model and no
-> `HF_TOKEN`. The exterior-full lane composites the remove.bg car cutout directly onto
-> the rendered plate.
+> The exterior-full lane first composites the rembg car cutout onto the rendered plate.
+> The server can optionally run a final FLUX.2 Klein image-edit refinement pass over
+> that composite plus a gray YOLO placement guide.
 
 ---
 
@@ -54,7 +54,7 @@ pip install -r requirements.txt
 # requirements.txt pulls: geocalib @ git+https://github.com/cvg/GeoCalib.git
 ```
 
-No diffusers / transformers / accelerate are needed (FLUX is gone).
+Diffusers / transformers / accelerate are needed when the FLUX refine pass is enabled.
 
 ## 3. Secret + the partial-lane background
 

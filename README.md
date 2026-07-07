@@ -1,16 +1,16 @@
 # Motuva Remove-BG Pipeline
 
 A self-contained Python package that turns dealer car photos into background-replaced
-**studio composites** at the original image dimensions — **without any diffusion model**.
+**studio composites** at the original image dimensions, with an optional final
+**FLUX.2 Klein image-edit refinement** pass.
 For exterior-full cars it renders a per-car studio "plate" in Blender at the photo's
 perspective, cuts the car out with **remove.bg**, and **manually alpha-composites** the
 cutout onto the plate at the recovered ground-contact placement. It can be driven two
 ways: a **batch runner** over a directory, or a **streaming FastAPI server**.
 
-> This directory is the **remove-bg variant** of the pipeline. FLUX / diffusion has been
-> removed entirely (the FLUX version lives in a separate directory). The exterior-full
-> lane preserves the car *exactly as shot* — no relighting or reflection cleanup — and
-> pastes it onto the rendered plate.
+> This directory keeps the remove-bg/manual-composite pipeline as the structure source.
+> The server can optionally run a final FLUX.2 Klein edit over the rembg composite plus
+> a gray YOLO placement guide for color correction, reflections, and shadow cleanup.
 
 ---
 
@@ -52,8 +52,8 @@ Two resource tiers plus a network lane:
 - **Blender pool** — a single warm-worker slot (scene + materials loaded once; Cycles on GPU). Serializes renders against each other.
 - **remove.bg** — network-bound, gated by `BackgroundRemover`'s own semaphore.
 
-There is **no diffusion model and no VRAM co-residency planning** — the warm Blender
-worker is the only heavy GPU user.
+The FLUX refine model is optional and loaded lazily on the server. When enabled, plan
+VRAM for both the warm Blender worker and the final image-edit model.
 
 ## 5. Package layout
 
@@ -79,7 +79,7 @@ motuva-pipline-removebgappraoch/
 See **SETUP.md** for step-by-step pod prep. In short you must provide:
 
 1. **Blender 5.x** installed, with its Cycles GPU device visible → set `MOTOCUT_BLENDER_EXE`.
-2. **Python deps** incl. PyTorch for your CUDA and **GeoCalib** (a git dep in `requirements.txt`). No diffusers / transformers / gated model needed.
+2. **Python deps** incl. PyTorch for your CUDA, **GeoCalib**, and Diffusers/Transformers if the FLUX refine pass is enabled.
 3. **remove.bg API key** (`REMOVE_BG_API_KEY`) — now required for **all** lanes (interior, partial, and the exterior-full car cutout).
 4. **Model weights** in `assets/weights/` (classifier + orientation `.pth`) and the **retrieval index** in `assets/index/` (`emb.npy` + `meta.json`). These are large and **gitignored** — copy them out-of-band.
 5. For the `exterior-partial` lane only: a **background image** (`MOTOCUT_BACKGROUND_IMAGE`).
@@ -122,10 +122,18 @@ each output at the input filename + dimensions, and prints a per-stage timing su
 ```bash
 python server.py               # FastAPI on :8000  (/process, /set_studio, /health)
 python client.py               # drives the server over HTTP, saving debug frames
+python client_compare_reference.py  # runs composite_only vs with_reference A/B tests
 python client_2.py             # studio-shuffle tester (randomises floor/wall per image)
 ```
 The server processes one image at a time and can stream intermediate frames
 (`crop_raw`, `crop_resized`, `plate`, `plate_marked`, `cutout`, `composite`).
+
+Flux refine has two modes:
+- `with_reference` sends the rembg composite, the gray YOLO placement guide, and the
+  cropped car reference. Use this when edges are jagged, pieces are missing, or identity
+  details need stronger preservation.
+- `composite_only` sends only the rembg composite. Use this when you want a conservative
+  cleanup pass without giving Flux another car reference image.
 
 ## 10. Placement tuning
 
@@ -143,8 +151,7 @@ much foreground" look.
 
 ## 11. Compute notes
 
-Single GPU; Blender's Cycles renders on the **GPU** via the warm worker. Since there is
-no diffusion model, VRAM demand is modest — the pipeline runs on far smaller cards than
-the FLUX version. The trade-off: the car is composited **exactly as shot** (no
-relighting or reflection harmonization), so the plate should be chosen to sit naturally
-under a real photo.
+Single GPU; Blender's Cycles renders on the **GPU** via the warm worker. Without
+`flux_refine`, VRAM demand stays modest. With FLUX refine enabled, the final server pass
+loads `black-forest-labs/FLUX.2-klein-9B` lazily and uses the rembg composite plus the
+gray YOLO guide to improve integration.

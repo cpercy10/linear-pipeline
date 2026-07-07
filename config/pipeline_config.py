@@ -256,6 +256,58 @@ class InpaintConfig(BaseModel):
     body_opacity: float = 0.35
 
 
+class FluxRefineConfig(BaseModel):
+    """Final FLUX.2 Klein image-edit pass over the rembg composite."""
+    enabled: bool = False
+    model_id: str = "black-forest-labs/FLUX.2-klein-9B"
+    max_long_edge: int = 1024
+    num_steps: int = 4
+    seed: Optional[int] = None
+    guidance_scale: float = 1.0
+    strength: Optional[float] = None
+    reference_mode: Literal["with_reference", "composite_only", "multi_reference"] = "with_reference"
+    cpu_offload: bool = True
+    prompt: str = ""  # optional override; empty selects one of the mode prompts below
+    prompt_composite_only: str = (
+        "Automotive composite repair only. Use the provided image as the locked final "
+        "composition and improve only the pasted car integration. Keep the background, "
+        "camera viewpoint, framing, scene geometry, road, sky, buildings, signs, and "
+        "all environment details unchanged. Repair jagged cutout edges, missing or "
+        "thin car edge pixels, small holes, alpha fringing, background bleed-through "
+        "inside the car, weak tire grounding, absent contact shadow, color mismatch, "
+        "exposure mismatch, glass contamination, paint reflections, and unnatural "
+        "reflections according to the visible scene lighting. Preserve the same car "
+        "silhouette, dimensions, viewing angle, camera perspective, proportions, body "
+        "shape, wheel size, wheel position, ride height, glass shape, grille, lights, "
+        "badges, trim, license area, model text, and original paint hue. Do not "
+        "repaint, recolor, redesign, resize, rotate, warp, smooth away details, add "
+        "new objects, remove background objects, or hallucinate background content. "
+        "Final result: photorealistic automotive integration with clean edges, better "
+        "color correction, realistic reflections, natural shadow, and no pasted-on look."
+    )
+    prompt_with_reference: str = (
+        "Automotive composite repair using references. Use the first image as the "
+        "locked final composition to improve. Use the gray guide image only for the "
+        "car's exact placement, silhouette, scale, tire contact points, and camera "
+        "perspective. Use the cropped car reference only for car identity and missing "
+        "details: same silhouette, dimensions, viewing angle, proportions, body shape, "
+        "wheel size, wheel position, ride height, glass shape, grille, lights, badges, "
+        "trim, license area, model text, and original paint hue. Keep the background "
+        "scene, camera viewpoint, road, sky, buildings, signs, and environment details "
+        "from the composition unchanged. Repair jagged edges, missing car parts, edge "
+        "holes, alpha fringing, background bleed-through, weak/no contact shadow, color "
+        "mismatch, exposure mismatch, glass contamination, old-environment reflections, "
+        "and unnatural paint reflections. Remove only unwanted old-environment reflected "
+        "objects and color contamination while preserving automotive gloss, metallic "
+        "tone if present, natural panel shading, broad gradients, curved surface "
+        "reflections, glass tint, chrome, trim, and specular highlights. Do not repaint, "
+        "recolor, redesign, resize, rotate, warp, flatten paint, make it matte, add "
+        "objects, remove background objects, or hallucinate new background details. "
+        "Final result: source-accurate photorealistic car integration with clean edges, "
+        "correct color, improved reflections, natural tire grounding, and realistic shadow."
+    )
+
+
 class InteriorConfig(BaseModel):
     bg_color: Tuple[int, int, int] = (255, 255, 255)
 
@@ -425,6 +477,7 @@ class PipelineSettings(BaseSettings):
     removebg:    RemoveBgConfig    = RemoveBgConfig()
     rembg:       RembgConfig       = RembgConfig()
     inpaint:     InpaintConfig     = InpaintConfig()
+    flux_refine: FluxRefineConfig  = FluxRefineConfig()
     interior:    InteriorConfig    = InteriorConfig()
     retrieval:   RetrievalConfig   = RetrievalConfig()
     geocalib:    GeoCalibConfig    = GeoCalibConfig()

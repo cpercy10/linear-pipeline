@@ -6,8 +6,8 @@ processing as a STREAMING response: each artifact is sent the instant it is prod
 appear. Processing is STRICTLY SERIAL — one image fully done (plate → composite →
 returned) before the next — enforced by a global lock.
 
-FLUX has been removed: exterior-full composites the remove.bg car cutout directly onto
-the rendered plate.
+Exterior-full first composites the rembg car cutout directly onto the rendered plate,
+then can optionally run a final FLUX.2 Klein image-edit refinement pass.
 
 Endpoints
 ---------
@@ -56,6 +56,7 @@ from config.pipeline_config import ImageClass, get_orientation_registry, get_set
 from models.model_manager import ModelManager
 from pipeline import _camera_export_payload
 from processing.flux_inpaint import FluxFillInpainter, default_request
+from processing.flux_refine import FluxKleinRefiner, default_refine_request
 from processing import interior, partial as partial_lane
 from processing.background_remover import BackgroundRemover
 from processing.rembg_segmenter import RembgSegmenter
@@ -80,7 +81,8 @@ S = SimpleNamespace(
     pre_exec=None,           # ThreadPoolExecutor (preprocess tier)
     remover=None,            # BackgroundRemover (all remove.bg lanes)
     rembg_segmenter=None,    # RembgSegmenter (server exterior-full only)
-    inpainter=None,          # FluxFillInpainter (lazy, optional)
+    inpainter=None,          # FluxFillInpainter (lazy, optional legacy path)
+    flux_refiner=None,       # FluxKleinRefiner (lazy final image-edit pass)
     registry=None,           # VisualOccupancyRegistry
     bg_rgba=None,            # supplied background for the partial lane (optional)
     active_studio=dict(settings.blender.studio),   # studio look, overridable via /set_studio
@@ -139,6 +141,13 @@ def _mark_plate(plate: Image.Image, cx: float, cy: float) -> Image.Image:
     d.line([cx - 2 * r, cy, cx + 2 * r, cy], fill=(255, 0, 0), width=max(2, r // 6))
     d.line([cx, cy - 2 * r, cx, cy + 2 * r], fill=(255, 0, 0), width=max(2, r // 6))
     return im
+
+
+def _gray_yolo_guide(pre, canvas_size, paste_top_left) -> Image.Image:
+    """Gray full-frame guide with the resized YOLO crop at the final placement."""
+    guide = Image.new("RGB", canvas_size, tuple(settings.canvas.fill_color))
+    guide.paste(pre.resized_crop.convert("RGB"), paste_top_left)
+    return guide
 
 
 def _meta(pre, plate, extra: Optional[Dict[str, object]] = None) -> Dict[str, object]:
@@ -218,6 +227,47 @@ def _inpaint_request_from_form(
     return req
 
 
+def _flux_prompt_for_mode(mode: str) -> str:
+    cfg = settings.flux_refine
+    if cfg.prompt:
+        return cfg.prompt
+    if mode == "composite_only":
+        return cfg.prompt_composite_only
+    return cfg.prompt_with_reference
+
+
+def _flux_refine_request_from_form(
+    *,
+    flux_refine: Optional[str],
+    flux_refine_prompt: Optional[str],
+    flux_refine_steps: Optional[str],
+    flux_refine_seed: Optional[str],
+    flux_refine_max_edge: Optional[str],
+    flux_refine_guidance: Optional[str],
+    flux_refine_strength: Optional[str],
+    flux_refine_reference_mode: Optional[str],
+):
+    req = default_refine_request(settings)
+    req.enabled = _parse_bool(flux_refine, req.enabled)
+    if flux_refine_reference_mode not in (None, ""):
+        if flux_refine_reference_mode not in {"with_reference", "multi_reference", "composite_only"}:
+            raise ValueError(
+                "flux_refine_reference_mode must be one of: with_reference, composite_only"
+            )
+        req.reference_mode = flux_refine_reference_mode
+    if flux_refine_prompt not in (None, ""):
+        req.prompt = flux_refine_prompt
+    else:
+        req.prompt = _flux_prompt_for_mode(req.reference_mode)
+    req.num_steps = int(_parse_int(flux_refine_steps, req.num_steps))
+    req.seed = _parse_int(flux_refine_seed, req.seed)
+    req.max_long_edge = int(_parse_int(flux_refine_max_edge, req.max_long_edge))
+    req.guidance_scale = _parse_float(flux_refine_guidance, req.guidance_scale)
+    if flux_refine_strength not in (None, ""):
+        req.strength = _parse_float(flux_refine_strength, req.strength or 0.0)
+    return req
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Plate render (mirrors pipeline.Pipeline._render_plate, reusing the shared helpers)
 # ─────────────────────────────────────────────────────────────────────────────
@@ -247,7 +297,13 @@ async def _render_plate(pre, stem: str, log):
 # Per-image streaming processor (STRICTLY SERIAL via PROCESS_LOCK)
 # ─────────────────────────────────────────────────────────────────────────────
 
-async def _process_stream(content: bytes, filename: str, debug: bool, inpaint_req) -> AsyncIterator[bytes]:
+async def _process_stream(
+    content: bytes,
+    filename: str,
+    debug: bool,
+    inpaint_req,
+    flux_req,
+) -> AsyncIterator[bytes]:
     stem = Path(filename).stem
     ext = (Path(filename).suffix or ".jpg").lower()
     orig_ctype = "image/png" if ext == ".png" else "image/jpeg"
@@ -309,7 +365,7 @@ async def _process_stream(content: bytes, filename: str, debug: bool, inpaint_re
                         meta={"cx": round(plate.cx, 1), "cy": round(plate.cy, 1)},
                     )
 
-                # tier 3 — rembg cutout + manual composite + optional FLUX Fill inpaint.
+                # tier 3 — rembg cutout + manual composite + optional FLUX.2 edit refine.
                 rembg_result = await loop.run_in_executor(
                     S.pre_exec,
                     partial(S.rembg_segmenter.remove, pre.raw_crop),
@@ -327,9 +383,20 @@ async def _process_stream(content: bytes, filename: str, debug: bool, inpaint_re
                     ),
                 )
 
+                gray_guide = _gray_yolo_guide(
+                    pre,
+                    plate.plate.size,
+                    inputs.paste_top_left,
+                )
+
                 if debug:
                     yield _frame("rembg_cutout.png", _img_bytes(inputs.cutout_resized),
                                  meta={"model": rembg_result.model_name})
+                    yield _frame("gray_yolo_guide.png", _img_bytes(gray_guide),
+                                 meta={"note": "resized YOLO crop at final placement"})
+                    if pre.raw_crop is not None:
+                        yield _frame("car_reference.png", _img_bytes(pre.raw_crop),
+                                     meta={"note": "original YOLO crop reference"})
                     yield _frame("mask_car.png", _img_bytes(inputs.car_mask))
                     yield _frame("mask_edge.png", _img_bytes(inputs.edge_band_mask))
                     yield _frame("mask_shadow.png", _img_bytes(inputs.shadow_mask))
@@ -358,6 +425,20 @@ async def _process_stream(content: bytes, filename: str, debug: bool, inpaint_re
                     if debug:
                         yield _frame("composite_inpaint.png", _img_bytes(composite))
 
+                if flux_req.enabled:
+                    composite = await loop.run_in_executor(
+                        S.pre_exec,
+                        partial(
+                            S.flux_refiner.refine,
+                            composite,
+                            gray_guide,
+                            pre.raw_crop,
+                            flux_req,
+                        ),
+                    )
+                    if debug:
+                        yield _frame("composite_flux_refined.png", _img_bytes(composite))
+
                 meta_extra = {
                     "rembg_model": rembg_result.model_name,
                     "inpaint_enabled": bool(inpaint_req.enabled),
@@ -367,6 +448,15 @@ async def _process_stream(content: bytes, filename: str, debug: bool, inpaint_re
                     "inpaint_steps": inpaint_req.num_steps,
                     "inpaint_max_long_edge": inpaint_req.max_long_edge,
                     "body_opacity": inpaint_req.body_opacity,
+                    "flux_refine_enabled": bool(flux_req.enabled),
+                    "flux_refine_model": settings.flux_refine.model_id,
+                    "flux_refine_prompt": flux_req.prompt,
+                    "flux_refine_seed": flux_req.seed,
+                    "flux_refine_steps": flux_req.num_steps,
+                    "flux_refine_max_long_edge": flux_req.max_long_edge,
+                    "flux_refine_guidance_scale": flux_req.guidance_scale,
+                    "flux_refine_strength": flux_req.strength,
+                    "flux_refine_reference_mode": flux_req.reference_mode,
                     "mask_pixels": inputs.mask_stats,
                     "paste_top_left": list(inputs.paste_top_left),
                     "placed_px": list(inputs.placed_size),
@@ -423,6 +513,7 @@ async def lifespan(app: FastAPI):
             S.remover = BackgroundRemover(settings)
             S.rembg_segmenter = RembgSegmenter(settings)
             S.inpainter = FluxFillInpainter(settings)
+            S.flux_refiner = FluxKleinRefiner(settings)
             S.pre_exec = ThreadPoolExecutor(
                 max_workers=settings.preprocess_workers, thread_name_prefix="pre"
             )
@@ -491,6 +582,14 @@ async def process(
     inpaint_seed: Optional[str] = Form(None),
     inpaint_max_edge: Optional[str] = Form(None),
     body_opacity: Optional[str] = Form(None),
+    flux_refine: Optional[str] = Form(None),
+    flux_refine_prompt: Optional[str] = Form(None),
+    flux_refine_steps: Optional[str] = Form(None),
+    flux_refine_seed: Optional[str] = Form(None),
+    flux_refine_max_edge: Optional[str] = Form(None),
+    flux_refine_guidance: Optional[str] = Form(None),
+    flux_refine_strength: Optional[str] = Form(None),
+    flux_refine_reference_mode: Optional[str] = Form(None),
 ):
     if not S.ready:
         detail = S.load_error or "model is still loading — retry shortly"
@@ -505,11 +604,21 @@ async def process(
             inpaint_max_edge=inpaint_max_edge,
             body_opacity=body_opacity,
         )
+        flux_req = _flux_refine_request_from_form(
+            flux_refine=flux_refine,
+            flux_refine_prompt=flux_refine_prompt,
+            flux_refine_steps=flux_refine_steps,
+            flux_refine_seed=flux_refine_seed,
+            flux_refine_max_edge=flux_refine_max_edge,
+            flux_refine_guidance=flux_refine_guidance,
+            flux_refine_strength=flux_refine_strength,
+            flux_refine_reference_mode=flux_refine_reference_mode,
+        )
     except ValueError as exc:
         raise HTTPException(400, str(exc)) from exc
     content = await file.read()
     return StreamingResponse(
-        _process_stream(content, file.filename or "image.jpg", debug, inpaint_req),
+        _process_stream(content, file.filename or "image.jpg", debug, inpaint_req, flux_req),
         media_type="application/octet-stream",
     )
 
@@ -532,6 +641,12 @@ async def health():
             "model": settings.inpaint.model_id,
             "mode_default": settings.inpaint.mode,
             "loaded": bool(S.inpainter and S.inpainter.loaded),
+        },
+        "flux_refine": {
+            "enabled_default": bool(settings.flux_refine.enabled),
+            "model": settings.flux_refine.model_id,
+            "reference_mode_default": settings.flux_refine.reference_mode,
+            "loaded": bool(S.flux_refiner and S.flux_refiner.loaded),
         },
     }
 

@@ -6,10 +6,9 @@ Loads the models the exterior-full lane needs, on the single GPU (cuda:0):
   * the DINOv2 retriever (index loaded once + embedder warmed),
   * GeoCalib (best-effort warm).
 
-FLUX / diffusion has been REMOVED: the exterior-full lane composites the remove.bg car
-cutout directly onto the rendered Blender plate, so there is no resident diffusion model
-and no VRAM co-residency planning. The warm Blender worker is the only heavy GPU user
-and is managed by ``runtime.blender_pool``.
+The final FLUX.2 Klein refinement is managed separately by ``processing.flux_refine``
+and loaded lazily by the server. ModelManager still owns only the small routing,
+orientation, YOLO, retrieval, and GeoCalib models.
 """
 
 from __future__ import annotations

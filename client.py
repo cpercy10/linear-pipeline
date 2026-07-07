@@ -20,20 +20,62 @@ from pathlib import Path
 import requests
 
 
-INPAINT_ENABLED = True
+INPAINT_ENABLED = False
 INPAINT_MODE = "shadow_edge"
 INPAINT_STEPS = 28
 INPAINT_MAX_EDGE = 1024
+FLUX_REFINE_ENABLED = True
+FLUX_REFINE_STEPS = 4
+FLUX_REFINE_MAX_EDGE = 1024
+FLUX_REFINE_GUIDANCE = 1.0
+FLUX_REFINE_STRENGTH = ""           # "" = model default
+FLUX_REFINE_REFERENCE_MODE = "with_reference"  # with_reference | composite_only
 # ── DEFAULTS (edit these; no CLI args needed) ────────────────────────────────
 SERVER_URL = "https://6ab7ri5k4gsatu-8000.proxy.runpod.net"   # your server (e.g. a https://xxxx-8000.proxy.runpod.net URL)
-INPUT_DIR  = r"C:\Users\SyedZulfiqarHaiderZa\Downloads\zaidi-images-2-20260701T204255Z-3-001\zaidi-images-2"
-OUTPUT_DIR = r"C:\Users\SyedZulfiqarHaiderZa\Downloads\zaidi-images-2-20260701T204255Z-3-001\Output-1"     # results land in OUTPUT_DIR/<stem>/
+INPUT_DIR = r"C:\Users\SyedZulfiqarHaiderZa\Desktop\cars2"
+OUTPUT_DIR = r"C:\Users\SyedZulfiqarHaiderZa\Desktop\cars2\Output-2"     # results land in OUTPUT_DIR/<stem>/
 INPAINT_PROMPT  = (
     "Create a natural soft studio contact shadow beneath the tires and repair only "
     "the cutout edge transition into the floor and background. Preserve the car "
     "identity, paint color, silhouette, wheels, lights, glass, trim, and details."
 )
+FLUX_REFINE_PROMPTS = {
+    "composite_only": (
+        "Automotive composite repair only. Use the provided image as the locked final "
+        "composition and improve only the pasted car integration. Keep the background, "
+        "camera viewpoint, framing, road, sky, buildings, signs, and all environment "
+        "details unchanged. Repair jagged cutout edges, missing or thin car edge pixels, "
+        "small holes, alpha fringing, background bleed-through inside the car, weak tire "
+        "grounding, absent contact shadow, color mismatch, exposure mismatch, glass "
+        "contamination, paint reflections, and unnatural reflections according to the "
+        "visible scene lighting. Preserve the same car silhouette, dimensions, viewing "
+        "angle, camera perspective, proportions, body shape, wheel size, wheel position, "
+        "ride height, glass shape, grille, lights, badges, trim, license area, model "
+        "text, and original paint hue. Do not repaint, recolor, redesign, resize, "
+        "rotate, warp, smooth away details, add new objects, remove background objects, "
+        "or hallucinate background content."
+    ),
+    "with_reference": (
+        "Automotive composite repair using references. Use the first image as the locked "
+        "final composition to improve. Use the gray guide image only for the car's exact "
+        "placement, silhouette, scale, tire contact points, and camera perspective. Use "
+        "the cropped car reference only for car identity and missing details: same "
+        "silhouette, dimensions, viewing angle, proportions, body shape, wheel size, "
+        "wheel position, ride height, glass shape, grille, lights, badges, trim, license "
+        "area, model text, and original paint hue. Keep the background scene, camera "
+        "viewpoint, road, sky, buildings, signs, and environment details unchanged. "
+        "Repair jagged edges, missing car parts, edge holes, alpha fringing, background "
+        "bleed-through, weak/no contact shadow, color mismatch, exposure mismatch, glass "
+        "contamination, old-environment reflections, and unnatural paint reflections. "
+        "Remove only unwanted old-environment reflected objects and color contamination "
+        "while preserving automotive gloss, metallic tone if present, natural panel "
+        "shading, broad gradients, glass tint, chrome, trim, and specular highlights. "
+        "Do not repaint, recolor, redesign, resize, rotate, warp, flatten paint, make "
+        "it matte, add objects, remove background objects, or hallucinate background details."
+    ),
+}
 INPAINT_SEED     = ""                # "" = random / server default
+FLUX_REFINE_SEED = ""                # "" = random / server default
 INPAINT_MAX_EDGE = 1024
 BODY_OPACITY     = 0.35              # only used by shadow_edge_body
 DEBUG      = True                    # True → also receive crop/cutout/plate-marker debug images
@@ -130,6 +172,16 @@ def process_one(base: str, img_path: Path, out_root: Path, debug: bool) -> bool:
                     "inpaint_seed": str(INPAINT_SEED),
                     "inpaint_max_edge": str(INPAINT_MAX_EDGE),
                     "body_opacity": str(BODY_OPACITY),
+                    "flux_refine": "true" if FLUX_REFINE_ENABLED else "false",
+                    "flux_refine_prompt": FLUX_REFINE_PROMPTS.get(
+                        FLUX_REFINE_REFERENCE_MODE, ""
+                    ),
+                    "flux_refine_steps": str(FLUX_REFINE_STEPS),
+                    "flux_refine_seed": str(FLUX_REFINE_SEED),
+                    "flux_refine_max_edge": str(FLUX_REFINE_MAX_EDGE),
+                    "flux_refine_guidance": str(FLUX_REFINE_GUIDANCE),
+                    "flux_refine_strength": str(FLUX_REFINE_STRENGTH),
+                    "flux_refine_reference_mode": FLUX_REFINE_REFERENCE_MODE,
                 },
                 stream=True,
                 timeout=REQUEST_TIMEOUT,

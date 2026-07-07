@@ -8,9 +8,9 @@
 # Blender is NOT a pip package — install it separately (5.x) and point
 # MOTOCUT_BLENDER_EXE at the executable. See SETUP.md.
 #
-# NOTE: FLUX / diffusion has been removed — the exterior-full lane composites the
-# remove.bg car cutout directly onto the rendered plate, so diffusers / transformers /
-# accelerate are no longer required and there is no gated Hugging Face model.
+# NOTE: exterior-full now has an optional final FLUX.2 Klein image-edit refinement
+# after the rembg composite. Keep diffusers / transformers / accelerate installed on
+# the RunPod server if MOTOCUT_FLUX_REFINE__ENABLED or client flux_refine=true is used.
 # ─────────────────────────────────────────────────────────────────────────────
 
 # ---- Core torch stack (install via the cuXXX index URL above) ----
@@ -45,12 +45,12 @@ fastapi
 uvicorn
 python-multipart
 
-# ---- Server-only rembg + FLUX Fill inpaint experiment ----
+# ---- Server-only rembg + FLUX image-edit refinement ----
 # rembg downloads its model cache on first use (default: ~/.u2net; override U2NET_HOME).
 # Use CPU rembg by default: onnxruntime-gpu wheels are CUDA-version-sensitive and can
 # pull a libcudart.so.* runtime that does not match the RunPod image. FLUX still uses GPU.
 rembg[cpu]>=2.0
-diffusers>=0.34
+diffusers @ git+https://github.com/huggingface/diffusers.git
 transformers>=4.43
 accelerate>=0.33
 safetensors>=0.4

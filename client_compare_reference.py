@@ -1,15 +1,14 @@
-"""Run the Motuva server twice per image: without and with FLUX references.
+"""Run Motuva reference-mode comparison in one server request per image.
 
 This is an A/B testing client for the server's final FLUX refine pass.
 
 Outputs are written as:
 
-    OUTPUT_DIR/<image-stem>/composite_only/...
-    OUTPUT_DIR/<image-stem>/with_reference/...
+    OUTPUT_DIR/<image-stem>/composite_composite_only.png
+    OUTPUT_DIR/<image-stem>/composite_with_reference.png
 
-`composite_only` means no extra reference image is sent to FLUX, only the current
-manual composite. `with_reference` lets the server give FLUX the manual composite,
-the gray placement guide, and the original YOLO crop reference.
+The default `both` mode makes the server run the heavy pipeline once, then reuse the
+already-loaded FLUX refiner to produce both `composite_only` and `with_reference`.
 """
 
 from __future__ import annotations
@@ -29,8 +28,8 @@ SERVER_URL = "https://6ab7ri5k4gsatu-8000.proxy.runpod.net"
 INPUT_DIR = r"C:\Users\SyedZulfiqarHaiderZa\Desktop\cars2"
 OUTPUT_DIR = r"C:\Users\SyedZulfiqarHaiderZa\Desktop\cars2\Reference-Compare"
 
-# Run both modes by default. Keep the order: baseline first, reference second.
-REFERENCE_MODES = ("composite_only", "with_reference")
+# Ask the server for both outputs in one request by default.
+REFERENCE_MODES = ("both",)
 
 # Turn this on only if you also want the older mask-based FLUX Fill inpaint pass.
 INPAINT_ENABLED = False
@@ -233,7 +232,7 @@ def parse_args() -> argparse.Namespace:
         "--modes",
         nargs="+",
         default=list(REFERENCE_MODES),
-        choices=("composite_only", "with_reference", "multi_reference"),
+        choices=("both", "composite_only", "with_reference", "multi_reference"),
         help="reference modes to run",
     )
     parser.add_argument("--no-debug", action="store_true", help="save only normal frames")
@@ -282,7 +281,7 @@ def main() -> None:
         print(f"[{i}/{len(imgs)}] {img.name}", flush=True)
         image_summary = {}
         for mode in args.modes:
-            mode_dir = out_root / img.stem / mode
+            mode_dir = out_root / img.stem if mode == "both" else out_root / img.stem / mode
             ok, meta = process_one_mode(base, img, mode_dir, mode, debug)
             image_summary[mode] = {
                 "ok": bool(ok),

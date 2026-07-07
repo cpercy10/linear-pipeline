@@ -41,6 +41,7 @@ import json
 import tempfile
 import threading
 from contextlib import asynccontextmanager
+from dataclasses import replace
 from functools import partial
 from pathlib import Path
 from types import SimpleNamespace
@@ -250,9 +251,9 @@ def _flux_refine_request_from_form(
     req = default_refine_request(settings)
     req.enabled = _parse_bool(flux_refine, req.enabled)
     if flux_refine_reference_mode not in (None, ""):
-        if flux_refine_reference_mode not in {"with_reference", "multi_reference", "composite_only"}:
+        if flux_refine_reference_mode not in {"both", "with_reference", "multi_reference", "composite_only"}:
             raise ValueError(
-                "flux_refine_reference_mode must be one of: with_reference, composite_only"
+                "flux_refine_reference_mode must be one of: both, with_reference, composite_only"
             )
         req.reference_mode = flux_refine_reference_mode
     if flux_refine_prompt not in (None, ""):
@@ -266,6 +267,21 @@ def _flux_refine_request_from_form(
     if flux_refine_strength not in (None, ""):
         req.strength = _parse_float(flux_refine_strength, req.strength or 0.0)
     return req
+
+
+def _flux_refine_modes(req) -> list[str]:
+    if not req.enabled:
+        return []
+    if req.reference_mode == "both":
+        return ["composite_only", "with_reference"]
+    return [req.reference_mode]
+
+
+def _flux_refine_req_for_mode(req, mode: str):
+    prompt = req.prompt
+    if req.reference_mode == "both" and req.prompt == _flux_prompt_for_mode("both"):
+        prompt = _flux_prompt_for_mode(mode)
+    return replace(req, reference_mode=mode, prompt=prompt)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -425,19 +441,38 @@ async def _process_stream(
                     if debug:
                         yield _frame("composite_inpaint.png", _img_bytes(composite))
 
-                if flux_req.enabled:
-                    composite = await loop.run_in_executor(
+                flux_outputs: Dict[str, Image.Image] = {}
+                base_for_flux = composite
+                for refine_mode in _flux_refine_modes(flux_req):
+                    mode_req = _flux_refine_req_for_mode(flux_req, refine_mode)
+                    refined = await loop.run_in_executor(
                         S.pre_exec,
                         partial(
                             S.flux_refiner.refine,
-                            composite,
+                            base_for_flux,
                             gray_guide,
                             pre.raw_crop,
-                            flux_req,
+                            mode_req,
                         ),
                     )
+                    flux_outputs[refine_mode] = refined
+                    yield _frame(
+                        f"composite_{refine_mode}.png",
+                        _img_bytes(refined),
+                        meta={"flux_refine_reference_mode": refine_mode},
+                    )
                     if debug:
-                        yield _frame("composite_flux_refined.png", _img_bytes(composite))
+                        yield _frame(
+                            f"composite_flux_refined_{refine_mode}.png",
+                            _img_bytes(refined),
+                            meta={"flux_refine_reference_mode": refine_mode},
+                        )
+
+                if flux_outputs:
+                    composite = (
+                        flux_outputs.get("with_reference")
+                        or next(reversed(flux_outputs.values()))
+                    )
 
                 meta_extra = {
                     "rembg_model": rembg_result.model_name,
@@ -457,6 +492,7 @@ async def _process_stream(
                     "flux_refine_guidance_scale": flux_req.guidance_scale,
                     "flux_refine_strength": flux_req.strength,
                     "flux_refine_reference_mode": flux_req.reference_mode,
+                    "flux_refine_modes": list(flux_outputs.keys()),
                     "mask_pixels": inputs.mask_stats,
                     "paste_top_left": list(inputs.paste_top_left),
                     "placed_px": list(inputs.placed_size),

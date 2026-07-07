@@ -128,7 +128,8 @@ python client_2.py             # studio-shuffle tester (randomises floor/wall pe
 The server processes one image at a time and can stream intermediate frames
 (`crop_raw`, `crop_resized`, `plate`, `plate_marked`, `cutout`, `composite`).
 
-Flux refine has two modes:
+Flux refine can run both A/B modes in one server request by sending
+`flux_refine_reference_mode=both` (the default in `client.py`):
 - `with_reference` sends the rembg composite, the gray YOLO placement guide, and the
   cropped car reference. Use this when edges are jagged, pieces are missing, or identity
   details need stronger preservation.

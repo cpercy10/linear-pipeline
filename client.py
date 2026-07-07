@@ -29,7 +29,7 @@ FLUX_REFINE_STEPS = 4
 FLUX_REFINE_MAX_EDGE = 1024
 FLUX_REFINE_GUIDANCE = 1.0
 FLUX_REFINE_STRENGTH = ""           # "" = model default
-FLUX_REFINE_REFERENCE_MODE = "with_reference"  # with_reference | composite_only
+FLUX_REFINE_REFERENCE_MODE = "both"  # both | with_reference | composite_only
 # ── DEFAULTS (edit these; no CLI args needed) ────────────────────────────────
 SERVER_URL = "https://6ab7ri5k4gsatu-8000.proxy.runpod.net"   # your server (e.g. a https://xxxx-8000.proxy.runpod.net URL)
 INPUT_DIR = r"C:\Users\SyedZulfiqarHaiderZa\Desktop\cars2"

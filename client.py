@@ -19,17 +19,20 @@ from pathlib import Path
 
 import requests
 
+
+INPAINT_ENABLED = True
+INPAINT_MODE = "shadow_edge"
+INPAINT_STEPS = 28
+INPAINT_MAX_EDGE = 1024
 # ── DEFAULTS (edit these; no CLI args needed) ────────────────────────────────
-SERVER_URL = "https://adwkhfepqo7bxo-8000.proxy.runpod.net"   # your server (e.g. a https://xxxx-8000.proxy.runpod.net URL)
-INPUT_DIR  = r"E:\CorTechSols\Motorcut\Background Removal\Background-Replacement-Removebg-Latest\Ali-Cortechsols\Latest\Results\Images\Set 02"    # folder of images to send
-OUTPUT_DIR = r"D:\Motocut\Code\motuva-pipline-removebgappraoch\Images\Output-1"     # results land in OUTPUT_DIR/<stem>/
-INPAINT_ENABLED = False              # False = rembg manual composite only
-INPAINT_MODE    = "shadow_edge"      # shadow | shadow_edge | shadow_edge_body
+SERVER_URL = "https://6ab7ri5k4gsatu-8000.proxy.runpod.net"   # your server (e.g. a https://xxxx-8000.proxy.runpod.net URL)
+INPUT_DIR  = r"C:\Users\SyedZulfiqarHaiderZa\Downloads\zaidi-images-2-20260701T204255Z-3-001\zaidi-images-2"
+OUTPUT_DIR = r"C:\Users\SyedZulfiqarHaiderZa\Downloads\zaidi-images-2-20260701T204255Z-3-001\Output-1"     # results land in OUTPUT_DIR/<stem>/
 INPAINT_PROMPT  = (
-    "Create a realistic studio contact shadow and cleanly blend the car into the "
-    "floor. Preserve the car identity, shape, wheels, lights, trim, and details."
+    "Create a natural soft studio contact shadow beneath the tires and repair only "
+    "the cutout edge transition into the floor and background. Preserve the car "
+    "identity, paint color, silhouette, wheels, lights, glass, trim, and details."
 )
-INPAINT_STEPS    = 28
 INPAINT_SEED     = ""                # "" = random / server default
 INPAINT_MAX_EDGE = 1024
 BODY_OPACITY     = 0.35              # only used by shadow_edge_body

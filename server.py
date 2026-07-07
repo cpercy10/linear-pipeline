@@ -331,6 +331,7 @@ async def _process_stream(content: bytes, filename: str, debug: bool, inpaint_re
                     yield _frame("rembg_cutout.png", _img_bytes(inputs.cutout_resized),
                                  meta={"model": rembg_result.model_name})
                     yield _frame("mask_car.png", _img_bytes(inputs.car_mask))
+                    yield _frame("mask_edge.png", _img_bytes(inputs.edge_band_mask))
                     yield _frame("mask_shadow.png", _img_bytes(inputs.shadow_mask))
                     yield _frame("mask_inpaint.png", _img_bytes(inputs.inpaint_mask),
                                  meta={"mode": inpaint_req.mode})

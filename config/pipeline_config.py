@@ -210,7 +210,7 @@ class RemoveBgConfig(BaseModel):
     endpoint:       str         = "https://api.remove.bg/v1.0/removebg"
     size:           str         = "auto"
     add_shadow:     bool        = True
-    exterior_add_shadow: bool   = True   # exterior-full manual composite: paste remove.bg drop shadow
+    exterior_add_shadow: bool   = False  # exterior-full uses the local plate-aware contact shadow
     shadow_opacity: int         = 100
     concurrency:    int         = 4      # simultaneous in-flight API calls
     max_retries:    int         = 3
@@ -228,9 +228,15 @@ class RembgConfig(BaseModel):
     alpha_threshold: int = 16
     preserve_erode_px: int = 5
     edge_band_px: int = 18
+    edge_inpaint_radius_px: int = 3
+    color_match_strength: float = 0.22
+    color_match_band_px: int = 24
+    edge_plate_blend: float = 0.18
     shadow_offset_frac: float = 0.08
     shadow_height_frac: float = 0.18
+    shadow_width_frac: float = 0.84
     shadow_blur_px: int = 18
+    contact_shadow_opacity: float = 0.34
 
 
 class InpaintConfig(BaseModel):
@@ -242,8 +248,9 @@ class InpaintConfig(BaseModel):
     seed: Optional[int] = None
     mode: Literal["shadow", "shadow_edge", "shadow_edge_body"] = "shadow_edge"
     prompt: str = (
-        "Create a realistic studio contact shadow and cleanly blend the car into the "
-        "floor. Preserve the car identity, shape, wheels, lights, trim, and details."
+        "Create a natural soft studio contact shadow beneath the tires and repair only "
+        "the cutout edge transition into the floor and background. Preserve the car "
+        "identity, paint color, silhouette, wheels, lights, glass, trim, and details."
     )
     guidance_scale: float = 30.0
     body_opacity: float = 0.35

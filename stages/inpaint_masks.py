@@ -5,13 +5,13 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Dict, Optional, TYPE_CHECKING, Tuple
 
-import cv2
 import numpy as np
 import structlog
-from PIL import Image, ImageChops, ImageFilter
+from PIL import Image, ImageFilter
 
 from config.pipeline_config import PipelineSettings
 from stages import anchor as anchor_stage
+from stages import composite_refine
 from utils.logging import get_logger, stage_timer
 
 if TYPE_CHECKING:
@@ -34,79 +34,24 @@ class InpaintInputs:
     mask_stats: Dict[str, int] = field(default_factory=dict)
 
 
-def _as_l_mask(mask: Image.Image) -> Image.Image:
-    return mask.convert("L")
-
-
-def _odd_kernel(value: int) -> int:
-    value = max(1, int(value))
-    return value if value % 2 else value + 1
-
-
-def clean_alpha(alpha: Image.Image, settings: PipelineSettings) -> Image.Image:
-    """Remove islands, fill holes, smooth jagged edges, and return a soft L mask."""
-    cfg = settings.rembg
-    mask = np.array(alpha.convert("L"))
-    binary = (mask >= int(cfg.alpha_threshold)).astype(np.uint8) * 255
-
-    if cfg.clean_mask:
-        n, labels, stats, _ = cv2.connectedComponentsWithStats(binary, connectivity=8)
-        if n > 1:
-            areas = stats[1:, cv2.CC_STAT_AREA]
-            largest = int(np.argmax(areas) + 1)
-            binary = np.where(labels == largest, 255, 0).astype(np.uint8)
-
-        contours, _ = cv2.findContours(binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        filled = np.zeros_like(binary)
-        cv2.drawContours(filled, contours, -1, 255, thickness=cv2.FILLED)
-
-        k = _odd_kernel(cfg.morph_kernel)
-        kernel = np.ones((k, k), np.uint8)
-        filled = cv2.morphologyEx(filled, cv2.MORPH_CLOSE, kernel)
-        filled = cv2.morphologyEx(filled, cv2.MORPH_OPEN, kernel)
-        binary = filled
-
-    soft = Image.fromarray(binary, mode="L")
-    if cfg.feather_px > 0:
-        soft = soft.filter(ImageFilter.GaussianBlur(float(cfg.feather_px)))
-    return soft
-
-
-def apply_alpha(cutout_rgba: Image.Image, alpha: Image.Image) -> Image.Image:
-    out = cutout_rgba.convert("RGBA").copy()
-    out.putalpha(alpha.resize(out.size, Image.LANCZOS).convert("L"))
-    return out
-
-
 def _dilate(mask: Image.Image, px: int) -> Image.Image:
-    if px <= 0:
-        return _as_l_mask(mask)
-    size = _odd_kernel(px * 2 + 1)
-    return _as_l_mask(mask).filter(ImageFilter.MaxFilter(size))
+    return composite_refine.dilate_mask(mask, px)
 
 
 def _erode(mask: Image.Image, px: int) -> Image.Image:
-    if px <= 0:
-        return _as_l_mask(mask)
-    size = _odd_kernel(px * 2 + 1)
-    return _as_l_mask(mask).filter(ImageFilter.MinFilter(size))
+    return composite_refine.erode_mask(mask, px)
 
 
 def _mask_union(*masks: Image.Image) -> Image.Image:
-    out = Image.new("L", masks[0].size, 0)
-    for mask in masks:
-        out = ImageChops.lighter(out, _as_l_mask(mask))
-    return out
+    return composite_refine.mask_union(*masks)
 
 
 def _mask_subtract(a: Image.Image, b: Image.Image) -> Image.Image:
-    return ImageChops.subtract(_as_l_mask(a), _as_l_mask(b))
+    return composite_refine.mask_subtract(a, b)
 
 
 def _paste_mask(mask: Image.Image, canvas_size: Tuple[int, int], xy: Tuple[int, int]) -> Image.Image:
-    full = Image.new("L", canvas_size, 0)
-    full.paste(_as_l_mask(mask), xy)
-    return full
+    return composite_refine.paste_mask(mask, canvas_size, xy)
 
 
 def _composite_target(pre, plate, settings: PipelineSettings) -> Tuple[float, float]:
@@ -122,31 +67,6 @@ def _composite_target(pre, plate, settings: PipelineSettings) -> Tuple[float, fl
     return (plate.cx, plate.cy + bias_px)
 
 
-def _shadow_mask(
-    car_mask: Image.Image,
-    xy: Tuple[int, int],
-    placed_size: Tuple[int, int],
-    canvas_size: Tuple[int, int],
-    settings: PipelineSettings,
-) -> Image.Image:
-    cfg = settings.rembg
-    x, y = xy
-    cw, ch = placed_size
-    width = max(8, int(cw * 0.92))
-    height = max(6, int(ch * cfg.shadow_height_frac))
-    cx = x + cw // 2
-    cy = y + int(ch * (1.0 - cfg.shadow_offset_frac))
-
-    arr = np.zeros((canvas_size[1], canvas_size[0]), dtype=np.uint8)
-    axes = (max(4, width // 2), max(3, height // 2))
-    cv2.ellipse(arr, (int(cx), int(cy)), axes, 0, 0, 360, 255, -1)
-    shadow = Image.fromarray(arr, mode="L")
-    if cfg.shadow_blur_px > 0:
-        shadow = shadow.filter(ImageFilter.GaussianBlur(float(cfg.shadow_blur_px)))
-    # Do not ask FLUX to repaint the confident car interior for pure shadow work.
-    return _mask_subtract(shadow, _erode(car_mask, settings.rembg.preserve_erode_px))
-
-
 def build_inputs(
     pre: "exterior_full.PreprocessResult",
     plate: "exterior_full.PlateRenderResult",
@@ -159,10 +79,7 @@ def build_inputs(
     _log = log or get_logger("stages.inpaint_masks")
 
     with stage_timer("rembg_mask_build", log=_log) as extra:
-        cleaned_alpha = clean_alpha(cutout_rgba.getchannel("A"), settings)
-        cutout_clean = apply_alpha(cutout_rgba, cleaned_alpha)
-        cutout_resized = cutout_clean.resize(pre.resized_crop.size, Image.LANCZOS)
-        cutout_alpha = cutout_resized.getchannel("A")
+        cutout_resized = cutout_rgba.convert("RGBA").resize(pre.resized_crop.size, Image.LANCZOS)
 
         target = _composite_target(pre, plate, settings)
         xy = anchor_stage.compute_paste_top_left(
@@ -173,14 +90,31 @@ def build_inputs(
         )
         x, y, clamped = xy
 
-        base = plate.plate.convert("RGBA")
+        cutout_resized = composite_refine.refine_cutout_for_plate(
+            cutout_resized,
+            plate.plate,
+            (x, y),
+            settings,
+        )
+        cutout_alpha = cutout_resized.getchannel("A")
+        shadow_hint = composite_refine.contact_shadow_mask(
+            cutout_alpha,
+            plate.plate.size,
+            (x, y),
+            settings,
+        )
+        base = composite_refine.apply_contact_shadow(
+            plate.plate,
+            shadow_hint,
+            settings,
+        ).convert("RGBA")
         base.alpha_composite(cutout_resized, (x, y))
         manual = base.convert("RGB")
 
         car_mask = _paste_mask(cutout_alpha, plate.plate.size, (x, y))
         preserve_mask = _erode(car_mask, settings.rembg.preserve_erode_px)
         edge_band = _mask_subtract(_dilate(car_mask, settings.rembg.edge_band_px), preserve_mask)
-        shadow = _shadow_mask(car_mask, (x, y), cutout_resized.size, plate.plate.size, settings)
+        shadow = _mask_subtract(shadow_hint, preserve_mask)
         body = preserve_mask.filter(ImageFilter.GaussianBlur(max(1.0, settings.rembg.feather_px * 2.0)))
 
         if mode == "shadow":
@@ -232,7 +166,7 @@ def merge_inpaint_result(
     mode: str,
     body_opacity: float,
 ) -> Image.Image:
-    """Merge FLUX output while preserving the original car silhouette by default."""
+    """Merge FLUX output while preserving confident car pixels by default."""
     base = manual.convert("RGBA")
     generated = inpainted.resize(manual.size, Image.LANCZOS).convert("RGBA")
 
@@ -244,10 +178,14 @@ def merge_inpaint_result(
         edit_mask = inputs.inpaint_mask.convert("L")
 
     merged = Image.composite(generated, base, edit_mask)
-    # Keep confident car pixels verbatim unless the user explicitly allowed body edits.
+    # Keep the car body stable, but do not cover the repaired edge band for shadow_edge.
     if mode != "shadow_edge_body":
+        restore_mask = inputs.car_mask if mode == "shadow" else inputs.preserve_mask
         car_layer = Image.new("RGBA", manual.size, (0, 0, 0, 0))
         car_layer.alpha_composite(inputs.cutout_resized, inputs.paste_top_left)
+        layer_alpha = np.array(car_layer.getchannel("A"), dtype=np.uint8)
+        restore_alpha = np.array(restore_mask.convert("L"), dtype=np.uint8)
+        car_layer.putalpha(Image.fromarray(np.minimum(layer_alpha, restore_alpha), mode="L"))
         merged.alpha_composite(car_layer, (0, 0))
 
     return merged.convert("RGB")

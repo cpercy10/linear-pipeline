@@ -79,6 +79,7 @@ from perspective import footprint
 from processing import image_processor as ip
 from processing.exceptions import BlenderRenderError, DetectionError
 from stages import anchor as anchor_stage
+from stages import composite_refine
 from stages import occupancy_resize as resize_stage
 from utils.logging import get_logger, stage_timer
 
@@ -416,10 +417,25 @@ def composite_on_plate(
         placed_px=list(cutout_resized.size),
     )
 
-    return anchor_stage.composite_car_on_plate(
+    anchor_frac = (0.5, pre.anchor_frac[1])   # center X; wheel offset on Y only
+    x, y, clamped = anchor_stage.compute_paste_top_left(
+        target,
+        cutout_resized.size,
+        plate.plate.size,
+        anchor_frac,
+    )
+    refined = composite_refine.composite_cutout_on_plate(
         cutout_resized,
         plate.plate,
-        target,
-        anchor_frac=(0.5, pre.anchor_frac[1]),   # center X; wheel offset on Y only
-        log=log,
+        (x, y),
+        settings,
     )
+
+    log.info(
+        "exterior_full.composite_refined",
+        paste_top_left=[x, y],
+        clamped=bool(clamped),
+        shadow_pixels=refined.stats.get("shadow_pixels"),
+        alpha_pixels=refined.stats.get("alpha_pixels"),
+    )
+    return refined.image

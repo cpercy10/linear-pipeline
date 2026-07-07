@@ -93,7 +93,7 @@ default **into the package** and are env-overridable.
 
 - Car **sizing**: `config/orientation.yaml` → `target_visual_occupancy` per pose class.
 - Car **placement / framing**: `AnchorConfig` → per-pose `forward_bias_*` (and `sensor_mm`).
-- **Contact shadow**: `RemoveBgConfig.exterior_add_shadow` (env `MOTOCUT_REMOVEBG__EXTERIOR_ADD_SHADOW`) — whether remove.bg adds a drop shadow under the exterior-full car.
+- **Contact shadow**: exterior-full uses a local plate-aware contact shadow by default. Keep `RemoveBgConfig.exterior_add_shadow` / `MOTOCUT_REMOVEBG__EXTERIOR_ADD_SHADOW` false unless you intentionally want remove.bg's baked shadow instead.
 
 ## 8. What to update before running (checklist)
 

@@ -41,10 +41,10 @@ BODY_OPACITY = 0.35
 
 # Main A/B pass: FLUX.2 Klein final image-edit refine.
 FLUX_REFINE_ENABLED = True
-FLUX_REFINE_STEPS = 6
+FLUX_REFINE_STEPS = 8
 FLUX_REFINE_SEED = "1234"  # fixed seed makes A/B comparisons less noisy; "" = random
 FLUX_REFINE_MAX_EDGE = 1024
-FLUX_REFINE_GUIDANCE = 1.0
+FLUX_REFINE_GUIDANCE = 2.2
 FLUX_REFINE_STRENGTH = ""  # "" = server/model default
 FLUX_REFINE_PROMPT = ""    # "" = server picks the prompt for each reference mode
 

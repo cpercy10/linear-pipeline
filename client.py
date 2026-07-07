@@ -25,15 +25,15 @@ INPAINT_MODE = "shadow_edge"
 INPAINT_STEPS = 28
 INPAINT_MAX_EDGE = 1024
 FLUX_REFINE_ENABLED = True
-FLUX_REFINE_STEPS = 6
+FLUX_REFINE_STEPS = 8
 FLUX_REFINE_MAX_EDGE = 1024
-FLUX_REFINE_GUIDANCE = 1.0
+FLUX_REFINE_GUIDANCE = 2.2
 FLUX_REFINE_STRENGTH = ""           # "" = model default
 FLUX_REFINE_REFERENCE_MODE = "both"  # both | with_reference | composite_only
 # ── DEFAULTS (edit these; no CLI args needed) ────────────────────────────────
 SERVER_URL = "https://6ab7ri5k4gsatu-8000.proxy.runpod.net"   # your server (e.g. a https://xxxx-8000.proxy.runpod.net URL)
 INPUT_DIR = r"C:\Users\SyedZulfiqarHaiderZa\Desktop\cars2"
-OUTPUT_DIR = r"C:\Users\SyedZulfiqarHaiderZa\Desktop\cars2\Output-7"     # results land in OUTPUT_DIR/<stem>/
+OUTPUT_DIR = r"C:\Users\SyedZulfiqarHaiderZa\Desktop\cars2\Output-8"     # results land in OUTPUT_DIR/<stem>/
 INPAINT_PROMPT  = (
     "Repair only the pasted car integration in this background replacement. Keep "
     "the car silhouette, dimensions, perspective, paint color, wheels, lights, "

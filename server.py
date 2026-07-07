@@ -166,10 +166,9 @@ def _lock_background_after_flux(
     )
     car_core = solid_car.filter(ImageFilter.GaussianBlur(0.6))
     narrow_edge = composite_refine.mask_subtract(
-        composite_refine.dilate_mask(solid_car, 7),
-        composite_refine.erode_mask(solid_car, 1),
-    ).filter(ImageFilter.GaussianBlur(1.2))
-    narrow_edge = narrow_edge.point(lambda p: int(p * 0.72))
+        composite_refine.dilate_mask(solid_car, 14),
+        composite_refine.erode_mask(solid_car, 2),
+    ).filter(ImageFilter.GaussianBlur(2.0))
     car_edit = composite_refine.mask_union(car_core, narrow_edge)
 
     contact_context = Image.new("L", base.size, 0)
@@ -573,6 +572,16 @@ async def _process_stream(
                             plate.plate,
                         ),
                     )
+                    raw_refined = refined
+                    if debug:
+                        yield _frame(
+                            f"39_debug_raw_klein_{refine_mode}_before_safety_merge.png",
+                            _img_bytes(raw_refined),
+                            meta={
+                                "note": "raw Klein output before restoring protected background",
+                                "flux_refine_reference_mode": refine_mode,
+                            },
+                        )
                     refined = _lock_background_after_flux(base_for_flux, refined, inputs)
                     flux_outputs[refine_mode] = refined
                     yield _frame(
@@ -634,6 +643,7 @@ async def _process_stream(
                         "30_composite_local_cutout_with_placeholder_shadow.png": "local cleaned rembg cutout on rendered plate before final prompt-based Klein refinement",
                         "31_composite_prompt_input_no_shadow.png": "actual clean composite sent into final Klein; shadow/reflection/window cleanup is prompt-generated",
                         "35_optional_flux_fill_mask_repair_not_final.png": "optional old FLUX Fill repair stage; not the final output",
+                        "39_debug_raw_klein_*_before_safety_merge.png": "raw Klein output before protected background restoration; use this to see whether Klein generated edge/shadow/reflection fixes",
                         "40_final_klein_no_reference_prompt_edges_glass_shadow.png": _flux_output_description("composite_only"),
                         "41_final_klein_with_reference_restore_parts_edges_glass_shadow.png": _flux_output_description("with_reference"),
                         "99_final_selected.png": "selected final output; prefers with-reference when both modes are requested",
